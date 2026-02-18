@@ -1,0 +1,241 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+  FIELD_PARTNER
+  FINANCE
+}
+
+enum ChildStatus {
+  WAITING
+  SPONSORED
+  GRADUATED
+}
+
+enum ModerationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum VisibilityScope {
+  PUBLIC
+  SPONSOR_ONLY
+}
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum SponsorshipStatus {
+  ACTIVE
+  CANCELLED
+  PAST_DUE
+}
+
+enum SponsorshipTier {
+  FULL
+  PARTIAL
+}
+
+enum DonationType {
+  ONE_TIME
+  RECURRING_MONTHLY
+}
+
+enum DonationStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  EXPORT
+  LOGIN
+}
+
+enum EntityType {
+  CHILD
+  SCHOOL
+  DOCUMENT
+}
+
+model User {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  role              Role     @default(USER)
+  name              String?
+  stripeCustomerId  String?
+  country           String?
+  preferredLanguage String   @default("en")
+  isActive          Boolean  @default(true)
+  archivedAt        DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  sponsorships      Sponsorship[]
+  donations         Donation[]
+  auditLogs         AdminAuditLog[]
+}
+
+model Child {
+  id               String           @id @default(cuid())
+  name             String
+  dob              DateTime
+  bio              String
+  story            String
+  photoUrl         String
+  status           ChildStatus      @default(WAITING)
+  sponsorshipSlots Int              @default(1)
+  annualCost       Decimal
+  gender           String
+  region           String
+  educationLevel   String
+  moderationStatus ModerationStatus @default(PENDING)
+  visibilityScope  VisibilityScope  @default(PUBLIC)
+  waitlistPosition Int?
+  allocationMap    Json?            // Stores fund routing logic { "school": 80, "program": 20 }
+  
+  isActive         Boolean          @default(true)
+  archivedAt       DateTime?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  schoolId         String
+  school           School           @relation(fields: [schoolId], references: [id])
+  sponsorships     Sponsorship[]
+  updates          Post[]
+  documents        VerificationDocument[]
+}
+
+model School {
+  id                 String             @id @default(cuid())
+  name               String
+  location           String
+  capacity           Int
+  establishedDate    DateTime
+  contactPerson      String?
+  verificationStatus VerificationStatus @default(PENDING)
+  partnerSince       DateTime           @default(now())
+  
+  isActive           Boolean            @default(true)
+  archivedAt         DateTime?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  children           Child[]
+  updates            Post[]
+  documents          VerificationDocument[]
+}
+
+model Sponsorship {
+  id                   String            @id @default(cuid())
+  startDate            DateTime          @default(now())
+  endDate              DateTime?
+  status               SponsorshipStatus @default(ACTIVE)
+  monthlyAmount        Decimal
+  stripeSubscriptionId String?
+  tier                 SponsorshipTier   @default(FULL)
+
+  userId               String
+  user                 User              @relation(fields: [userId], references: [id])
+  childId              String
+  child                Child             @relation(fields: [childId], references: [id])
+
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+}
+
+model Donation {
+  id              String         @id @default(cuid())
+  amount          Decimal
+  currency        String         @default("USD")
+  baseAmountUSD   Decimal?       // For normalized reporting
+  fxRate          Decimal?
+  status          DonationStatus @default(PENDING)
+  stripePaymentId String?        @unique
+  type            DonationType
+  receiptUrl      String?
+  invoiceNumber   String?
+  allocationTag   String?        // "General Fund", "School Build", etc.
+
+  userId          String
+  user            User           @relation(fields: [userId], references: [id])
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model Post {
+  id             String   @id @default(cuid())
+  title          String
+  content        String
+  mediaUrl       String?
+  
+  childId        String?
+  child          Child?   @relation(fields: [childId], references: [id])
+  schoolId       String?
+  school         School?  @relation(fields: [schoolId], references: [id])
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model AdminAuditLog {
+  id           String      @id @default(cuid())
+  action       AuditAction
+  targetEntity String
+  targetId     String?
+  changes      Json?       // Stores before/after snapshot
+  ipAddress    String?
+  
+  adminId      String
+  admin        User        @relation(fields: [adminId], references: [id])
+  
+  createdAt    DateTime    @default(now())
+}
+
+model VerificationDocument {
+  id          String             @id @default(cuid())
+  entityType  EntityType
+  documentUrl String
+  status      VerificationStatus @default(PENDING)
+  uploadedBy  String
+  reviewedBy  String?
+  
+  childId     String?
+  child       Child?             @relation(fields: [childId], references: [id])
+  schoolId    String?
+  school      School?            @relation(fields: [schoolId], references: [id])
+
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+}
+
+model MonthlySnapshot {
+  id                String   @id @default(cuid())
+  month             Int
+  year              Int
+  totalDonations    Decimal
+  totalSponsorships Int
+  activeChildren    Int
+  churnRate         Decimal?
+  
+  createdAt         DateTime @default(now())
+
+  @@unique([month, year])
+}
