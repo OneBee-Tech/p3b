@@ -16,18 +16,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 password: { label: "Password (any)", type: "password" }
             },
             async authorize(credentials) {
-                console.log("Authorize called with:", credentials?.email);
+                // If the user just clicks "Sign in" without typing, the form submits an empty string.
+                // We fallback to the demo email.
+                const email = credentials?.email || "donor@example.com";
 
-                if (!credentials?.email) {
-                    throw new CustomError("Email is required");
-                }
+                console.log("Authorize called with email:", email);
 
                 try {
                     const user = await prisma.user.upsert({
-                        where: { email: credentials.email as string },
+                        where: { email: email as string },
                         update: {},
                         create: {
-                            email: credentials.email as string,
+                            email: email as string,
                             name: "Alex Donor",
                             role: "USER"
                         }
