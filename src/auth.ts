@@ -1,18 +1,19 @@
 import NextAuth from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { db } from "@/lib/db"
+import { authConfig } from "./auth.config"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
     adapter: PrismaAdapter(db),
-    providers: [], // Add providers here (Google, Email, etc.)
-    session: { strategy: "jwt" },
+    ...authConfig,
     callbacks: {
+        ...authConfig.callbacks,
         async session({ session, token }) {
             if (token.sub && session.user) {
                 session.user.id = token.sub;
             }
             if (token.role && session.user) {
-                session.user.role = token.role as "ADMIN" | "USER" | "FIELD_PARTNER" | "FINANCE";
+                (session.user as any).role = token.role as "ADMIN" | "USER" | "FIELD_PARTNER" | "FINANCE";
             }
             return session;
         },
