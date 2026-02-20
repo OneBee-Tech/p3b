@@ -80,6 +80,18 @@ enum AuditAction {
   LOGIN
 }
 
+enum UrgencyLevel {
+  LOW
+  HIGH
+  CRITICAL
+}
+
+enum CampaignStatus {
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
 enum EntityType {
   CHILD
   SCHOOL
@@ -117,6 +129,9 @@ model Program {
   snapshots       ProgramSnapshot[]
   schoolId        String?
   school          School?  @relation(fields: [schoolId], references: [id])
+  campaignId      String?
+  campaign        Campaign? @relation(fields: [campaignId], references: [id])
+  stories         Story[]
 }
 
 model User {
@@ -157,6 +172,12 @@ model Child {
   visibilityScope  VisibilityScope  @default(PUBLIC)
   waitlistPosition Int?
   allocationMap    Json?            // Stores fund routing logic { "school": 80, "program": 20 }
+  
+  // Media Ethics & Consent Governance
+  consentFlag      Boolean          @default(true)
+  usageScope       String?
+  consentExpiry    DateTime?
+  isAnonymized     Boolean          @default(false)
   
   isActive         Boolean          @default(true)
   archivedAt       DateTime?
@@ -367,4 +388,37 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Campaign {
+  id              String         @id @default(cuid())
+  title           String
+  slug            String         @unique
+  urgencyLevel    UrgencyLevel   @default(LOW)
+  status          CampaignStatus @default(ACTIVE)
+  fundingGoal     Decimal
+  fundingCurrent  Decimal        @default(0)
+  deadline        DateTime?
+  heroMedia       String?
+  
+  programs        Program[]
+  
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model Story {
+  id              String           @id @default(cuid())
+  title           String
+  region          String
+  narrative       String           @db.Text
+  mediaUrl        String?
+  publishDate     DateTime         @default(now())
+  status          ModerationStatus @default(PENDING)
+  
+  programId       String
+  program         Program          @relation(fields: [programId], references: [id])
+  
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
 }

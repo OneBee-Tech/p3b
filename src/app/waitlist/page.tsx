@@ -11,7 +11,7 @@ export default function WaitlistPage() {
                     Thank you for your incredible generosity. We will notify you as soon as funding opens up for this community program or when similar programs require support.
                 </p>
                 <div className="space-y-4">
-                    <Link href="/sponsor" className="block w-full">
+                    <Link href="/programs" className="block w-full">
                         <Button variant="impact" size="lg" className="w-full text-lg">
                             Explore Other Communities
                         </Button>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Globe, Menu, X, Heart } from "lucide-react";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const languages = [
@@ -22,6 +23,15 @@ export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [langOpen, setLangOpen] = useState(false);
     const [currentLang, setCurrentLang] = useState(languages[0]);
+    const pathname = usePathname();
+
+    const navLinks = [
+        { href: "/programs", label: "Explore Communities" },
+        { href: "/stories", label: "Stories" },
+        { href: "/impact", label: "Our Impact" },
+        { href: "/our-story", label: "Our Story" },
+        { href: "/dashboard", label: "My Dashboard" },
+    ];
 
     return (
         <nav className="fixed w-full z-50 transition-all duration-300 bg-cinematic-dark/80 backdrop-blur-md border-b border-white/5">
@@ -39,24 +49,18 @@ export function Navbar() {
 
                     {/* Desktop Links */}
                     <div className="hidden md:flex items-center gap-8">
-                        <Link
-                            href="/sponsor"
-                            className="text-white/80 hover:text-white transition-colors text-sm font-medium"
-                        >
-                            Explore Communities
-                        </Link>
-                        <Link
-                            href="/dashboard"
-                            className="text-white/80 hover:text-white transition-colors text-sm font-medium"
-                        >
-                            My Dashboard
-                        </Link>
-                        <Link
-                            href="/#impact"
-                            className="text-white/80 hover:text-white transition-colors text-sm font-medium"
-                        >
-                            Our Impact
-                        </Link>
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className={cn(
+                                    "transition-colors text-sm font-medium",
+                                    pathname.startsWith(link.href) ? "text-impact-gold" : "text-white/80 hover:text-white"
+                                )}
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
 
                         {/* Language Switcher */}
                         <div className="relative">
@@ -90,7 +94,7 @@ export function Navbar() {
                             )}
                         </div>
 
-                        <Link href="/sponsor">
+                        <Link href="/programs">
                             <Button variant="impact" size="sm" className="font-bold">
                                 Donate Now
                             </Button>
@@ -110,27 +114,19 @@ export function Navbar() {
             {isOpen && (
                 <div className="md:hidden bg-cinematic-dark border-t border-white/10 animate-fade-in">
                     <div className="px-4 pt-2 pb-6 space-y-4">
-                        <Link
-                            href="/sponsor"
-                            className="block text-white/80 hover:text-white py-2"
-                            onClick={() => setIsOpen(false)}
-                        >
-                            Explore Communities
-                        </Link>
-                        <Link
-                            href="/dashboard"
-                            className="block text-white/80 hover:text-white py-2"
-                            onClick={() => setIsOpen(false)}
-                        >
-                            My Dashboard
-                        </Link>
-                        <Link
-                            href="/#impact"
-                            className="block text-white/80 hover:text-white py-2"
-                            onClick={() => setIsOpen(false)}
-                        >
-                            Our Impact
-                        </Link>
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className={cn(
+                                    "block py-2 font-medium transition-colors",
+                                    pathname.startsWith(link.href) ? "text-impact-gold" : "text-white/80 hover:text-white"
+                                )}
+                                onClick={() => setIsOpen(false)}
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
                         <div className="border-t border-white/10 pt-4">
                             <p className="text-xs text-white/50 mb-2 uppercase tracking-wider">Select Language</p>
                             <div className="grid grid-cols-2 gap-2">
@@ -151,7 +147,7 @@ export function Navbar() {
                                 ))}
                             </div>
                         </div>
-                        <Link href="/sponsor" className="block w-full mt-4">
+                        <Link href="/programs" className="block w-full mt-4" onClick={() => setIsOpen(false)}>
                             <Button variant="impact" className="w-full">
                                 Donate Now
                             </Button>

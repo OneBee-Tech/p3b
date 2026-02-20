@@ -72,7 +72,7 @@ export default async function ChildProfilePage({ params }: { params: Promise<{ c
                 <div className="absolute inset-0 bg-gradient-to-t from-cinematic-dark via-cinematic-dark/40 to-transparent" />
 
                 <div className="absolute top-24 left-4 md:left-8 z-20">
-                    <Link href="/sponsor" className="inline-flex items-center text-white/80 hover:text-white transition-colors bg-black/20 hover:bg-black/40 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium">
+                    <Link href="/programs" className="inline-flex items-center text-white/80 hover:text-white transition-colors bg-black/20 hover:bg-black/40 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium">
                         <ChevronLeft className="w-4 h-4 mr-1" /> Back to Communities
                     </Link>
                 </div>

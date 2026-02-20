@@ -221,7 +221,7 @@ export default async function DashboardPage() {
                             ) : (
                                 <div className="text-center">
                                     <p className="text-gray-500 text-sm mb-6 max-w-sm mx-auto">Once you support a community, you’ll see exactly how your contributions fund tuition, supplies, and infrastructure.</p>
-                                    <Link href="/sponsor">
+                                    <Link href="/programs">
                                         <Button variant="impact">Explore Communities</Button>
                                     </Link>
                                 </div>

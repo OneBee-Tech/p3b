@@ -19,7 +19,7 @@ export function ProgramContributionList({ contributions }: { contributions: Prog
             <div className="bg-white p-8 text-center rounded-2xl border border-gray-100 text-gray-500 transition-all duration-300 hover:shadow-md">
                 <Globe2 className="w-12 h-12 mx-auto text-gray-300 mb-4" />
                 <p className="mb-4 text-gray-600 font-medium">Your journey starts here — discover communities waiting for support.</p>
-                <Link href="/sponsor">
+                <Link href="/programs">
                     <Button variant="impact">Explore Communities</Button>
                 </Link>
             </div>
@@ -50,7 +50,7 @@ export function ProgramContributionList({ contributions }: { contributions: Prog
                                     Your Impact: <span className="font-bold text-impact-gold">${program.userContribution.toLocaleString()} USD</span> {program.isMonthly && "(Monthly)"}
                                 </p>
                             </div>
-                            <Link href={`/sponsor`} className="text-trust-blue hover:text-blue-700 bg-blue-50 p-2 rounded-full transition-colors flex-shrink-0">
+                            <Link href={`/programs`} className="text-trust-blue hover:text-blue-700 bg-blue-50 p-2 rounded-full transition-colors flex-shrink-0">
                                 <ChevronRight className="w-5 h-5" />
                             </Link>
                         </div>

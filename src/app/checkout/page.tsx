@@ -77,7 +77,7 @@ export default async function CheckoutPage({
                                         Join Waitlist for Openings
                                     </Button>
                                 </Link>
-                                <Link href="/sponsor" className="block w-full">
+                                <Link href="/programs" className="block w-full">
                                     <Button variant="outline" size="lg" className="w-full text-gray-600">
                                         Support a Similar Community
                                     </Button>

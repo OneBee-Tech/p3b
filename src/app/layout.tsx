@@ -4,6 +4,8 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { TrustBadgeStrip } from "@/components/TrustBadgeStrip";
+import { AnalyticsTracker } from "@/components/AnalyticsTracker";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -45,7 +47,9 @@ export default function RootLayout({
       >
         <Navbar />
         <main className="flex-grow">{children}</main>
+        <TrustBadgeStrip />
         <Footer />
+        <AnalyticsTracker />
       </body>
     </html>
   );
