@@ -120,21 +120,24 @@ model Program {
 }
 
 model User {
-  id                String   @id @default(cuid())
-  email             String   @unique
-  role              Role     @default(USER)
+  id                String    @id @default(cuid())
+  email             String    @unique
+  emailVerified     DateTime?
+  role              Role      @default(USER)
   name              String?
   stripeCustomerId  String?
   country           String?
-  preferredLanguage String   @default("en")
-  isActive          Boolean  @default(true)
+  preferredLanguage String    @default("en")
+  isActive          Boolean   @default(true)
   archivedAt        DateTime?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
   sponsorships      Sponsorship[]
   donations         Donation[]
   auditLogs         AdminAuditLog[]
+  accounts          Account[]
+  sessions          Session[]
 }
 
 model Child {
@@ -319,4 +322,49 @@ model ProgramSnapshot {
   @@unique([programId, month, year])
 }
 
+model FailedWebhook {
+  id         String   @id @default(cuid())
+  eventId    String   @unique
+  eventType  String
+  payload    Json
+  error      String?
+  retryCount Int      @default(0)
+  status     String   @default("PENDING") // PENDING, RESOLVED, FAILED
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
 
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

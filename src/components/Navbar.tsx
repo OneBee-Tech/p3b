@@ -40,22 +40,22 @@ export function Navbar() {
                     {/* Desktop Links */}
                     <div className="hidden md:flex items-center gap-8">
                         <Link
-                            href="#how-it-works"
+                            href="/sponsor"
                             className="text-white/80 hover:text-white transition-colors text-sm font-medium"
                         >
-                            How It Works
+                            Explore Communities
                         </Link>
                         <Link
-                            href="#impact"
+                            href="/dashboard"
+                            className="text-white/80 hover:text-white transition-colors text-sm font-medium"
+                        >
+                            My Dashboard
+                        </Link>
+                        <Link
+                            href="/#impact"
                             className="text-white/80 hover:text-white transition-colors text-sm font-medium"
                         >
                             Our Impact
-                        </Link>
-                        <Link
-                            href="#stories"
-                            className="text-white/80 hover:text-white transition-colors text-sm font-medium"
-                        >
-                            Stories
                         </Link>
 
                         {/* Language Switcher */}
@@ -90,9 +90,11 @@ export function Navbar() {
                             )}
                         </div>
 
-                        <Button variant="impact" size="sm" className="font-bold">
-                            Donate Now
-                        </Button>
+                        <Link href="/sponsor">
+                            <Button variant="impact" size="sm" className="font-bold">
+                                Donate Now
+                            </Button>
+                        </Link>
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -109,25 +111,25 @@ export function Navbar() {
                 <div className="md:hidden bg-cinematic-dark border-t border-white/10 animate-fade-in">
                     <div className="px-4 pt-2 pb-6 space-y-4">
                         <Link
-                            href="#how-it-works"
+                            href="/sponsor"
                             className="block text-white/80 hover:text-white py-2"
                             onClick={() => setIsOpen(false)}
                         >
-                            How It Works
+                            Explore Communities
                         </Link>
                         <Link
-                            href="#impact"
+                            href="/dashboard"
+                            className="block text-white/80 hover:text-white py-2"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            My Dashboard
+                        </Link>
+                        <Link
+                            href="/#impact"
                             className="block text-white/80 hover:text-white py-2"
                             onClick={() => setIsOpen(false)}
                         >
                             Our Impact
-                        </Link>
-                        <Link
-                            href="#stories"
-                            className="block text-white/80 hover:text-white py-2"
-                            onClick={() => setIsOpen(false)}
-                        >
-                            Stories
                         </Link>
                         <div className="border-t border-white/10 pt-4">
                             <p className="text-xs text-white/50 mb-2 uppercase tracking-wider">Select Language</p>
@@ -149,9 +151,11 @@ export function Navbar() {
                                 ))}
                             </div>
                         </div>
-                        <Button variant="impact" className="w-full mt-4">
-                            Donate Now
-                        </Button>
+                        <Link href="/sponsor" className="block w-full mt-4">
+                            <Button variant="impact" className="w-full">
+                                Donate Now
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             )}
