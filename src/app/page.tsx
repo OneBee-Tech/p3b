@@ -1,7 +1,7 @@
 import { Hero } from "@/components/Hero";
 import { RealityStrip } from "@/components/RealityStrip";
 import { HowItWorks } from "@/components/HowItWorks";
-import { ImpactGallery } from "@/components/ImpactGallery";
+import { ImpactGallery } from "@/components/ProgramImpactGallery";
 import { GratitudeWall } from "@/components/GratitudeWall";
 import { FounderStory } from "@/components/FounderStory";
 import { ImpactReport } from "@/components/ImpactReport";

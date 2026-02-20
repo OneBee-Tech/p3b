@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL")
 }
 
 enum Role {
@@ -53,6 +54,17 @@ enum DonationType {
   RECURRING_MONTHLY
 }
 
+enum DonationFundType {
+  RESTRICTED
+  UNRESTRICTED
+}
+
+enum AllocationStatus {
+  AUTOMATED
+  PENDING_APPROVAL
+  APPROVED
+}
+
 enum DonationStatus {
   PENDING
   SUCCEEDED
@@ -72,6 +84,39 @@ enum EntityType {
   CHILD
   SCHOOL
   DOCUMENT
+  PROGRAM
+}
+
+enum ProgramStatus {
+  ACTIVE
+  FULLY_FUNDED
+  ARCHIVED
+}
+
+model Program {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String   @unique
+  description     String
+  location        String
+  
+  status          ProgramStatus @default(ACTIVE)
+
+  fundingGoal     Decimal
+  fundingCurrent  Decimal  @default(0)
+  
+  isLocked        Boolean  @default(false) // Prevents overfunding
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  children        Child[]
+  donations       Donation[]
+  sponsorships    Sponsorship[]
+  posts           Post[]
+  snapshots       ProgramSnapshot[]
+  schoolId        String?
+  school          School?  @relation(fields: [schoolId], references: [id])
 }
 
 model User {
@@ -117,7 +162,11 @@ model Child {
 
   schoolId         String
   school           School           @relation(fields: [schoolId], references: [id])
-  sponsorships     Sponsorship[]
+  
+  programId        String?
+  program          Program?         @relation(fields: [programId], references: [id])
+
+  sponsorships     Sponsorship[]    // Optional reference for dashboard "representative" child
   updates          Post[]
   documents        VerificationDocument[]
 }
@@ -137,6 +186,7 @@ model School {
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @updatedAt
 
+  programs           Program[]
   children           Child[]
   updates            Post[]
   documents          VerificationDocument[]
@@ -153,46 +203,60 @@ model Sponsorship {
 
   userId               String
   user                 User              @relation(fields: [userId], references: [id])
-  childId              String
-  child                Child             @relation(fields: [childId], references: [id])
+  
+  programId            String
+  program              Program           @relation(fields: [programId], references: [id])
+
+  childId              String?           // Optional "Representative" Child
+  child                Child?            @relation(fields: [childId], references: [id])
 
   createdAt            DateTime          @default(now())
   updatedAt            DateTime          @updatedAt
 }
 
 model Donation {
-  id              String         @id @default(cuid())
-  amount          Decimal
-  currency        String         @default("USD")
-  baseAmountUSD   Decimal?       // For normalized reporting
-  fxRate          Decimal?
-  status          DonationStatus @default(PENDING)
-  stripePaymentId String?        @unique
-  type            DonationType
-  receiptUrl      String?
-  invoiceNumber   String?
-  allocationTag   String?        // "General Fund", "School Build", etc.
+  id                  String           @id @default(cuid())
+  amount              Decimal
+  currency            String           @default("USD")
+  baseAmountUSD       Decimal?         // For normalized reporting
+  fxRate              Decimal?
+  status              DonationStatus   @default(PENDING)
+  stripePaymentId     String?          @unique
+  type                DonationType
+  fundType            DonationFundType @default(UNRESTRICTED)
+  receiptUrl          String?
+  invoiceNumber       String?
+  
+  allocationStatus    AllocationStatus @default(AUTOMATED)
+  allocationTag       String?          // "General Fund", "School Build", etc.
+  allocationBreakdown Json?            // Breakdown: { "tuition": 20, "supplies": 10 }
 
-  userId          String
-  user            User           @relation(fields: [userId], references: [id])
+  userId              String
+  user                User             @relation(fields: [userId], references: [id])
+  
+  programId           String?
+  program             Program?         @relation(fields: [programId], references: [id])
 
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
 }
 
 model Post {
-  id             String   @id @default(cuid())
-  title          String
-  content        String
-  mediaUrl       String?
-  
-  childId        String?
-  child          Child?   @relation(fields: [childId], references: [id])
-  schoolId       String?
-  school         School?  @relation(fields: [schoolId], references: [id])
+  id               String           @id @default(cuid())
+  title            String
+  content          String
+  mediaUrl         String?
+  moderationStatus ModerationStatus @default(PENDING)
 
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  childId          String?
+  child            Child?   @relation(fields: [childId], references: [id])
+  schoolId         String?
+  school           School?  @relation(fields: [schoolId], references: [id])
+  programId        String?
+  program          Program? @relation(fields: [programId], references: [id])
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 model AdminAuditLog {
@@ -221,7 +285,7 @@ model VerificationDocument {
   child       Child?             @relation(fields: [childId], references: [id])
   schoolId    String?
   school      School?            @relation(fields: [schoolId], references: [id])
-
+  
   createdAt   DateTime           @default(now())
   updatedAt   DateTime           @updatedAt
 }
@@ -239,3 +303,20 @@ model MonthlySnapshot {
 
   @@unique([month, year])
 }
+
+model ProgramSnapshot {
+  id                String   @id @default(cuid())
+  month             Int
+  year              Int
+  fundsRaised       Decimal
+  studentsImpacted  Int
+  
+  programId         String
+  program           Program  @relation(fields: [programId], references: [id])
+
+  createdAt         DateTime @default(now())
+  
+  @@unique([programId, month, year])
+}
+
+

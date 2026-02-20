@@ -1,4 +1,4 @@
-import { SponsorshipCard } from "@/components/SponsorshipCard";
+import { SponsorshipCard } from "@/components/ProgramCard";
 import { Button } from "@/components/ui/button";
 import { Filter, Search } from "lucide-react";
 
