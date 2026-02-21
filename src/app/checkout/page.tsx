@@ -13,16 +13,29 @@ import { TrustBadgeStrip } from "@/components/TrustBadgeStrip";
 export default async function CheckoutPage({
     searchParams
 }: {
-    searchParams: Promise<{ programId?: string, childId?: string }>
+    searchParams: Promise<{ programId?: string, childId?: string, type?: string }>
 }) {
-    const { programId, childId } = await searchParams;
+    const { programId, childId, type } = await searchParams;
 
-    if (!programId) {
-        return <div className="p-8 text-center text-red-500">Missing Program ID</div>;
+    let targetProgramId = programId;
+
+    // Handle general donation routing logic fallback
+    if (!targetProgramId && type === 'general') {
+        const generalFund = await prisma.program.findUnique({
+            where: { slug: 'general-fund' }
+        });
+
+        if (generalFund) {
+            targetProgramId = generalFund.id;
+        }
+    }
+
+    if (!targetProgramId) {
+        return <div className="p-8 text-center text-red-500">Missing Program ID or valid donation type</div>;
     }
 
     const program = await prisma.program.findUnique({
-        where: { id: programId }
+        where: { id: targetProgramId }
     });
 
     if (!program) {

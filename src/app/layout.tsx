@@ -26,8 +26,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Hope for Humanity",
-  description: "A cinematic humanitarian nonprofit platform.",
+  title: "OneDollarOneChild",
+  description: "OneDollarOneChild",
 };
 
 export default function RootLayout({

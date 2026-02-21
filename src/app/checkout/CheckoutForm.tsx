@@ -78,13 +78,29 @@ export function CheckoutForm({ programId, childId }: { programId: string, childI
                     </>
                 ) : (
                     <>
-                        <button onClick={() => setAmount(50)} className={`p-4 border-2 rounded-xl text-center transition-all ${amount === 50 ? 'border-trust-blue bg-blue-50/50' : 'border-gray-200 hover:border-gray-300'}`}>
-                            <span className="block text-2xl font-bold text-gray-900">$50</span>
-                        </button>
-                        <button onClick={() => setAmount(365)} className={`p-4 border-2 rounded-xl text-center transition-all ${amount === 365 ? 'border-trust-blue bg-blue-50/50' : 'border-gray-200 hover:border-gray-300'}`}>
-                            <span className="block text-2xl font-bold text-gray-900">$365</span>
-                            <span className="text-xs text-gray-500">$1 a day</span>
-                        </button>
+                        <div className="col-span-2 grid grid-cols-2 gap-4">
+                            <button onClick={() => setAmount(50)} className={`p-4 border-2 rounded-xl text-center transition-all ${amount === 50 ? 'border-trust-blue bg-blue-50/50' : 'border-gray-200 hover:border-gray-300'}`}>
+                                <span className="block text-2xl font-bold text-gray-900">$50</span>
+                            </button>
+                            <button onClick={() => setAmount(365)} className={`p-4 border-2 rounded-xl text-center transition-all ${amount === 365 ? 'border-trust-blue bg-blue-50/50' : 'border-gray-200 hover:border-gray-300'}`}>
+                                <span className="block text-2xl font-bold text-gray-900">$365</span>
+                                <span className="text-xs text-gray-500">$1 a day</span>
+                            </button>
+                        </div>
+                        <div className="col-span-2 mt-2">
+                            <label htmlFor="custom-amount" className="block text-sm font-bold text-gray-700 mb-2">Custom Amount</label>
+                            <div className="relative">
+                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">$</span>
+                                <input
+                                    type="number"
+                                    id="custom-amount"
+                                    min="1"
+                                    value={amount}
+                                    onChange={(e) => setAmount(Math.max(1, parseInt(e.target.value) || 0))}
+                                    className="w-full pl-8 pr-4 py-4 rounded-xl border-2 border-gray-200 focus:border-trust-blue focus:ring-4 focus:ring-trust-blue/10 transition-all font-bold text-lg text-gray-900 outline-none"
+                                />
+                            </div>
+                        </div>
                     </>
                 )}
             </div>
