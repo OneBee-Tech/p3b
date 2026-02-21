@@ -28,6 +28,14 @@ export function Navbar() {
     const pathname = usePathname();
 
     useEffect(() => {
+        const savedLang = localStorage.getItem("ODOC_LANG");
+        if (savedLang) {
+            const matched = languages.find(l => l.code === savedLang);
+            if (matched) setCurrentLang(matched);
+        }
+    }, []);
+
+    useEffect(() => {
         const controlNavbar = () => {
             if (typeof window !== 'undefined') {
                 if (window.scrollY > lastScrollY && window.scrollY > 100) {
@@ -104,8 +112,8 @@ export function Navbar() {
                                         <button
                                             key={lang.code}
                                             onClick={() => {
-                                                setCurrentLang(lang);
-                                                setLangOpen(false);
+                                                localStorage.setItem("ODOC_LANG", lang.code);
+                                                window.location.reload();
                                             }}
                                             className={cn(
                                                 "w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors",
@@ -159,8 +167,8 @@ export function Navbar() {
                                     <button
                                         key={lang.code}
                                         onClick={() => {
-                                            setCurrentLang(lang);
-                                            setIsOpen(false);
+                                            localStorage.setItem("ODOC_LANG", lang.code);
+                                            window.location.reload();
                                         }}
                                         className={cn(
                                             "text-left text-sm py-1 hover:text-white transition-colors",

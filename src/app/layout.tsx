@@ -6,6 +6,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { TrustBadgeStrip } from "@/components/TrustBadgeStrip";
 import { AnalyticsTracker } from "@/components/AnalyticsTracker";
+import { ClientAutoTranslator } from "@/components/ClientAutoTranslator";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -50,6 +51,7 @@ export default function RootLayout({
         <TrustBadgeStrip />
         <Footer />
         <AnalyticsTracker />
+        <ClientAutoTranslator />
       </body>
     </html>
   );
