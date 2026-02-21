@@ -15,7 +15,6 @@ export async function EmergencyCampaignBanner() {
                 id: true,
                 title: true,
                 fundingGoal: true,
-                currentFunding: true,
                 deadline: true,
             },
         });

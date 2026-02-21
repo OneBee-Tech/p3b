@@ -11,6 +11,9 @@ export async function POST(req: Request) {
 
         // Use free Bing Translate API (no key required for this wrapper)
         const res = await translate(text, null, to);
+        if (!res) {
+            throw new Error("Translation returned undefined");
+        }
         return NextResponse.json({ translated: res.translation });
     } catch (e: any) {
         console.error("API Translation Error:", e);

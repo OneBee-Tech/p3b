@@ -1,5 +1,7 @@
 import { stripe } from "@/lib/stripe";
 import { absoluteUrl } from "@/lib/utils";
+import { auth } from "@/auth";
+import { NextResponse } from "next/server";
 
 const settingsUrl = absoluteUrl("/dashboard");
 
