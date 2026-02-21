@@ -13,7 +13,20 @@ const nextConfig: NextConfig = {
         destination: '/programs/:path*',
         permanent: true,
       },
+      {
+        source: '/index',
+        destination: '/',
+        permanent: true,
+      },
     ];
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+    ],
   },
 };
 

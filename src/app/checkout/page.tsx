@@ -1,10 +1,14 @@
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { CheckoutForm } from "./CheckoutForm";
-import { DonationProgressCard } from "@/components/DonationProgressCard";
-import { Lock, ShieldCheck } from "lucide-react";
+import { Lock } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { AllocationPreviewCard } from "@/components/checkout/AllocationPreviewCard";
+import { ProgramFundingStatusCard } from "@/components/checkout/ProgramFundingStatusCard";
+import { AdminVerificationNotice } from "@/components/checkout/AdminVerificationNotice";
+import { PostDonationVisibilityNote } from "@/components/checkout/PostDonationVisibilityNote";
+import { TrustBadgeStrip } from "@/components/TrustBadgeStrip";
 
 export default async function CheckoutPage({
     searchParams
@@ -30,38 +34,17 @@ export default async function CheckoutPage({
     const isLocked = program.isLocked || fundingCurrent >= fundingGoal || program.status === 'FULLY_FUNDED';
 
     return (
-        <div className="min-h-screen bg-warm-bg py-20 px-4">
-            <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="min-h-screen bg-warm-bg py-24 px-4">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
 
-                {/* Left Side: Program Context */}
-                <div>
+                {/* Left Side: Payment Form / Waitlist */}
+                <div className="lg:col-span-7">
                     <h1 className="text-3xl font-heading font-bold text-cinematic-dark mb-4">Complete Your Support</h1>
                     <p className="text-gray-600 mb-8 leading-relaxed">
                         You are contributing to the community funding pool for <strong>{program.name}</strong>.
-                        Your donation allocates transparently to tuition, supplies, and infrastructure,
-                        benefiting all representative children.
+                        Select your contribution tier and proceed to the encrypted checkout.
                     </p>
 
-                    <DonationProgressCard
-                        title={program.name}
-                        description={program.location}
-                        currentAmount={fundingCurrent}
-                        goalAmount={fundingGoal}
-                    />
-
-                    <div className="mt-8 bg-white p-6 rounded-xl border border-gray-100 flex gap-4">
-                        <ShieldCheck className="text-trust-blue w-8 h-8 flex-shrink-0" />
-                        <div>
-                            <h4 className="font-bold text-cinematic-dark mb-1">Tax Deductible & Secure</h4>
-                            <p className="text-sm text-gray-500">
-                                Your transaction is encrypted. 100% of your donation is distributed directly to the field operations.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Right Side: Payment Form / Waitlist */}
-                <div>
                     {isLocked ? (
                         <div className="bg-white p-8 rounded-xl shadow-xl border border-impact-gold text-center relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-4 opacity-5 bg-impact-gold transform translate-x-12 -translate-y-12 rounded-full w-48 h-48 pointer-events-none" />
@@ -85,10 +68,28 @@ export default async function CheckoutPage({
                             </div>
                         </div>
                     ) : (
-                        <div className="bg-white p-8 rounded-xl shadow-xl border border-gray-100">
+                        <div className="bg-white p-8 rounded-xl shadow-2xl border border-gray-100">
                             <CheckoutForm programId={program.id} childId={childId} />
                         </div>
                     )}
+
+                    <div className="mt-8">
+                        <TrustBadgeStrip className="!bg-transparent !border-none !py-0 !shadow-none" />
+                    </div>
+                </div>
+
+                {/* Right Side: Governance & Transparency Panels */}
+                <div className="lg:col-span-5 space-y-0">
+                    <div className="sticky top-24">
+                        <ProgramFundingStatusCard
+                            programName={program.name}
+                            currentFunding={fundingCurrent}
+                            fundingGoal={fundingGoal}
+                        />
+                        <AllocationPreviewCard />
+                        <AdminVerificationNotice />
+                        <PostDonationVisibilityNote />
+                    </div>
                 </div>
 
             </div>

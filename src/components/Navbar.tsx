@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Globe, Menu, X, Heart } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -23,7 +23,29 @@ export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [langOpen, setLangOpen] = useState(false);
     const [currentLang, setCurrentLang] = useState(languages[0]);
+    const [isVisible, setIsVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
     const pathname = usePathname();
+
+    useEffect(() => {
+        const controlNavbar = () => {
+            if (typeof window !== 'undefined') {
+                if (window.scrollY > lastScrollY && window.scrollY > 100) {
+                    setIsVisible(false); // Scroll down
+                } else {
+                    setIsVisible(true);  // Scroll up
+                }
+                setLastScrollY(window.scrollY);
+            }
+        };
+
+        if (typeof window !== 'undefined') {
+            window.addEventListener('scroll', controlNavbar);
+            return () => {
+                window.removeEventListener('scroll', controlNavbar);
+            };
+        }
+    }, [lastScrollY]);
 
     const navLinks = [
         { href: "/programs", label: "Explore Communities" },
@@ -34,7 +56,10 @@ export function Navbar() {
     ];
 
     return (
-        <nav className="fixed w-full z-50 transition-all duration-300 bg-cinematic-dark/80 backdrop-blur-md border-b border-white/5">
+        <nav className={cn(
+            "fixed w-full z-50 transition-transform duration-300 bg-cinematic-dark/80 backdrop-blur-md border-b border-white/5",
+            isVisible ? "translate-y-0" : "-translate-y-full"
+        )}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-20">
                     {/* Logo */}
@@ -43,7 +68,7 @@ export function Navbar() {
                             <Heart className="w-6 h-6 text-white fill-current" />
                         </div>
                         <span className="font-heading font-bold text-xl text-white tracking-tight">
-                            Hope for Humanity
+                            OneDollarOneChild
                         </span>
                     </Link>
 

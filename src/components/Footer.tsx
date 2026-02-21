@@ -13,7 +13,7 @@ export function Footer() {
                                 <Heart className="w-5 h-5 text-white fill-current" />
                             </div>
                             <span className="font-heading font-bold text-lg text-white tracking-tight">
-                                Hope for Humanity
+                                OneDollarOneChild
                             </span>
                         </Link>
                         <p className="text-sm leading-relaxed mb-6">
@@ -66,7 +66,7 @@ export function Footer() {
                 </div>
 
                 <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
-                    <p>&copy; {new Date().getFullYear()} Hope for Humanity. All rights reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} OneDollarOneChild. All rights reserved.</p>
                     <p>501(c)(3) Non-profit Organization.</p>
                 </div>
             </div>
