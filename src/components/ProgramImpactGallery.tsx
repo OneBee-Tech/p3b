@@ -63,6 +63,11 @@ export function ImpactGallery() {
 
                                 {/* Overlay Gradient */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+
+                                {/* Privacy Disclaimer */}
+                                <div className="absolute top-4 right-4 bg-cinematic-dark/80 backdrop-blur-md rounded-lg p-2 border border-white/20 text-[10px] text-white/80 max-w-[200px] text-right z-20">
+                                    Images are representative. Child identities are protected for safety.
+                                </div>
                             </div>
 
                             {/* Content Overlay */}

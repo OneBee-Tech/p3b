@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, MapPin, GraduationCap, ShieldCheck } from "lucide-react";
 import Link from "next/link";
@@ -6,6 +7,27 @@ import { notFound } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { TransparencyAlert } from "@/components/TransparencyAlert";
 import { DonationProgressCard } from "@/components/DonationProgressCard";
+
+export async function generateMetadata({ params }: { params: Promise<{ childId: string }> }): Promise<Metadata> {
+    const { childId } = await params;
+    const child = await prisma.child.findUnique({
+        where: { id: childId },
+        include: { program: true }
+    });
+
+    if (!child) return { title: "Not Found" };
+
+    return {
+        title: `Sponsor ${child.name} - OneDollarOneChild`,
+        description: `Support ${child.name}'s education and future in ${child.region} through our secure child sponsorship program.`,
+        openGraph: {
+            title: `Sponsor ${child.name} - OneDollarOneChild`,
+            description: `Support ${child.name}'s education and future in ${child.region} through our secure child sponsorship program.`,
+            type: "website",
+            images: child.photoUrl ? [{ url: child.photoUrl }] : [],
+        },
+    };
+}
 
 export default async function ChildProfilePage({ params }: { params: Promise<{ childId: string }> }) {
     // 1. Data Fetching
@@ -70,6 +92,11 @@ export default async function ChildProfilePage({ params }: { params: Promise<{ c
                     sizes="100vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-cinematic-dark via-cinematic-dark/40 to-transparent" />
+
+                {/* Privacy Disclaimer */}
+                <div className="absolute top-4 right-4 bg-cinematic-dark/80 backdrop-blur-md rounded-lg p-2 border border-white/20 text-xs text-white/80 text-right z-20">
+                    Images are representative. Child identities are protected for safety.
+                </div>
 
                 <div className="absolute top-24 left-4 md:left-8 z-20">
                     <Link href="/programs" className="inline-flex items-center text-white/80 hover:text-white transition-colors bg-black/20 hover:bg-black/40 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium">
@@ -147,9 +174,9 @@ export default async function ChildProfilePage({ params }: { params: Promise<{ c
                     {/* Donation Sidebar */}
                     <div className="lg:col-span-1">
                         <div className="bg-white rounded-xl p-6 shadow-xl border border-gray-100 sticky top-24">
-                            <h3 className="text-xl font-heading font-bold text-cinematic-dark mb-2">Fund this Community</h3>
+                            <h3 className="text-xl font-heading font-bold text-cinematic-dark mb-2">Child Sponsorship</h3>
                             <p className="text-sm text-gray-500 mb-6">
-                                Support the <strong className="text-cinematic-dark">{program.name}</strong> to empower {child.name} and classmates.
+                                Support the <strong className="text-cinematic-dark">{program.name}</strong> to empower {child.name} and their classmates.
                             </p>
 
                             {/* Progress Bar (Program Level) */}
@@ -179,8 +206,8 @@ export default async function ChildProfilePage({ params }: { params: Promise<{ c
                                 </Button>
                             ) : (
                                 <Link href={`/checkout?programId=${program.id}&childId=${child.id}`} className="w-full block">
-                                    <Button variant="impact" size="lg" className="w-full py-6 text-lg shadow-lg" aria-label="Support This Community">
-                                        Support This Community
+                                    <Button variant="impact" size="lg" className="w-full py-6 text-lg shadow-lg" aria-label="Sponsor This Child">
+                                        Sponsor {child.name}
                                     </Button>
                                 </Link>
                             )}

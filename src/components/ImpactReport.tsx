@@ -73,10 +73,10 @@ export function ImpactReport() {
                                 <h3 className="font-heading font-bold text-xl text-white">Milestone Reached</h3>
                                 <BarChart3 className="w-5 h-5 text-impact-gold" />
                             </div>
-                            <div className="text-5xl font-bold text-impact-gold mb-2">100th</div>
-                            <p className="text-xl font-medium mb-4">School Constructed</p>
+                            <div className="text-5xl font-bold text-impact-gold mb-2">1,000th</div>
+                            <p className="text-xl font-medium mb-4">Child Sponsored</p>
                             <p className="text-gray-400 text-sm leading-relaxed">
-                                This year, we broke ground on our 100th community school in the rural district of Dadu.
+                                This year, we welcomed our 1,000th sponsored child into our educational support programs.
                             </p>
                         </div>
                         <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-impact-gold/10 rounded-full blur-3xl z-0" />

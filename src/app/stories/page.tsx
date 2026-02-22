@@ -19,7 +19,7 @@ export default function StoriesPage() {
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
                     <h1 className="text-4xl md:text-5xl font-heading font-bold tracking-tight">Stories from the Field</h1>
                     <p className="text-xl text-white/80 leading-relaxed max-w-3xl mx-auto">
-                        See the tangible impact of community-first funding across the globe.
+                        See the tangible impact of child-first sponsorship across the globe.
                     </p>
                 </div>
             </section>

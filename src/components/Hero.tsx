@@ -32,11 +32,8 @@ export function Hero() {
                     <span className="inline-block py-1 px-3 rounded-full bg-white/10 border border-white/20 text-white/90 text-sm font-medium mb-6 backdrop-blur-sm">
                         Global Education Initiative
                     </span>
-                    <h1 className="text-5xl md:text-7xl font-heading font-bold text-white leading-[1.1] mb-8 tracking-tight drop-shadow-lg">
-                        Empower the Next <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">
-                            Generation of Leaders
-                        </span>
+                    <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold font-heading mb-6 tracking-tight max-w-4xl">
+                        Empower the Next Generation of Leaders
                     </h1>
                     <p className="text-lg md:text-xl text-white/90 font-body max-w-2xl mx-auto mb-10 leading-relaxed text-shadow-sm">
                         Millions of children lack access to quality education. Your support builds schools, trains teachers, and transforms communities forever.

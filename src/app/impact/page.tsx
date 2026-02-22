@@ -20,7 +20,7 @@ export default function ImpactPage() {
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
                     <h1 className="text-4xl md:text-5xl font-heading font-bold tracking-tight">Radical Transparency</h1>
                     <p className="text-xl text-white/80 leading-relaxed max-w-3xl mx-auto">
-                        Follow every dollar. See how we allocate funds to optimize community growth and educational access.
+                        Follow every dollar. See how we allocate funds to optimize child education and wellbeing.
                     </p>
                 </div>
             </section>
@@ -37,7 +37,7 @@ export default function ImpactPage() {
                         <h2 className="text-3xl font-bold font-heading text-cinematic-dark">Financial Responsibility</h2>
                     </div>
                     <p className="text-gray-600 leading-relaxed max-w-3xl text-lg">
-                        Our model guarantees that 100% of your community contributions are directed efficiently entirely toward program execution. Our operational bandwidth is subsidized through a private endowment and specialized donor commitments, allowing your capital to perform directly in the field.
+                        Our model guarantees that 100% of your child sponsorships are directed efficiently entirely toward program execution. Our operational bandwidth is subsidized through a private endowment and specialized donor commitments, allowing your capital to perform directly in the field.
                     </p>
                 </div>
 
@@ -46,12 +46,12 @@ export default function ImpactPage() {
                     <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1">
                         <PieChart className="w-8 h-8 text-trust-blue mb-4" />
                         <h3 className="text-xl font-bold text-cinematic-dark mb-2">Allocation Matrix</h3>
-                        <p className="text-gray-500">View real-time breakdowns of tuition, infrastructure, and supply expenditures across our global footprint.</p>
+                        <p className="text-gray-500">View real-time breakdowns of tuition, education support, and supply expenditures across our global footprint.</p>
                     </div>
                     <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1">
                         <TrendingUp className="w-8 h-8 text-emerald-500 mb-4" />
                         <h3 className="text-xl font-bold text-cinematic-dark mb-2">Programmatic Growth</h3>
-                        <p className="text-gray-500">Track longitudinal growth in student retention and community graduation rates quarter over quarter.</p>
+                        <p className="text-gray-500">Track longitudinal growth in student retention and sponsored child graduation rates quarter over quarter.</p>
                     </div>
                     <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1">
                         <ShieldCheck className="w-8 h-8 text-impact-gold mb-4" />
@@ -71,7 +71,7 @@ export default function ImpactPage() {
                         {[
                             { title: "2024 Annual Report", format: "PDF", icon: FileText },
                             { title: "Financial Audit Q1", format: "PDF", icon: PieChart },
-                            { title: "501(c)(3) Letter", format: "PDF", icon: FileBadge },
+                            { title: "NGO Documentation", format: "PDF", icon: FileBadge },
                             { title: "NGO Registration", format: "PDF", icon: ShieldCheck },
                         ].map((doc, idx) => (
                             <a key={idx} href="#" className="flex items-start gap-4 p-4 rounded-xl border border-gray-100 hover:border-trust-blue/30 hover:bg-trust-blue/5 transition-all group">
@@ -90,7 +90,7 @@ export default function ImpactPage() {
 
                 {/* Integration of existing component */}
                 <div className="mt-16 bg-white p-8 md:p-12 border border-gray-100 shadow-sm rounded-3xl">
-                    <h2 className="text-2xl font-bold font-heading text-cinematic-dark mb-8 text-center">Historical Program Impact</h2>
+                    <h2 className="text-2xl font-bold font-heading text-cinematic-dark mb-8 text-center">Historical Child Impact</h2>
                     <ImpactReport />
                 </div>
             </section>

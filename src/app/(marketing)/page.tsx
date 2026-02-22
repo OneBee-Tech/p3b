@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { EmergencyCampaignBanner } from '@/components/landing/EmergencyCampaignBanner';
 import { HeroAcquisition } from '@/components/landing/HeroAcquisition';
 import { StickyDonateRail } from '@/components/landing/StickyDonateRail';
-import { PricingContributionTiers } from '@/components/landing/PricingContributionTiers';
+import { SponsorshipImpactTiers } from '@/components/landing/SponsorshipImpactTiers';
 import { ImpactMetricsStrip } from '@/components/landing/ImpactMetricsStrip';
 import { HowItWorksFlow } from '@/components/landing/HowItWorksFlow';
 import { ImpactGalleryPreview } from '@/components/landing/ImpactGalleryPreview';
@@ -12,18 +12,34 @@ import { LandingCTASection } from '@/components/landing/LandingCTASection';
 import { TrustBadgeStrip } from '@/components/TrustBadgeStrip';
 
 export const metadata: Metadata = {
-    title: 'One Dollar. One Child. One Future. | OneDollarOneChild',
-    description: 'Support community-led education initiatives transforming entire regions through pooled funding.',
+    title: 'Sponsor a Child for Just $1 a Day | OneDollarOneChild',
+    description: 'Support a child’s education, supplies, and future. Even one dollar a day creates lasting impact.',
     openGraph: {
-        title: 'One Dollar. One Child. One Future. | OneDollarOneChild',
-        description: 'Support community-led education initiatives transforming entire regions through pooled funding.',
+        title: 'Sponsor a Child for Just $1 a Day | OneDollarOneChild',
+        description: 'Support a child’s education, supplies, and future. Even one dollar a day creates lasting impact.',
         images: [{ url: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2670&auto=format&fit=crop' }],
     }
+};
+
+const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'NGO',
+    name: 'OneDollarOneChild',
+    description: 'Child Education Sponsorship',
+    url: 'https://onedollaronechild.org',
+    areaServed: 'Global',
+    serviceType: 'Child Education Sponsorship'
 };
 
 export default function MarketingLandingPage() {
     return (
         <>
+            {/* JSON-LD Structured Data Schema */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+
             {/* Layer 1: Emotional Acquisition (Landing) */}
             <EmergencyCampaignBanner />
 
@@ -35,7 +51,7 @@ export default function MarketingLandingPage() {
             <StickyDonateRail />
 
             {/* 2. Action (Structured Tiers) */}
-            <PricingContributionTiers />
+            <SponsorshipImpactTiers />
 
             {/* 3. Logic (Data Visualization) */}
             <ImpactMetricsStrip />

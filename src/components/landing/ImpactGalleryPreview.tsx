@@ -5,25 +5,25 @@ import { ArrowRight, ImageIcon } from "lucide-react";
 export function ImpactGalleryPreview() {
     const previewStories = [
         {
-            src: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=2670&auto=format&fit=crop",
-            alt: "Children in a new computer lab",
+            src: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=2670&auto=format&fit=crop",
+            alt: "Educational supplies and notebooks",
             region: "Kigali, Rwanda",
             title: "The Digital Jumpstart",
-            impact: "120 Students Connected",
+            impact: "120 Children Connected",
         },
         {
-            src: "https://images.unsplash.com/photo-1542810634-71277d95dcbb?q=80&w=2670&auto=format&fit=crop",
-            alt: "Community members assembling desks",
+            src: "https://images.unsplash.com/photo-1427504494785-3a9a27b8bfbc?q=80&w=2670&auto=format&fit=crop",
+            alt: "Clean and safe learning environments",
             region: "Nairobi, Kenya",
-            title: "Rebuilding the Foundation",
-            impact: "New Classrooms Funded",
+            title: "Safe Learning Environments",
+            impact: "New Classrooms Furnished",
         },
         {
-            src: "https://images.unsplash.com/photo-1588075592446-265fd1e6e76f?q=80&w=2672&auto=format&fit=crop",
-            alt: "Teacher leading a class in a bright room",
+            src: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2670&auto=format&fit=crop",
+            alt: "Stack of educational books",
             region: "Accra, Ghana",
-            title: "Empowering Educators",
-            impact: "Teacher Salaries Stabilized",
+            title: "Empowering Through Literacy",
+            impact: "Learning Materials Provided",
         }
     ];
 
@@ -34,10 +34,10 @@ export function ImpactGalleryPreview() {
                 <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
                     <div className="max-w-2xl">
                         <h2 className="text-4xl font-heading font-bold text-cinematic-dark mb-4 tracking-tight">
-                            See the ecosystem in action.
+                            See the impact in action.
                         </h2>
                         <p className="text-lg text-gray-600 font-body leading-relaxed">
-                            Every dollar acts as a brick. Explore exactly what Community-First funding builds on the ground, verified by our transparent impact reporting.
+                            Every dollar changes a life. Explore exactly how child sponsorships provide education, supplies, and wellbeing, verified by our transparent impact reporting.
                         </p>
                     </div>
                     <Link
@@ -67,6 +67,11 @@ export function ImpactGalleryPreview() {
                             />
                             {/* Rich Gradient Overlay */}
                             <div className="absolute inset-0 bg-gradient-to-t from-cinematic-dark/90 via-cinematic-dark/40 to-transparent transition-opacity duration-300 group-hover:opacity-90" />
+
+                            {/* Privacy Disclaimer */}
+                            <div className="absolute top-4 right-4 bg-cinematic-dark/80 backdrop-blur-md rounded-lg p-2 border border-white/20 text-[10px] text-white/80 max-w-[200px] text-right z-20">
+                                Images are representative. Child identities are protected for safety.
+                            </div>
 
                             {/* Card Content */}
                             <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col justify-end h-full">

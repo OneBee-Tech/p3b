@@ -34,6 +34,11 @@ export function SponsorshipCard({ child }: SponsorshipCardProps) {
                 {/* Overlays */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
 
+                {/* Privacy Disclaimer */}
+                <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-cinematic-dark/80 backdrop-blur-md rounded px-2 py-1 text-[8px] text-white/80 whitespace-nowrap z-10">
+                    Images are representative. Child identities are protected for safety.
+                </div>
+
                 {/* Urgency Tag */}
                 {child.isUrgent && (
                     <div className="absolute top-4 left-4 bg-red-500/90 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 backdrop-blur-sm shadow-sm animate-pulse-slow">

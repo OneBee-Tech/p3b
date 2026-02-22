@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { unstable_cache } from "next/cache";
 import { Button } from "@/components/ui/button";
-import { LogOut, CheckCircle2, AlertCircle, Star, Lock, ShieldCheck } from "lucide-react";
+import { LogOut, CheckCircle2, AlertCircle, Star, Lock, ShieldCheck, Info } from "lucide-react";
 import Link from "next/link";
 import { AllocationPieChart } from "./AllocationPieChart";
 import { FundingCategoryBreakdown } from "./FundingCategoryBreakdown";
@@ -151,7 +151,7 @@ export default async function DashboardPage() {
                     <div>
                         <p className="text-gray-400 text-sm font-bold uppercase tracking-wider mb-2">Donor Intelligence Portal</p>
                         <h1 className="text-4xl font-heading font-bold">Welcome back, {donor.name || 'Impact Maker'} — here’s the change you’re creating.</h1>
-                        <p className="text-gray-400 mt-2">Every contribution strengthens communities and expands access to education.</p>
+                        <p className="text-gray-400 mt-2">Every contribution strengthens children's futures and expands access to education.</p>
                     </div>
                     <form action={async () => { 'use server'; await signOut({ redirectTo: '/' }); }}>
                         <Button variant="outline" className="text-cinematic-dark" type="submit">
@@ -168,7 +168,7 @@ export default async function DashboardPage() {
                         <AlertCircle className="text-red-500 w-6 h-6 flex-shrink-0" />
                         <div>
                             <h3 className="text-red-800 font-bold mb-1">Action Required: Failed Subscription</h3>
-                            <p className="text-red-700 text-sm mb-4">We were unable to process your recent contribution for {pastDueSponsorships.length} community support plan(s). Please update your payment method to ensure continuous funding.</p>
+                            <p className="text-red-700 text-sm mb-4">We were unable to process your recent contribution for {pastDueSponsorships.length} child support plan(s). Please update your payment method to ensure continuous funding.</p>
                             {/* In a real app, integrate Stripe Customer Portal here */}
                             <Button variant="impact" size="sm">Fix Payment</Button>
                         </div>
@@ -189,7 +189,7 @@ export default async function DashboardPage() {
                             <p className="text-4xl font-light text-cinematic-dark">${totalDonatedUSD.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-sm text-gray-400">USD</span></p>
                         </div>
                         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1">
-                            <p className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">Communities Empowered</p>
+                            <p className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-1">Children Supported</p>
                             <p className="text-4xl font-light text-trust-blue">{communitiesSupported}</p>
                         </div>
                         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1">
@@ -207,7 +207,12 @@ export default async function DashboardPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                     {/* System 2: Allocation Transparency */}
                     <section className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
-                        <h2 className="text-2xl font-bold text-cinematic-dark mb-2">Fund Allocation</h2>
+                        <div className="flex items-center gap-2 mb-2">
+                            <h2 className="text-2xl font-bold text-cinematic-dark">Support Utilization</h2>
+                            <span title="Shows how your sponsorship supports education and wellbeing." className="cursor-help flex items-center">
+                                <Info className="w-4 h-4 text-gray-400" />
+                            </span>
+                        </div>
                         <p className="text-gray-500 text-sm mb-8">Transparent breakdown of where your donations have been utilized.</p>
 
                         <div className="aspect-square flex items-center justify-center">
@@ -220,15 +225,15 @@ export default async function DashboardPage() {
                                 />
                             ) : (
                                 <div className="text-center">
-                                    <p className="text-gray-500 text-sm mb-6 max-w-sm mx-auto">Once you support a community, you’ll see exactly how your contributions fund tuition, supplies, and infrastructure.</p>
+                                    <p className="text-gray-500 text-sm mb-6 max-w-sm mx-auto">Once you sponsor a child, you’ll see exactly how your contributions fund tuition, supplies, and wellbeing services.</p>
                                     <Link href="/programs">
-                                        <Button variant="impact">Explore Communities</Button>
+                                        <Button variant="impact">Sponsor a Child</Button>
                                     </Link>
                                 </div>
                             )}
                         </div>
                         {completedDonations > 0 && (
-                            <p className="text-gray-400 text-xs text-center mt-4">This reflects how your contributions are distributed across all supported community programs.</p>
+                            <p className="text-gray-400 text-xs text-center mt-4">This reflects how your contributions are distributed across all sponsored children.</p>
                         )}
 
                         <FundingCategoryBreakdown
@@ -243,7 +248,7 @@ export default async function DashboardPage() {
 
                     {/* System 3: Program Contribution Tracking */}
                     <section>
-                        <h2 className="text-2xl font-bold text-cinematic-dark mb-6">Your Communities</h2>
+                        <h2 className="text-2xl font-bold text-cinematic-dark mb-6">Child Support</h2>
                         <ProgramContributionList contributions={userContributions} />
 
                         {/* System 4: Impact Certificate Engine Placeholder */}
@@ -266,8 +271,8 @@ export default async function DashboardPage() {
 
                 {/* System 5: Macro Impact Visualization */}
                 <section className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mt-12 transition-all duration-300 hover:shadow-md">
-                    <h2 className="text-2xl font-bold text-cinematic-dark mb-2">Ecosystem Growth over Time</h2>
-                    <p className="text-gray-500 text-sm mb-8">Track how donor communities like yours are transforming education access worldwide.</p>
+                    <h2 className="text-2xl font-bold text-cinematic-dark mb-2">Children Impact Overview</h2>
+                    <p className="text-gray-500 text-sm mb-8">Track how sponsors like you are transforming education access worldwide.</p>
 
                     <div className="w-full h-[300px]">
                         <SnapshotIntelligenceChart data={formattedSnapshots} />

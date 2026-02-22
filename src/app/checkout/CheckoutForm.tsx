@@ -118,11 +118,11 @@ export function CheckoutForm({ programId, childId }: { programId: string, childI
                 onClick={handleCheckout}
                 disabled={isProcessing}
             >
-                {isProcessing ? 'Processing Securely...' : `Donate $${amount} ${frequency === 'monthly' ? 'Monthly' : ''}`}
+                {isProcessing ? 'Processing Securely...' : `${frequency === 'monthly' ? 'Sponsor' : 'Gift'} $${amount} ${frequency === 'monthly' ? 'Monthly' : ''}`}
             </Button>
 
             <p className="text-xs text-center text-gray-400 mt-4">
-                By donating, you agree to our Terms of Service and Privacy Policy.
+                By contributing, you agree to our Terms of Service and Privacy Policy. <br /> Donation invoices are issued within 24 hours of successful payment.
             </p>
         </div>
     );

@@ -9,9 +9,8 @@ export function RealityStrip() {
                     {/* Emotional Narrative */}
                     <div className="order-2 lg:order-1">
                         <div className="w-16 h-1 bg-impact-gold mb-8" />
-                        <h2 className="text-3xl md:text-5xl font-heading font-bold mb-8 leading-tight">
-                            Every child deserves <br />
-                            <span className="text-gray-400">more than just survival.</span>
+                        <h2 className="text-3xl md:text-5xl font-heading font-bold mb-8 leading-tight max-w-[600px]">
+                            Every child deserves more than just survival.
                         </h2>
                         <p className="text-lg text-gray-300 font-body leading-relaxed mb-8">
                             In the remote villages we serve, education is not a right—it’s a rare privilege. Without schools, generations are trapped in a cycle of poverty that feels impossible to break.

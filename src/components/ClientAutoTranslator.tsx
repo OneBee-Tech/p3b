@@ -63,14 +63,18 @@ export function AutoTranslator({ targetLang }: { targetLang: string }) {
         };
 
         const walkDOM = (node: Node) => {
-            if (node.nodeType === Node.TEXT_NODE) {
-                translateNode(node as Text);
-            } else {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+                const el = node as HTMLElement;
+                // Respect standard notranslate class
+                if (el.classList && el.classList.contains("notranslate")) return;
+
                 // Do not translate code logic, scripts, styles, etc.
                 if (["SCRIPT", "STYLE", "NOSCRIPT", "IFRAME", "CODE", "TEXTAREA"].includes(node.nodeName)) return;
 
                 // Allow traversal downwards
                 Array.from(node.childNodes).forEach(walkDOM);
+            } else if (node.nodeType === Node.TEXT_NODE) {
+                translateNode(node as Text);
             }
         };
 
@@ -82,6 +86,8 @@ export function AutoTranslator({ targetLang }: { targetLang: string }) {
             mutations.forEach((mutation) => {
                 mutation.addedNodes.forEach((node) => {
                     if (node.nodeType === Node.TEXT_NODE) {
+                        // Check if parent has notranslate before translating direct text inserts
+                        if (node.parentElement && node.parentElement.closest('.notranslate')) return;
                         translateNode(node as Text);
                     } else if (node.nodeType === Node.ELEMENT_NODE) {
                         walkDOM(node);

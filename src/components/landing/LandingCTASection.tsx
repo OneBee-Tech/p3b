@@ -13,10 +13,10 @@ export function LandingCTASection() {
 
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                 <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6 tracking-tight">
-                    Ready to fund an entire ecosystem?
+                    Ready to change a child's life?
                 </h2>
                 <p className="text-xl text-white/80 mb-10 leading-relaxed font-body">
-                    Join a collective of community builders providing the infrastructure, education, and resources needed to break the cycle of poverty permanently.
+                    Join a collective of sponsors providing the education, supplies, and resources needed to break the cycle of poverty permanently. Your gift will support children with the most urgent needs.
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -24,14 +24,14 @@ export function LandingCTASection() {
                         href="/programs"
                         className="group w-full sm:w-auto bg-impact-gold hover:bg-yellow-400 text-cinematic-dark px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-impact-gold/20 hover:-translate-y-1"
                     >
-                        Sponsor a Future
+                        Sponsor a Child
                         <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </Link>
                     <Link
                         href="/checkout?type=general"
                         className="group w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 backdrop-blur-sm"
                     >
-                        Give Where Needed Most
+                        Give One-Time Gift
                     </Link>
                 </div>
             </div>

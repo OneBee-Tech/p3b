@@ -51,7 +51,7 @@ export async function DashboardTransparencyPreview() {
                             <div className="flex items-center justify-between border-b border-gray-100 pb-4">
                                 <div className="flex items-center gap-3">
                                     <div className="w-2 h-2 rounded-full bg-trust-blue" />
-                                    <span className="font-medium text-gray-700">School Infrastructure</span>
+                                    <span className="font-medium text-gray-700">Education Support</span>
                                 </div>
                                 <span className="font-bold text-cinematic-dark">65%</span>
                             </div>
@@ -92,16 +92,16 @@ export async function DashboardTransparencyPreview() {
                             <span className="text-sm font-bold tracking-wide uppercase text-yellow-800">100% Transparency</span>
                         </div>
 
-                        <h2 className="text-4xl md:text-5xl font-heading font-bold text-cinematic-dark mb-6 tracking-tight leading-tight">
-                            Track every dollar <br className="hidden md:block" /> you give.
+                        <h2 className="text-4xl md:text-5xl font-heading font-bold text-cinematic-dark mb-6 tracking-tight leading-tight max-w-md">
+                            Track every dollar you give.
                         </h2>
 
                         <div className="space-y-6 text-gray-600 font-body text-lg leading-relaxed mb-10">
                             <p>
-                                Charity shouldn't be a black box. Our architecture ensures that from the moment you contribute, your funds are cryptographically mapped to the community ecosystem.
+                                Charity shouldn't be a black box. Our architecture ensures that from the moment you contribute, your funds are cryptographically mapped to the child's support utilization.
                             </p>
                             <p className="font-medium text-cinematic-dark">
-                                So far, our community has tracked <span className="text-trust-blue">${metrics.fundsRouted.toLocaleString()}</span> in transparent impact.
+                                So far, our donors have tracked <span className="text-trust-blue">${metrics.fundsRouted.toLocaleString()}</span> in transparent impact.
                             </p>
                         </div>
 

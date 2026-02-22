@@ -8,15 +8,15 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const languages = [
-    { code: "en", name: "English" },
-    { code: "ar", name: "العربية" },
-    { code: "hi", name: "हिन्दी" },
-    { code: "ur", name: "اردو" },
-    { code: "fr", name: "Français" },
-    { code: "bn", name: "বাংলা" },
-    { code: "pa", name: "ਪੰਜਾਬੀ" },
-    { code: "es", name: "Español" },
-    { code: "sw", name: "Swahili" },
+    { code: "en", local: "English", english: "[English]" },
+    { code: "ar", local: "العربية", english: "[Arbi]" },
+    { code: "hi", local: "हिन्दी", english: "[Hindi]" },
+    { code: "ur", local: "اردو", english: "[Urdu]" },
+    { code: "fr", local: "Français", english: "[French]" },
+    { code: "bn", local: "বাংলা", english: "[Bangla]" },
+    { code: "pa", local: "ਪੰਜਾਬੀ", english: "[Punjabi]" },
+    { code: "es", local: "Español", english: "[Spanish]" },
+    { code: "sw", local: "Swahili", english: "[Swahili]" },
 ];
 
 export function Navbar() {
@@ -56,7 +56,7 @@ export function Navbar() {
     }, [lastScrollY]);
 
     const navLinks = [
-        { href: "/programs", label: "Explore Communities" },
+        { href: "/programs", label: "Sponsor a Child" },
         { href: "/stories", label: "Stories" },
         { href: "/impact", label: "Our Impact" },
         { href: "/our-story", label: "Our Story" },
@@ -75,7 +75,7 @@ export function Navbar() {
                         <div className="bg-trust-blue p-2 rounded-lg group-hover:bg-blue-700 transition-colors">
                             <Heart className="w-6 h-6 text-white fill-current" />
                         </div>
-                        <span className="font-heading font-bold text-xl text-white tracking-tight">
+                        <span className="font-heading font-bold text-xl text-white tracking-tight notranslate">
                             OneDollarOneChild
                         </span>
                     </Link>
@@ -120,22 +120,31 @@ export function Navbar() {
                                                 currentLang.code === lang.code ? "font-bold text-trust-blue" : "text-gray-700"
                                             )}
                                         >
-                                            {lang.name}
+                                            {lang.local}
+                                            {lang.english && (lang.code !== "en" || currentLang.code !== "en") && <span className="notranslate"> {lang.english}</span>}
                                         </button>
                                     ))}
                                 </div>
                             )}
                         </div>
 
-                        <Link href="/programs">
-                            <Button variant="impact" size="sm" className="font-bold">
-                                Donate Now
-                            </Button>
-                        </Link>
+                        <div className="flex items-center gap-2">
+
+                            <Link href="/programs">
+                                <Button variant="impact" size="sm" className="font-bold">
+                                    Sponsor a Child
+                                </Button>
+                            </Link>
+                        </div>
                     </div>
 
                     {/* Mobile Menu Button */}
                     <div className="md:hidden flex items-center gap-4">
+                        <Link href="/programs" className="mr-2">
+                            <Button variant="impact" size="sm" className="font-bold py-1 h-8 text-xs">
+                                Sponsor
+                            </Button>
+                        </Link>
                         <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)} className="text-white">
                             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                         </Button>
@@ -175,16 +184,20 @@ export function Navbar() {
                                             currentLang.code === lang.code ? "text-impact-gold font-bold" : "text-white/70"
                                         )}
                                     >
-                                        {lang.name}
+                                        {lang.local}
+                                        {lang.english && (lang.code !== "en" || currentLang.code !== "en") && <span className="notranslate"> {lang.english}</span>}
                                     </button>
                                 ))}
                             </div>
                         </div>
-                        <Link href="/programs" className="block w-full mt-4" onClick={() => setIsOpen(false)}>
-                            <Button variant="impact" className="w-full">
-                                Donate Now
-                            </Button>
-                        </Link>
+                        <div className="flex flex-col gap-2 mt-4">
+                            <Link href="/programs" className="block w-full" onClick={() => setIsOpen(false)}>
+                                <Button variant="impact" className="w-full">
+                                    Sponsor a Child
+                                </Button>
+                            </Link>
+
+                        </div>
                     </div>
                 </div>
             )}

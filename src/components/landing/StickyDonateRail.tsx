@@ -30,13 +30,13 @@ export function StickyDonateRail() {
             >
                 <Link
                     href="/programs"
-                    data-tracking="RAIL_MONTHLY"
+                    data-tracking="RAIL_SPONSOR"
                     className="group flex flex-col items-center justify-center gap-2 bg-trust-blue text-white w-16 py-6 rounded-l-xl shadow-xl hover:bg-impact-gold hover:text-cinematic-dark hover:-translate-x-1 transition-all"
-                    title="Donate Monthly"
+                    title="Sponsor a Child"
                 >
                     <Activity className="w-6 h-6 group-hover:scale-110 transition-transform" />
-                    <span className="[writing-mode:vertical-lr] rotate-180 font-heading font-bold tracking-widest uppercase text-xs">
-                        Donate Monthly
+                    <span className="[writing-mode:vertical-lr] rotate-180 font-heading font-bold tracking-widest uppercase text-xs whitespace-nowrap">
+                        Sponsor a Child
                     </span>
                 </Link>
 
@@ -44,11 +44,11 @@ export function StickyDonateRail() {
                     href="/checkout?type=general"
                     data-tracking="RAIL_ONETIME"
                     className="group flex flex-col items-center justify-center gap-2 bg-trust-blue text-white w-16 py-4 rounded-l-xl shadow-xl hover:bg-impact-gold hover:text-cinematic-dark hover:-translate-x-1 transition-all"
-                    title="One-Time Gift"
+                    title="Give One-Time Gift"
                 >
                     <Heart className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                    <span className="[writing-mode:vertical-lr] rotate-180 font-heading font-bold tracking-widest uppercase text-xs">
-                        One-Time Gift
+                    <span className="[writing-mode:vertical-lr] rotate-180 font-heading font-bold tracking-widest uppercase text-xs whitespace-nowrap mt-4">
+                        Give One-Time Gift
                     </span>
                 </Link>
 
@@ -76,7 +76,7 @@ export function StickyDonateRail() {
                     className="flex items-center justify-center gap-2 w-full bg-trust-blue text-white py-4 rounded-xl shadow-xl font-bold font-heading uppercase tracking-wide hover:bg-impact-gold hover:text-cinematic-dark transition-colors"
                 >
                     <Heart className="w-5 h-5 fill-current" />
-                    Give Where Needed Most
+                    Give One-Time Gift
                 </Link>
             </div>
         </>

@@ -35,19 +35,19 @@ export function FounderStoryBlock() {
 
                     {/* Narrative Col */}
                     <div className="lg:col-span-7">
-                        <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6 tracking-tight leading-tight">
-                            "We realized treating the <span className="text-impact-gold">symptom</span> wasn't enough."
+                        <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6 tracking-tight leading-tight text-impact-gold">
+                            "We realized every child needed a champion."
                         </h2>
 
                         <div className="space-y-6 text-white/80 font-body text-lg leading-relaxed mb-10">
                             <p>
-                                Ten years ago, we were running a traditional child sponsorship program. We noticed an uncomfortable truth: sending one child to school while their neighbors stayed behind created fractures, not foundations.
+                                Ten years ago, we realized that an isolated approach to child support wasn't enough. We recognized that true impact required a holistic sponsorship model that guaranteed access to education, supplies, and wellbeing services.
                             </p>
                             <p>
-                                The school buildings were still crumbling. The teachers were still underpaid. The system was still broken.
+                                Every child deserves an environment where they can thrive, learn, and build a secure foundation for their future.
                             </p>
                             <p className="text-white font-medium border-l-4 border-impact-gold pl-6 py-2">
-                                That's why we fundamentally changed our architecture. We stopped funding individuals and started pooling resources to fund the entire community ecosystem.
+                                That's why we fundamentally changed our architecture. We connected everyday donors directly with a child's educational journey, ensuring verified and stable support through dedicated education partners.
                             </p>
                         </div>
 

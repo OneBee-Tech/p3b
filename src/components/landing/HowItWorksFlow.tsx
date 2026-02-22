@@ -5,23 +5,23 @@ export function HowItWorksFlow() {
     const steps = [
         {
             number: "01",
-            title: "Pool Resources",
-            description: "Donations are aggregated into powerful community funds, not isolated single-child accounts.",
+            title: "Sponsor a Child",
+            description: "Connect with a child's educational journey and become a vital part of their support system.",
         },
         {
             number: "02",
             title: "Identify Needs",
-            description: "Local leaders pinpoint the exact infrastructure, tuitions, and materials required for their region.",
+            description: "Verified partners pinpoint the exact education support, tuitions, and materials required.",
         },
         {
             number: "03",
-            title: "Deploy Capital",
-            description: "Funds are deployed transparently to construct schools, pay teachers, and equip classrooms.",
+            title: "Provide Resources",
+            description: "Funds are deployed transparently to cover school fees, provide learning kits, and support wellbeing.",
         },
         {
             number: "04",
-            title: "Transform Generation",
-            description: "Thousands of children rise out of poverty simultaneously through systemic ecosystem upgrades.",
+            title: "Transform Futures",
+            description: "Thousands of sponsored children rise out of poverty through sustained, structured support.",
         }
     ];
 
@@ -34,13 +34,13 @@ export function HowItWorksFlow() {
                     {/* Left: Text & Flow */}
                     <div>
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-trust-blue/10 text-trust-blue mb-6">
-                            <span className="text-sm font-bold tracking-wide uppercase">The Hybrid Approach</span>
+                            <span className="text-sm font-bold tracking-wide uppercase">The Sponsorship Journey</span>
                         </div>
-                        <h2 className="text-4xl md:text-5xl font-heading font-bold text-cinematic-dark mb-6 tracking-tight">
-                            We fix the ecosystem, <br className="hidden md:block" /> not just the symptoms.
+                        <h2 className="text-3xl md:text-5xl font-heading font-bold text-cinematic-dark mb-6 tracking-tight leading-tight">
+                            Sponsorship ensures access to education, supplies, and wellbeing services.
                         </h2>
                         <p className="text-lg text-gray-600 mb-12 leading-relaxed font-body">
-                            Traditional sponsorships focus on one child while ignoring the crumbling school around them. Our community-first funding model changes everything by rebuilding the environment they learn in.
+                            While sponsorship is presented at the child level, funds are ethically administered through verified education partners to ensure continuity, safeguarding, and resource stability.
                         </p>
 
                         <div className="space-y-8">
@@ -71,8 +71,8 @@ export function HowItWorksFlow() {
                     {/* Right: Visual */}
                     <div className="relative h-[600px] rounded-2xl overflow-hidden shadow-2xl group">
                         <Image
-                            src="https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2670&auto=format&fit=crop"
-                            alt="Students in a newly funded classroom environment"
+                            src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=2673&auto=format&fit=crop"
+                            alt="Symbolic imagery of books representing educational support"
                             fill
                             className="object-cover transition-transform duration-700 group-hover:scale-105"
                             sizes="(max-width: 1024px) 100vw, 50vw"
@@ -80,18 +80,23 @@ export function HowItWorksFlow() {
                         {/* Overlay Gradient */}
                         <div className="absolute inset-0 bg-gradient-to-t from-cinematic-dark via-cinematic-dark/20 to-transparent" />
 
+                        {/* Privacy Disclaimer */}
+                        <div className="absolute top-4 right-4 bg-cinematic-dark/80 backdrop-blur-md rounded-lg p-3 border border-white/20 text-xs text-white/80 max-w-[250px] text-right">
+                            Images are representative. Child identities are protected for safety.
+                        </div>
+
                         <div className="absolute bottom-8 left-8 right-8">
                             <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
                                 <blockquote className="text-white font-medium text-lg italic mb-4">
-                                    "When you fund the school, you don't just help my daughter. You help every child in our village."
+                                    "When you sponsor a child's education, you build a foundation that elevates their entire future."
                                 </blockquote>
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 rounded-full bg-trust-blue flex items-center justify-center text-white font-bold">
-                                        M
+                                        E
                                     </div>
                                     <div>
-                                        <div className="text-white font-bold text-sm">Maria S.</div>
-                                        <div className="text-impact-gold text-xs font-bold uppercase tracking-wider">Community Leader</div>
+                                        <div className="text-white font-bold text-sm">Elena R.</div>
+                                        <div className="text-impact-gold text-xs font-bold uppercase tracking-wider">Education Partner</div>
                                     </div>
                                 </div>
                             </div>

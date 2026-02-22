@@ -54,8 +54,11 @@ export default async function CheckoutPage({
                 <div className="lg:col-span-7">
                     <h1 className="text-3xl font-heading font-bold text-cinematic-dark mb-4">Complete Your Support</h1>
                     <p className="text-gray-600 mb-8 leading-relaxed">
-                        You are contributing to the community funding pool for <strong>{program.name}</strong>.
+                        You are sponsoring a child's education and support services for <strong>{program.name}</strong>.
                         Select your contribution tier and proceed to the encrypted checkout.
+                        <span className="block mt-3 text-sm text-gray-500">
+                            Support is allocated toward education, learning materials, and wellbeing services. Donation invoices are issued within 24 hours of successful payment.
+                        </span>
                     </p>
 
                     {isLocked ? (
@@ -64,7 +67,7 @@ export default async function CheckoutPage({
                             <Lock className="w-12 h-12 text-impact-gold mx-auto mb-4" />
                             <h2 className="text-2xl font-bold text-cinematic-dark mb-2">Program Fully Funded</h2>
                             <p className="text-gray-600 mb-8">
-                                Thanks to incredible donors like you, <strong>{program.name}</strong> has reached its funding goal! We are currently not accepting new recurring donations for this program to prevent overfunding.
+                                Thanks to incredible donors like you, <strong>{program.name}</strong> has reached its funding goal! We are currently not accepting new recurring sponsorships to prevent overfunding.
                             </p>
 
                             <div className="space-y-4">
@@ -75,7 +78,7 @@ export default async function CheckoutPage({
                                 </Link>
                                 <Link href="/programs" className="block w-full">
                                     <Button variant="outline" size="lg" className="w-full text-gray-600">
-                                        Support a Similar Community
+                                        Support Another Child
                                     </Button>
                                 </Link>
                             </div>

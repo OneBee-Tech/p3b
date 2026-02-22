@@ -21,9 +21,8 @@ export function FinalCTA() {
                     <span>Join the movement today</span>
                 </div>
 
-                <h2 className="text-4xl md:text-6xl font-heading font-bold text-white mb-8 leading-tight drop-shadow-xl">
-                    You have the power to <br />
-                    <span className="text-impact-gold">change a destiny.</span>
+                <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6 tracking-tight max-w-2xl mx-auto">
+                    You have the power to change a life today.
                 </h2>
 
                 <p className="text-xl text-gray-200 font-body max-w-2xl mx-auto mb-12 leading-relaxed">

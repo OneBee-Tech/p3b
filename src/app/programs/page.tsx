@@ -1,6 +1,17 @@
 import { SponsorshipCard } from "@/components/ProgramCard";
 import { Button } from "@/components/ui/button";
 import { Filter, Search } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Sponsor a Child - OneDollarOneChild",
+    description: "Browse children waiting for a guardian. Your monthly sponsorship provides education, supplies, and hope.",
+    openGraph: {
+        title: "Sponsor a Child - OneDollarOneChild",
+        description: "Browse children waiting for a guardian. Your monthly sponsorship provides education, supplies, and hope.",
+        type: "website",
+    },
+};
 
 // Mock Data - In real app, fetch from DB
 const children = [
