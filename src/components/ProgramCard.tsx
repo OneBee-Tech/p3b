@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Heart, Clock, MapPin, GraduationCap } from "lucide-react";
@@ -12,6 +11,7 @@ interface Child {
     location: string;
     dream: string;
     image: string;
+    bio: string;
     isUrgent?: boolean;
 }
 
@@ -23,21 +23,15 @@ export function SponsorshipCard({ child }: SponsorshipCardProps) {
     return (
         <div className="group relative bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full">
             {/* Image Container */}
-            <div className="relative aspect-[4/5] overflow-hidden">
-                <Image
-                    src={child.image}
+            <div className="relative aspect-[4/5] overflow-hidden bg-[#f0f4f8]">
+                <img
+                    src={`https://api.dicebear.com/9.x/micah/svg?seed=${child.name}&backgroundColor=ffd5dc,b6e3f4,c0aede,d1d4f9`}
                     alt={child.name}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
 
                 {/* Overlays */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
-
-                {/* Privacy Disclaimer */}
-                <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-cinematic-dark/80 backdrop-blur-md rounded px-2 py-1 text-[8px] text-white/80 whitespace-nowrap z-10">
-                    Images are representative. Child identities are protected for safety.
-                </div>
 
                 {/* Urgency Tag */}
                 {child.isUrgent && (
@@ -71,18 +65,13 @@ export function SponsorshipCard({ child }: SponsorshipCardProps) {
                     </div>
                 </div>
 
-                <p className="text-gray-600 text-sm line-clamp-3 mb-6 flex-grow">
-                    {child.name} lives in a remote village where schools are scarce. Your sponsorship provides uniform, books, and daily meals.
+                <p className="text-gray-600 text-sm line-clamp-4 leading-relaxed mb-6 flex-grow">
+                    {child.bio}
                 </p>
 
-                {/* Footer / CTA */}
-                <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between gap-4">
-                    <div className="text-xs font-medium text-gray-500">
-                        <span className="block text-lg font-bold text-cinematic-dark">$30</span>
-                        per month
-                    </div>
-                    <Link href={`/sponsor/${child.id}`} className="flex-1">
-                        <Button variant="impact" size="sm" className="w-full shadow-md">
+                <div className="mt-auto pt-4 border-t border-gray-100">
+                    <Link href={`/programs/${child.id}`} className="block w-full">
+                        <Button variant="impact" className="w-full shadow-md font-bold text-base py-6 hover:-translate-y-1 transition-transform hover:cursor-pointer">
                             Sponsor {child.name}
                         </Button>
                     </Link>

@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Globe, Menu, X, Heart } from "lucide-react";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 
 const languages = [
-    { code: "en", local: "English", english: "[English]" },
+    { code: "en", local: "English", english: "" },
     { code: "ar", local: "العربية", english: "[Arbi]" },
     { code: "hi", local: "हिन्दी", english: "[Hindi]" },
     { code: "ur", local: "اردو", english: "[Urdu]" },
@@ -19,9 +20,10 @@ const languages = [
     { code: "sw", local: "Swahili", english: "[Swahili]" },
 ];
 
-export function Navbar() {
+export function Navbar({ session }: { session?: any }) {
     const [isOpen, setIsOpen] = useState(false);
     const [langOpen, setLangOpen] = useState(false);
+    const [profileOpen, setProfileOpen] = useState(false);
     const [currentLang, setCurrentLang] = useState(languages[0]);
     const [isVisible, setIsVisible] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
@@ -72,9 +74,7 @@ export function Navbar() {
                 <div className="flex justify-between items-center h-20">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2 group">
-                        <div className="bg-trust-blue p-2 rounded-lg group-hover:bg-blue-700 transition-colors">
-                            <Heart className="w-6 h-6 text-white fill-current" />
-                        </div>
+                        <img src="/logo.png" alt="OneDollarOneChild Logo" className="h-12 w-auto transition-transform group-hover:scale-105 rounded" />
                         <span className="font-heading font-bold text-xl text-white tracking-tight notranslate">
                             OneDollarOneChild
                         </span>
@@ -120,18 +120,52 @@ export function Navbar() {
                                                 currentLang.code === lang.code ? "font-bold text-trust-blue" : "text-gray-700"
                                             )}
                                         >
-                                            {lang.local}
-                                            {lang.english && (lang.code !== "en" || currentLang.code !== "en") && <span className="notranslate"> {lang.english}</span>}
+                                            <span className={lang.code === "en" ? "notranslate" : ""}>{lang.local}</span>
+                                            {lang.english && <span className="notranslate"> {lang.english}</span>}
                                         </button>
                                     ))}
                                 </div>
                             )}
                         </div>
 
+                        {session ? (
+                            <div className="relative">
+                                <button
+                                    onClick={() => setProfileOpen(!profileOpen)}
+                                    className="flex items-center gap-2 focus:outline-none"
+                                >
+                                    <div className="w-8 h-8 rounded-full bg-trust-blue flex items-center justify-center text-sm font-bold text-white uppercase shadow-sm ring-2 ring-white/20 hover:ring-white/50 transition-all">
+                                        {session.user?.name ? session.user.name.charAt(0) : session.user?.email?.charAt(0) || 'U'}
+                                    </div>
+                                </button>
+                                {profileOpen && (
+                                    <div className="absolute top-12 right-0 w-48 bg-white rounded-xl shadow-xl overflow-hidden py-2 animate-fade-in-up border border-gray-100">
+                                        <div className="px-4 py-2 border-b border-gray-100 mb-1">
+                                            <p className="text-sm font-medium text-cinematic-dark truncate">{session.user?.name || "Donor"}</p>
+                                            <p className="text-xs text-gray-500 truncate">{session.user?.email}</p>
+                                        </div>
+                                        <Link onClick={() => setProfileOpen(false)} href="/dashboard" className="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-trust-blue transition-colors">
+                                            My Dashboard
+                                        </Link>
+                                        <button
+                                            onClick={() => { setProfileOpen(false); signOut({ callbackUrl: '/' }); }}
+                                            className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors mt-1"
+                                        >
+                                            Sign Out
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <Link href="/signin" className="text-white/80 hover:text-white text-sm font-bold transition-colors">
+                                Sign In
+                            </Link>
+                        )}
+
                         <div className="flex items-center gap-2">
 
                             <Link href="/programs">
-                                <Button variant="impact" size="sm" className="font-bold">
+                                <Button variant="impact" size="sm" className="font-bold hover: cursor-pointer">
                                     Sponsor a Child
                                 </Button>
                             </Link>
@@ -184,12 +218,37 @@ export function Navbar() {
                                             currentLang.code === lang.code ? "text-impact-gold font-bold" : "text-white/70"
                                         )}
                                     >
-                                        {lang.local}
-                                        {lang.english && (lang.code !== "en" || currentLang.code !== "en") && <span className="notranslate"> {lang.english}</span>}
+                                        <span className={lang.code === "en" ? "notranslate" : ""}>{lang.local}</span>
+                                        {lang.english && <span className="notranslate"> {lang.english}</span>}
                                     </button>
                                 ))}
                             </div>
                         </div>
+
+                        <div className="border-t border-white/10 pt-4 mt-4">
+                            {session ? (
+                                <>
+                                    <div className="py-2 mb-2">
+                                        <p className="text-sm font-medium text-white truncate">{session.user?.name || "Donor"}</p>
+                                        <p className="text-xs text-white/50 truncate">{session.user?.email}</p>
+                                    </div>
+                                    <Link onClick={() => setIsOpen(false)} href="/dashboard" className="block py-2 text-sm text-white/80 hover:text-white transition-colors">
+                                        My Dashboard
+                                    </Link>
+                                    <button
+                                        onClick={() => { setIsOpen(false); signOut({ callbackUrl: '/' }); }}
+                                        className="w-full text-left py-2 text-sm text-red-400 hover:text-red-300 transition-colors"
+                                    >
+                                        Sign Out
+                                    </button>
+                                </>
+                            ) : (
+                                <Link onClick={() => setIsOpen(false)} href="/signin" className="block py-2 text-sm text-white font-bold hover:text-impact-gold transition-colors">
+                                    Sign In
+                                </Link>
+                            )}
+                        </div>
+
                         <div className="flex flex-col gap-2 mt-4">
                             <Link href="/programs" className="block w-full" onClick={() => setIsOpen(false)}>
                                 <Button variant="impact" className="w-full">

@@ -30,6 +30,14 @@ export default async function CheckoutPage({
         }
     }
 
+    // Handle direct sponsorship routing fallback
+    if (!targetProgramId && type === 'sponsorship') {
+        const defaultProgram = await prisma.program.findFirst();
+        if (defaultProgram) {
+            targetProgramId = defaultProgram.id;
+        }
+    }
+
     if (!targetProgramId) {
         return <div className="p-8 text-center text-red-500">Missing Program ID or valid donation type</div>;
     }

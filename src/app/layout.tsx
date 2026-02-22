@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { TrustBadgeStrip } from "@/components/TrustBadgeStrip";
 import { AnalyticsTracker } from "@/components/AnalyticsTracker";
 import { ClientAutoTranslator } from "@/components/ClientAutoTranslator";
+import { auth } from "@/auth";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -31,11 +32,13 @@ export const metadata: Metadata = {
   description: "OneDollarOneChild",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html lang="en" className="scroll-smooth">
       <body
@@ -46,7 +49,7 @@ export default function RootLayout({
           "antialiased font-body bg-warm-bg text-cinematic-dark min-h-screen flex flex-col"
         )}
       >
-        <Navbar />
+        <Navbar session={session} />
         <main className="flex-grow">{children}</main>
         <TrustBadgeStrip />
         <Footer />

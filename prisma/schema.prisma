@@ -140,6 +140,7 @@ model User {
   emailVerified     DateTime?
   role              Role      @default(USER)
   name              String?
+  image             String?
   stripeCustomerId  String?
   country           String?
   preferredLanguage String    @default("en")

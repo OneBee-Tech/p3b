@@ -146,7 +146,7 @@ export default async function DashboardPage() {
     return (
         <div className="min-h-screen bg-warm-bg">
             {/* Header */}
-            <header className="bg-cinematic-dark text-white py-12 px-4 shadow-md">
+            <header className="bg-cinematic-dark text-white pt-36 pb-20 px-4 shadow-md">
                 <div className="max-w-6xl mx-auto flex justify-between items-end">
                     <div>
                         <p className="text-gray-400 text-sm font-bold uppercase tracking-wider mb-2">Donor Intelligence Portal</p>

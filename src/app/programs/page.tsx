@@ -15,32 +15,53 @@ export const metadata: Metadata = {
 
 // Mock Data - In real app, fetch from DB
 const children = [
-    { id: "1", name: "Ayesha", age: 8, gender: "Female", location: "Sindh, PK", dream: "Doctor", image: "/images/impact/child1.jpg", isUrgent: true },
-    { id: "2", name: "Raju", age: 10, gender: "Male", location: "Punjab, PK", dream: "Engineer", image: "/images/impact/child2.jpg" },
-    { id: "3", name: "Fatima", age: 6, gender: "Female", location: "KPK, PK", dream: "Teacher", image: "/images/impact/child3.jpg", isUrgent: true },
-    { id: "4", name: "Ali", age: 12, gender: "Male", location: "Balochistan, PK", dream: "Pilot", image: "/images/impact/child4.jpg" },
-    { id: "5", name: "Zainab", age: 9, gender: "Female", location: "Sindh, PK", dream: "Artist", image: "/images/impact/child5.jpg" },
-    { id: "6", name: "Bilal", age: 11, gender: "Male", location: "Punjab, PK", dream: "Cricketer", image: "/images/impact/child6.jpg" },
+    {
+        id: "1", name: "Ayesha", age: 8, gender: "Female", location: "Sindh, PK", dream: "Doctor", image: "/images/impact/child1.jpg", isUrgent: true,
+        bio: "Ayesha loves science but her local school lacks basic supplies. Your $30/mo sponsorship will directly fund her tuition, daily nutritional meals, and the textbooks she needs to chase her dream of becoming a pediatrician."
+    },
+    {
+        id: "2", name: "Raju", age: 10, gender: "Male", location: "Punjab, PK", dream: "Engineer", image: "/images/impact/child2.jpg",
+        bio: "Raju is a math prodigy who had to drop out to help his family. Sponsorship will cover his re-enrollment fees and provide a monthly stipend to his household so he can return to class."
+    },
+    {
+        id: "3", name: "Fatima", age: 6, gender: "Female", location: "KPK, PK", dream: "Teacher", image: "/images/impact/child3.jpg", isUrgent: true,
+        bio: "Fatima walks 3 miles a day to reach the nearest charity school. Your support provides safe transportation and uniform costs, ensuring she stays enrolled safely."
+    },
+    {
+        id: "4", name: "Ali", age: 12, gender: "Male", location: "Balochistan, PK", dream: "Pilot", image: "/images/impact/child4.jpg",
+        bio: "Ali dreams of flying but currently works in a local market. Sponsoring him ensures his family receives income replacement, allowing Ali to focus entirely on his foundational education."
+    },
+    {
+        id: "5", name: "Zainab", age: 9, gender: "Female", location: "Sindh, PK", dream: "Artist", image: "/images/impact/child5.jpg",
+        bio: "Zainab expresses herself through drawing but has never owned a sketchbook. Your funds will guarantee her school placement and provide essential creative and academic supplies."
+    },
+    {
+        id: "6", name: "Bilal", age: 11, gender: "Male", location: "Punjab, PK", dream: "Cricketer", image: "/images/impact/child6.jpg",
+        bio: "Bilal leverages sports to stay focused. Sponsorship covers his core curriculum costs and provides access to the school's newly funded physical education program."
+    },
 ];
 
 export default function SponsorPage() {
     return (
-        <div className="min-h-screen bg-warm-bg pt-24 pb-20">
+        <div className="min-h-screen bg-warm-bg pb-20">
 
             {/* Header */}
-            <div className="bg-cinematic-dark text-white py-16 mb-12 relative overflow-hidden">
+            <div className="bg-cinematic-dark text-white pt-36 pb-20 mb-12 relative overflow-hidden">
                 <div className="absolute inset-0 bg-trust-blue/20 mix-blend-overlay" />
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
                     <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4">Find a Child to Sponsor</h1>
-                    <p className="text-lg text-white/80 max-w-2xl mx-auto">
+                    <p className="text-lg text-white/80 max-w-2xl mx-auto mb-6">
                         Your monthly support changes their entire world. Browse the children waiting for a guardian below.
                     </p>
+                    <div className="inline-flex items-center gap-2 bg-white/10 px-4 py-2 rounded-lg text-sm text-white/90 border border-white/20">
+                        For the privacy and protection of the children, symbolic imagery is used.
+                    </div>
                 </div>
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Filter Bar */}
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between sticky top-24 z-30">
+                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
                     <div className="flex items-center gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
                         <Button variant="outline" size="sm" className="flex items-center gap-2 border-gray-200">
                             <Filter className="w-4 h-4" /> Filters

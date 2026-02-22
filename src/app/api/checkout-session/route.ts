@@ -39,7 +39,9 @@ export async function POST(req: Request) {
         }
 
         // 3. Checkout Session Creation
-        const isSubscription = frequency === 'monthly';
+        const isMonthly = frequency === 'monthly';
+        const isYearly = frequency === 'yearly';
+        const isSubscription = isMonthly || isYearly;
         const unitAmount = Math.round(amount * 100); // Convert USD to cents
 
         const sessionData: any = {
@@ -64,7 +66,7 @@ export async function POST(req: Request) {
                         unit_amount: unitAmount,
                         ...(isSubscription ? {
                             recurring: {
-                                interval: 'month',
+                                interval: isYearly ? 'year' : 'month',
                             }
                         } : {})
                     },

@@ -9,9 +9,7 @@ export function Footer() {
                     {/* Brand */}
                     <div className="col-span-1 sm:col-span-2 lg:col-span-2">
                         <Link href="/" className="flex items-center gap-2 group mb-6">
-                            <div className="bg-white/10 p-2 rounded-lg">
-                                <Heart className="w-5 h-5 text-white fill-current" />
-                            </div>
+                            <img src="/logo.png" alt="OneDollarOneChild Logo" className="h-14 w-auto transition-opacity group-hover:opacity-80 rounded" />
                             <span className="font-heading font-bold text-lg text-white tracking-tight notranslate">
                                 OneDollarOneChild
                             </span>
