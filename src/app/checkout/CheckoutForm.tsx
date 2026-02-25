@@ -10,7 +10,7 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY 
 
 export function CheckoutForm({ programId, childId }: { programId: string, childId?: string }) {
     const [amount, setAmount] = useState(30);
-    const [frequency, setFrequency] = useState<"monthly" | "yearly" | "one-time">("monthly");
+    const [frequency, setFrequency] = useState<"monthly" | "yearly" | "one-time" | "daily">("monthly");
     const [tier, setTier] = useState<"daily" | "monthly" | "yearly" | "none">("monthly");
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -52,7 +52,7 @@ export function CheckoutForm({ programId, childId }: { programId: string, childI
             <div className="flex gap-2 mb-6 p-1 bg-gray-100 rounded-lg">
                 <button
                     onClick={() => { setFrequency('monthly'); setAmount(30); setTier('monthly'); }}
-                    className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${frequency === 'monthly' || frequency === 'yearly' ? 'bg-white text-trust-blue shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                    className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${frequency === 'monthly' || frequency === 'yearly' || frequency === 'daily' ? 'bg-white text-trust-blue shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
                 >
                     Subscription (Recommended)
                 </button>
@@ -65,11 +65,11 @@ export function CheckoutForm({ programId, childId }: { programId: string, childI
             </div>
 
             <div className="grid grid-cols-2 gap-4 mb-6">
-                {frequency === 'monthly' || frequency === 'yearly' ? (
+                {frequency === 'monthly' || frequency === 'yearly' || frequency === 'daily' ? (
                     <>
-                        <button onClick={() => { setAmount(30); setFrequency('monthly'); setTier('daily'); }} className={`col-span-1 p-4 border-2 rounded-xl text-center transition-all ${tier === 'daily' ? 'border-trust-blue bg-blue-50/50' : 'border-gray-200 hover:border-gray-300'}`}>
-                            <span className="block text-2xl font-bold text-gray-900">$30</span>
-                            <span className="text-xs text-gray-500">$1 per day</span>
+                        <button onClick={() => { setAmount(1); setFrequency('daily'); setTier('daily'); }} className={`col-span-1 p-4 border-2 rounded-xl text-center transition-all ${tier === 'daily' ? 'border-trust-blue bg-blue-50/50' : 'border-gray-200 hover:border-gray-300'}`}>
+                            <span className="block text-2xl font-bold text-gray-900">$1</span>
+                            <span className="text-xs font-bold text-trust-blue">per day</span>
                         </button>
                         <button onClick={() => { setAmount(30); setFrequency('monthly'); setTier('monthly'); }} className={`col-span-1 p-4 border-2 rounded-xl text-center transition-all relative ${tier === 'monthly' ? 'border-trust-blue bg-blue-50/50' : 'border-gray-200 hover:border-gray-300'}`}>
                             <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-impact-gold text-[10px] font-bold px-2 py-0.5 rounded text-cinematic-dark whitespace-nowrap">FULL SPONSOR</div>
@@ -112,7 +112,12 @@ export function CheckoutForm({ programId, childId }: { programId: string, childI
                 onClick={handleCheckout}
                 disabled={isProcessing}
             >
-                {isProcessing ? 'Processing Securely...' : `${frequency === 'monthly' || frequency === 'yearly' ? 'Sponsor' : 'Gift'} $${amount} ${frequency === 'monthly' ? 'Monthly' : frequency === 'yearly' ? 'Yearly' : ''}`}
+                {isProcessing
+                    ? 'Processing Securely...'
+                    : tier === 'daily'
+                        ? 'Sponsor $1 a Day'
+                        : `${frequency === 'monthly' || frequency === 'yearly' ? 'Sponsor' : 'Gift'} $${amount} ${frequency === 'monthly' ? 'Monthly' : frequency === 'yearly' ? 'Yearly' : ''}`
+                }
             </Button>
 
             <p className="text-xs text-center text-gray-400 mt-4">

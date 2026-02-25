@@ -2,12 +2,14 @@ import { Target } from "lucide-react";
 
 interface Props {
     programName?: string;
+    childName?: string;
     currentFunding?: number;
     fundingGoal?: number;
 }
 
 export function ProgramFundingStatusCard({
     programName = "General Community Fund",
+    childName,
     currentFunding = 42500,
     fundingGoal = 100000
 }: Props) {
@@ -22,8 +24,10 @@ export function ProgramFundingStatusCard({
                     <Target className="w-5 h-5" />
                 </div>
                 <div>
-                    <h3 className="font-heading font-bold text-sm text-white/70 uppercase tracking-widest">Target Program</h3>
-                    <p className="font-bold text-lg text-white">{programName}</p>
+                    <h3 className="font-heading font-bold text-sm text-white/70 uppercase tracking-widest">
+                        {childName ? "Help a Child" : "Target Program"}
+                    </h3>
+                    <p className="font-bold text-lg text-white">{childName ?? programName}</p>
                 </div>
             </div>
 

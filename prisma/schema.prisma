@@ -125,6 +125,39 @@ enum SponsorshipAssignmentStatus {
   ENDED
 }
 
+// Phase 8: Contact & Inquiry System (isolated module)
+enum InquiryType {
+  GENERAL
+  SPONSORSHIP
+  REFER_CHILD
+  REQUEST_ASSISTANCE
+  PARTNERSHIP
+  MEDIA
+}
+
+enum InquiryStatus {
+  NEW
+  IN_PROGRESS
+  RESOLVED
+  ARCHIVED
+}
+
+model ContactInquiry {
+  id          String        @id @default(cuid())
+  name        String
+  email       String
+  inquiryType InquiryType
+  message     String        @db.Text
+  status      InquiryStatus @default(NEW)
+
+  // Governance
+  deletedAt   DateTime?
+  isArchived  Boolean       @default(false)
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
 model Program {
   id              String   @id @default(cuid())
   name            String

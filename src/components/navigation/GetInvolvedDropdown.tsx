@@ -61,7 +61,7 @@ export function GetInvolvedDropdown() {
                 onMouseLeave={() => setIsOpen(false)}
             >
                 {/* Arrow pointer */}
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45 border-l border-t border-gray-100" />
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45 border-l border-t border-gray-100 hover: cursor-pointer" />
 
                 <div className="relative bg-white p-2">
                     {menuItems.map((item) => (

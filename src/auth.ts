@@ -77,6 +77,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         maxAge: 30 * 24 * 60 * 60, // 30 days
     },
     callbacks: {
+        async redirect({ url, baseUrl }) {
+            // If an admin is signing in and would land on the base URL or callback,
+            // skip — we handle admin redirect in the jwt callback via a flag.
+            // Instead, honour the callbackUrl if it's safe (same origin).
+            if (url.startsWith(baseUrl)) return url;
+            if (url.startsWith('/')) return `${baseUrl}${url}`;
+            return baseUrl;
+        },
         async session({ session, token }) {
             if (token.sub && session.user) {
                 session.user.id = token.sub;
@@ -86,12 +94,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
             return session;
         },
-        async jwt({ token, user, trigger, session }) {
+        async jwt({ token, user, trigger, session, account }) {
             // Initial sign-in
             if (user) {
                 token.role = (user as any).role || "USER";
                 token.sub = user.id;
-            } else if (token.sub) {
+                // Flag a fresh login so the redirect callback can act on it
+                token.isNewLogin = true;
+            } else {
+                token.isNewLogin = false;
+            }
+
+            if (token.sub && !user) {
                 // Background sync on subsequent requests
                 try {
                     const dbUser = await prisma.user.findUnique({
@@ -111,5 +125,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
             return token;
         }
+    },
+    pages: {
+        signIn: '/signin',
     }
 })

@@ -7,11 +7,21 @@ const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
     const isLoggedIn = !!req.auth;
+    const role = (req.auth?.user as any)?.role;
     const { nextUrl } = req;
     const isDashboardRoute = nextUrl.pathname.startsWith('/dashboard');
+    const isHomePage = nextUrl.pathname === '/';
+    const isSignInPage = nextUrl.pathname.startsWith('/signin') || nextUrl.pathname.startsWith('/api/auth/signin');
 
+    // Admin auto-redirect: if an ADMIN lands on home, signin, or dashboard — send to /admin
+    if (isLoggedIn && role === 'ADMIN' && !nextUrl.pathname.startsWith('/admin') && !isSignInPage) {
+        if (isHomePage || isDashboardRoute) {
+            return NextResponse.redirect(new URL('/admin', nextUrl));
+        }
+    }
+
+    // Protect donor dashboard from unauthenticated access
     if (isDashboardRoute && !isLoggedIn) {
-        // Redirect unauthenticated users to the login page
         return NextResponse.redirect(new URL('/api/auth/signin?callbackUrl=/dashboard', nextUrl));
     }
 

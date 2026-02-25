@@ -39,6 +39,9 @@ export function Footer() {
                     <div>
                         <h4 className="font-heading font-semibold text-white mb-6">Contact Us</h4>
                         <div className="space-y-4 text-sm">
+                            <Link href="/contact" className="flex items-center gap-2 hover:text-white transition-colors">
+                                <Mail className="w-4 h-4" /> Contact Form
+                            </Link>
                             <a href="https://wa.me/XXXXXXXX" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white transition-colors">
                                 <MessageCircle className="w-4 h-4" /> WhatsApp Support
                             </a>

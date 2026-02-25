@@ -10,14 +10,16 @@ export const dynamic = "force-dynamic";
 export default async function EditChildPage({
     params
 }: {
-    params: { childId: string }
+    params: Promise<{ childId: string }>
 }) {
     const session = await auth();
     if (!session?.user || (session.user as any).role !== "ADMIN") return null;
 
+    const { childId } = await params;
+
     const child = await prisma.registryChild.findUnique({
         where: {
-            id: params.childId,
+            id: childId,
             deletedAt: null,
             isArchived: false,
         }

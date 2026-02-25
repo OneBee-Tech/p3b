@@ -20,6 +20,16 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Program not found' }, { status: 404 });
         }
 
+        // Fetch child name if sponsoring a specific child
+        let childDisplayName: string | null = null;
+        if (childId) {
+            const registryChild = await prisma.registryChild.findUnique({
+                where: { id: childId },
+                select: { displayName: true }
+            });
+            childDisplayName = registryChild?.displayName ?? null;
+        }
+
         // 2. Funding Cap Enforcement
         const fundingCurrent = Number(program.fundingCurrent);
         const fundingGoal = Number(program.fundingGoal);
@@ -39,9 +49,10 @@ export async function POST(req: Request) {
         }
 
         // 3. Checkout Session Creation
+        const isDaily = frequency === 'daily';
         const isMonthly = frequency === 'monthly';
         const isYearly = frequency === 'yearly';
-        const isSubscription = isMonthly || isYearly;
+        const isSubscription = isDaily || isMonthly || isYearly;
         const unitAmount = Math.round(amount * 100); // Convert USD to cents
 
         const sessionData: any = {
@@ -60,13 +71,17 @@ export async function POST(req: Request) {
                     price_data: {
                         currency: 'usd',
                         product_data: {
-                            name: `Support ${program.name}`,
-                            description: `Contribution to the Community Pool${childId ? ' (including support for a specific child)' : ''}`,
+                            name: childDisplayName
+                                ? `Help ${childDisplayName}`
+                                : `Support ${program.name}`,
+                            description: childDisplayName
+                                ? `Sponsoring ${childDisplayName}'s education, learning materials, and wellbeing services.`
+                                : `Contribution to the ${program.name} Community Fund.`,
                         },
                         unit_amount: unitAmount,
                         ...(isSubscription ? {
                             recurring: {
-                                interval: isYearly ? 'year' : 'month',
+                                interval: isYearly ? 'year' : isDaily ? 'day' : 'month',
                             }
                         } : {})
                     },

@@ -50,6 +50,32 @@ export default async function CheckoutPage({
         notFound();
     }
 
+    // If sponsoring a specific child, fetch their name and monthly funding data
+    let childDisplayName: string | undefined;
+    let childMonthlyGoal: number | undefined;
+    let childMonthlyFunding: number | undefined;
+    if (childId) {
+        const registryChild = await prisma.registryChild.findUnique({
+            where: { id: childId },
+            select: { displayName: true, sponsorshipNeededMonthly: true }
+        });
+        if (registryChild) {
+            childDisplayName = registryChild.displayName;
+            childMonthlyGoal = Number(registryChild.sponsorshipNeededMonthly);
+            // Sum active monthly donations tied to this child
+            const monthlyPledges = await prisma.donation.aggregate({
+                where: {
+                    status: 'SUCCEEDED',
+                    type: 'RECURRING_MONTHLY',
+                    // Match via metadata — childId is stored in Stripe metadata, not directly on Donation
+                    // Fall back to zero if no direct relation exists
+                },
+                _sum: { amount: true }
+            });
+            childMonthlyFunding = 0; // Will be computed when webhook-linked assignments are available
+        }
+    }
+
     const fundingCurrent = Number(program.fundingCurrent);
     const fundingGoal = Number(program.fundingGoal);
     const isLocked = program.isLocked || fundingCurrent >= fundingGoal || program.status === 'FULLY_FUNDED';
@@ -62,8 +88,10 @@ export default async function CheckoutPage({
                 <div className="lg:col-span-7">
                     <h1 className="text-3xl font-heading font-bold text-cinematic-dark mb-4">Complete Your Support</h1>
                     <p className="text-gray-600 mb-8 leading-relaxed">
-                        You are sponsoring a child's education and support services for <strong>{program.name}</strong>.
-                        Select your contribution tier and proceed to the encrypted checkout.
+                        {childDisplayName
+                            ? <>You are sponsoring <strong>{childDisplayName}</strong>'s education and support services.</>
+                            : <>You are supporting <strong>{program.name}</strong>.</>}
+                        {" "}Select your contribution tier and proceed to the encrypted checkout.
                         <span className="block mt-3 text-sm text-gray-500">
                             Support is allocated toward education, learning materials, and wellbeing services. Donation invoices are issued within 24 hours of successful payment.
                         </span>
@@ -107,8 +135,9 @@ export default async function CheckoutPage({
                     <div className="sticky top-24">
                         <ProgramFundingStatusCard
                             programName={program.name}
-                            currentFunding={fundingCurrent}
-                            fundingGoal={fundingGoal}
+                            childName={childDisplayName}
+                            currentFunding={childMonthlyGoal !== undefined ? (childMonthlyFunding ?? 0) : fundingCurrent}
+                            fundingGoal={childMonthlyGoal ?? fundingGoal}
                         />
                         <AllocationPreviewCard />
                         <AdminVerificationNotice />

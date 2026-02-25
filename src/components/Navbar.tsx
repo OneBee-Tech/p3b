@@ -62,6 +62,7 @@ export function Navbar({ session }: { session?: any }) {
         { href: "/programs", label: "Explore Communities" },
         { href: "/impact", label: "Impact" },
         { href: "/our-story", label: "Our Story" },
+        { href: "/contact", label: "Contact" },
         { href: "/dashboard", label: "My Dashboard" },
     ];
 

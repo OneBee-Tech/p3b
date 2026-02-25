@@ -11,6 +11,10 @@ export default async function SignInPage(props: { searchParams: Promise<{ callba
     const callbackUrl = searchParams.callbackUrl || "/dashboard";
 
     if (session) {
+        // Admin users always land on /admin
+        if ((session.user as any)?.role === "ADMIN") {
+            redirect("/admin");
+        }
         redirect(callbackUrl);
     }
 
