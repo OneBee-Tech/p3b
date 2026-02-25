@@ -100,7 +100,7 @@ export default async function ChildrenRegistryPage() {
                                         </td>
                                         <td className="p-4">
                                             <div className="flex flex-col gap-1 items-start">
-                                                <span className={`px-2 py-0.5 text-[10px] font-bold uppercase rounded-md ${child.privacyMode === "STRICT" ? "bg-red-500/20 text-red-400" : "bg-trust-blue/20 text-trust-blue"
+                                                <span className={`px-2 py-0.5 text-[10px] font-bold uppercase rounded-md ${child.privacyMode === "SPONSOR_ONLY" ? "bg-red-500/20 text-red-400" : "bg-trust-blue/20 text-trust-blue"
                                                     }`}>
                                                     {child.privacyMode}
                                                 </span>
