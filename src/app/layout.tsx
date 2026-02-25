@@ -7,6 +7,7 @@ import { Footer } from "@/components/Footer";
 import { TrustBadgeStrip } from "@/components/TrustBadgeStrip";
 import { AnalyticsTracker } from "@/components/AnalyticsTracker";
 import { ClientAutoTranslator } from "@/components/ClientAutoTranslator";
+import { FloatingWhatsAppButton } from "@/components/global/FloatingWhatsAppButton";
 import { auth } from "@/auth";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/next"
@@ -57,6 +58,7 @@ export default async function RootLayout({
         </main>
         <TrustBadgeStrip />
         <Footer />
+        <FloatingWhatsAppButton />
         <AnalyticsTracker />
         <ClientAutoTranslator />
         <SpeedInsights />

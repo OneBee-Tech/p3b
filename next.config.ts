@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         destination: '/',
         permanent: true,
       },
+      {
+        source: "/stories",
+        destination: "/impact",
+        permanent: true
+      }
     ];
   },
   images: {

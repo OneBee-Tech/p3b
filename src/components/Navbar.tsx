@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
+import { GetInvolvedDropdown } from "@/components/navigation/GetInvolvedDropdown";
 
 const languages = [
     { code: "en", local: "English", english: "" },
@@ -58,9 +59,8 @@ export function Navbar({ session }: { session?: any }) {
     }, [lastScrollY]);
 
     const navLinks = [
-        { href: "/programs", label: "Sponsor a Child" },
-        { href: "/stories", label: "Stories" },
-        { href: "/impact", label: "Our Impact" },
+        { href: "/programs", label: "Explore Communities" },
+        { href: "/impact", label: "Impact" },
         { href: "/our-story", label: "Our Story" },
         { href: "/dashboard", label: "My Dashboard" },
     ];
@@ -94,6 +94,8 @@ export function Navbar({ session }: { session?: any }) {
                                 {link.label}
                             </Link>
                         ))}
+
+                        <GetInvolvedDropdown />
 
                         {/* Language Switcher */}
                         <div className="relative">
@@ -166,7 +168,7 @@ export function Navbar({ session }: { session?: any }) {
 
                             <Link href="/programs">
                                 <Button variant="impact" size="sm" className="font-bold hover: cursor-pointer">
-                                    Sponsor a Child
+                                    Donate Now
                                 </Button>
                             </Link>
                         </div>
@@ -176,7 +178,7 @@ export function Navbar({ session }: { session?: any }) {
                     <div className="md:hidden flex items-center gap-4">
                         <Link href="/programs" className="mr-2">
                             <Button variant="impact" size="sm" className="font-bold py-1 h-8 text-xs">
-                                Sponsor
+                                Donate
                             </Button>
                         </Link>
                         <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)} className="text-white">
@@ -203,6 +205,12 @@ export function Navbar({ session }: { session?: any }) {
                                 {link.label}
                             </Link>
                         ))}
+                        <div className="border-t border-white/10 pt-4">
+                            <p className="text-xs text-white/50 mb-2 uppercase tracking-wider">Get Involved</p>
+                            <Link href="/refer" className="block py-2 font-medium text-white/80 hover:text-white transition-colors" onClick={() => setIsOpen(false)}>Refer a Child</Link>
+                            <Link href="/assist" className="block py-2 font-medium text-white/80 hover:text-white transition-colors" onClick={() => setIsOpen(false)}>Request Assistance</Link>
+                            <Link href="/partnership" className="block py-2 font-medium text-white/80 hover:text-white transition-colors" onClick={() => setIsOpen(false)}>Partnership Inquiry</Link>
+                        </div>
                         <div className="border-t border-white/10 pt-4">
                             <p className="text-xs text-white/50 mb-2 uppercase tracking-wider">Select Language</p>
                             <div className="grid grid-cols-2 gap-2">
@@ -252,7 +260,7 @@ export function Navbar({ session }: { session?: any }) {
                         <div className="flex flex-col gap-2 mt-4">
                             <Link href="/programs" className="block w-full" onClick={() => setIsOpen(false)}>
                                 <Button variant="impact" className="w-full">
-                                    Sponsor a Child
+                                    Donate Now
                                 </Button>
                             </Link>
 
