@@ -1,6 +1,11 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import { MessageCircle } from "lucide-react";
 
 export function FloatingWhatsAppButton() {
+    const pathname = usePathname();
+    if (pathname?.startsWith("/admin")) return null;
     return (
         <a
             href="https://wa.me/XXXXXXXX"

@@ -65,6 +65,8 @@ export function Navbar({ session }: { session?: any }) {
         { href: "/dashboard", label: "My Dashboard" },
     ];
 
+    if (pathname?.startsWith("/admin")) return null;
+
     return (
         <nav className={cn(
             "fixed w-full z-50 transition-transform duration-300 bg-cinematic-dark/80 backdrop-blur-md border-b border-white/5",

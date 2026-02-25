@@ -1,6 +1,11 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import { ShieldCheck, Lock, Building2, PieChart, FileText } from "lucide-react";
 
 export function TrustBadgeStrip({ className = "" }: { className?: string }) {
+    const pathname = usePathname();
+    if (pathname?.startsWith("/admin")) return null;
     return (
         <div className={`bg-white border-y border-gray-100 py-10 ${className}`}>
             <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 md:divide-x divide-gray-200">
