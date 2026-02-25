@@ -9,6 +9,7 @@ import { AnalyticsTracker } from "@/components/AnalyticsTracker";
 import { ClientAutoTranslator } from "@/components/ClientAutoTranslator";
 import { auth } from "@/auth";
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/next"
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -59,6 +60,7 @@ export default async function RootLayout({
         <AnalyticsTracker />
         <ClientAutoTranslator />
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
