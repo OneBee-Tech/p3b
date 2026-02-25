@@ -53,12 +53,12 @@ export default async function RootLayout({
         <Navbar session={session} />
         <main className="flex-grow">
           {children}
-          <SpeedInsights />
         </main>
         <TrustBadgeStrip />
         <Footer />
         <AnalyticsTracker />
         <ClientAutoTranslator />
+        <SpeedInsights />
       </body>
     </html>
   );
