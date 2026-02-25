@@ -8,6 +8,7 @@ import { TrustBadgeStrip } from "@/components/TrustBadgeStrip";
 import { AnalyticsTracker } from "@/components/AnalyticsTracker";
 import { ClientAutoTranslator } from "@/components/ClientAutoTranslator";
 import { auth } from "@/auth";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -50,7 +51,10 @@ export default async function RootLayout({
         )}
       >
         <Navbar session={session} />
-        <main className="flex-grow">{children}</main>
+        <main className="flex-grow">
+          {children}
+          <SpeedInsights />
+        </main>
         <TrustBadgeStrip />
         <Footer />
         <AnalyticsTracker />
