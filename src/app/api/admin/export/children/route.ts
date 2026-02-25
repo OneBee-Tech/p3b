@@ -48,7 +48,7 @@ export async function GET() {
         // Log the export action
         await prisma.adminActionLog.create({
             data: {
-                adminId: session.user.id,
+                adminId: session.user.id as string,
                 actionType: "EXPORT_CHILDREN_CSV",
                 targetEntity: "RegistryChild",
                 targetId: "ALL",

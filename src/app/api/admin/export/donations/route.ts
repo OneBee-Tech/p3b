@@ -40,7 +40,7 @@ export async function GET() {
         // Log the export action (Governance: Immutable Snapshot Exported)
         await prisma.adminActionLog.create({
             data: {
-                adminId: session.user.id,
+                adminId: session.user.id as string,
                 actionType: "EXPORT_DONATIONS_CSV",
                 targetEntity: "DonationLedger",
                 targetId: "ALL",

@@ -18,7 +18,7 @@ export async function logAdminAccess(pathname: string) {
     try {
         await prisma.adminAccessLog.create({
             data: {
-                adminId: session.user.id,
+                adminId: session.user.id as string,
                 routeAccessed: pathname,
                 ipAddress: ip,
             }

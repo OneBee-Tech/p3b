@@ -38,7 +38,7 @@ export async function createRegistryChild(formData: FormData) {
             avatarIllustrationUrl: avatarIllustrationUrl || null,
             caseNotes: caseNotes || null,
             referralId: referralId || null,
-            createdByAdminId: session.user.id,
+            createdByAdminId: session.user.id as string,
             safeguardingReviewStatus: "PENDING", // Enforce audit workflow
         }
     });
@@ -46,7 +46,7 @@ export async function createRegistryChild(formData: FormData) {
     // Governance: Log action
     await prisma.adminActionLog.create({
         data: {
-            adminId: session.user.id,
+            adminId: session.user.id as string,
             actionType: "CREATE_CHILD",
             targetEntity: "RegistryChild",
             targetId: child.id,
@@ -97,7 +97,7 @@ export async function updateRegistryChild(formData: FormData) {
     // Governance: Log action
     await prisma.adminActionLog.create({
         data: {
-            adminId: session.user.id,
+            adminId: session.user.id as string,
             actionType: "UPDATE_CHILD",
             targetEntity: "RegistryChild",
             targetId: child.id,

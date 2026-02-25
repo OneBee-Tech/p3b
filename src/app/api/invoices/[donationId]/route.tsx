@@ -103,7 +103,8 @@ const InvoicePDF = ({ donation, invoiceId }: { donation: any, invoiceId: string 
     );
 };
 
-export async function GET(request: Request, { params }: { params: { donationId: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ donationId: string }> }) {
+    const { donationId } = await params;
     const session = await auth();
     // Security Governance: Only the donor themselves or an ADMIN can view this invoice
     if (!session?.user) {
@@ -112,7 +113,7 @@ export async function GET(request: Request, { params }: { params: { donationId: 
 
     try {
         const donation = await prisma.donation.findUnique({
-            where: { id: params.donationId },
+            where: { id: donationId },
             include: { user: true, program: true }
         });
 
@@ -138,7 +139,7 @@ export async function GET(request: Request, { params }: { params: { donationId: 
         if (isAdmin && !isOwner) {
             await prisma.adminActionLog.create({
                 data: {
-                    adminId: session.user.id,
+                    adminId: session.user.id as string,
                     actionType: "GENERATE_INVOICE_PDF",
                     targetEntity: "Donation",
                     targetId: donation.id,

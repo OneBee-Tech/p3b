@@ -19,7 +19,7 @@ export async function updateReferralStatus(id: string, newStatus: any) {
     // Governance: Audit the state shift
     await prisma.adminActionLog.create({
         data: {
-            adminId: session.user.id,
+            adminId: session.user.id as string,
             actionType: "UPDATE_REFERRAL_STATUS",
             targetEntity: "Referral",
             targetId: referral.id,
@@ -43,7 +43,7 @@ export async function approveAndConvertReferral(id: string) {
 
     await prisma.adminActionLog.create({
         data: {
-            adminId: session.user.id,
+            adminId: session.user.id as string,
             actionType: "APPROVE_REFERRAL",
             targetEntity: "Referral",
             targetId: id,
