@@ -36,7 +36,7 @@ export function Hero() {
                         Empower the Next Generation of Leaders
                     </h1>
                     <p className="text-lg md:text-xl text-white/90 font-body max-w-2xl mx-auto mb-10 leading-relaxed text-shadow-sm">
-                        Millions of children lack access to quality education. Your support builds schools, trains teachers, and transforms communities forever.
+                        Millions of children lack access to quality education. Your support provides essentials, ensures safety, and transforms futures forever.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">

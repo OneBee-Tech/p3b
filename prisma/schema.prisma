@@ -105,6 +105,26 @@ enum ProgramStatus {
   ARCHIVED
 }
 
+enum ReferralStatus {
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  ARCHIVED
+}
+
+enum SafeguardingReviewStatus {
+  PENDING
+  VERIFIED
+  FLAGGED
+}
+
+enum SponsorshipAssignmentStatus {
+  ACTIVE
+  PAUSED
+  ENDED
+}
+
 model Program {
   id              String   @id @default(cuid())
   name            String
@@ -154,6 +174,7 @@ model User {
   auditLogs         AdminAuditLog[]
   accounts          Account[]
   sessions          Session[]
+  sponsorshipAssignments SponsorshipAssignment[]
 }
 
 model Child {
@@ -423,3 +444,91 @@ model Story {
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
 }
+
+// ----------------------------------------------------------------------
+// PHASE 5: ADMIN MANAGEMENT & ISOLATED CMS GOVERNANCE
+// ----------------------------------------------------------------------
+
+model Referral {
+  id               String         @id @default(cuid())
+  referrerName     String
+  email            String
+  childLocation    String
+  educationStatus  String
+  urgencyLevel     UrgencyLevel   @default(LOW)
+  notes            String?        @db.Text
+  status           ReferralStatus @default(PENDING)
+  
+  // Soft Delete & Governance
+  deletedAt        DateTime?
+  isArchived       Boolean        @default(false)
+
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model RegistryChild {
+  id                       String                   @id @default(cuid())
+  displayName              String
+  age                      Int
+  region                   String
+  educationLevel           String
+  sponsorshipNeededMonthly Decimal
+  status                   ChildStatus              @default(WAITING)
+  privacyMode              VisibilityScope          @default(PUBLIC)
+  safeguardingConsent      Boolean                  @default(false)
+  avatarIllustrationUrl    String?
+  caseNotes                String?                  @db.Text
+  
+  // Sponsorship Capacity
+  maxSponsors              Int                      @default(1)
+  
+  // Referral Traceability
+  referralId               String?                  @unique
+  
+  // Safeguarding & Audit
+  createdByAdminId         String
+  lastReviewedAt           DateTime?
+  safeguardingReviewStatus SafeguardingReviewStatus @default(PENDING)
+  
+  // Soft Delete & Governance
+  deletedAt                DateTime?
+  isArchived               Boolean                  @default(false)
+
+  createdAt                DateTime                 @default(now())
+  updatedAt                DateTime                 @updatedAt
+
+  assignments              SponsorshipAssignment[]
+}
+
+model SponsorshipAssignment {
+  id                String                      @id @default(cuid())
+  donorId           String
+  registryChildId   String
+  startedAt         DateTime                    @default(now())
+  endedAt           DateTime?
+  status            SponsorshipAssignmentStatus @default(ACTIVE)
+
+  donor             User                        @relation(fields: [donorId], references: [id])
+  registryChild     RegistryChild               @relation(fields: [registryChildId], references: [id])
+}
+
+model AdminAccessLog {
+  id               String    @id @default(cuid())
+  adminId          String
+  routeAccessed    String
+  timestamp        DateTime  @default(now())
+  ipAddress        String?
+}
+
+model AdminActionLog {
+  id               String    @id @default(cuid())
+  adminId          String
+  actionType       String
+  targetEntity     String
+  targetId         String
+  previousValue    String?   @db.Text
+  newValue         String?   @db.Text
+  timestamp        DateTime  @default(now())
+}
+

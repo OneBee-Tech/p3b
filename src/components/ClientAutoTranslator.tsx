@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 // Concurrency limiter to prevent hammering the internal translation proxy
 const limitConcurrency = (limit: number) => {
@@ -27,6 +28,8 @@ const limitConcurrency = (limit: number) => {
 const getTicket = limitConcurrency(4); // Keep to 4 concurrent translations to avoid HTTP drops
 
 export function AutoTranslator({ targetLang }: { targetLang: string }) {
+    const pathname = usePathname();
+
     useEffect(() => {
         if (!targetLang || targetLang === "en") return;
 
@@ -99,7 +102,7 @@ export function AutoTranslator({ targetLang }: { targetLang: string }) {
         observer.observe(document.body, { childList: true, subtree: true });
 
         return () => observer.disconnect();
-    }, [targetLang]);
+    }, [targetLang, pathname]);
 
     return null;
 }

@@ -13,8 +13,8 @@ async function getImpactMetrics() {
         // As a proxy for "Children Educated", we can use total donations.
         const allocationsCount = await prisma.donation.count();
 
-        // For teachers trained, we can proxy with a base number + recent campaigns or programs.
-        const teacherBase = 150 + (programCount * 5); // Example metric mapping
+        // For meals provided, proxy with a base number + recent campaigns
+        const mealsBase = 1500 + (programCount * 50); // Example metric mapping
 
         if (programCount === 0 && allocationsCount === 0) {
             throw new Error("No data available, dropping to safe mode seeds");
@@ -23,7 +23,7 @@ async function getImpactMetrics() {
         return {
             childrenEducated: 5000 + (allocationsCount * 10), // Seed base + live data scaling
             communitiesServed: 12 + programCount,
-            teachersTrained: teacherBase,
+            mealsProvided: mealsBase,
             isLive: true
         };
     } catch (error) {
@@ -31,7 +31,7 @@ async function getImpactMetrics() {
         return {
             childrenEducated: 5430,
             communitiesServed: 14,
-            teachersTrained: 210,
+            mealsProvided: 2150,
             isLive: false
         };
     }
@@ -82,14 +82,16 @@ export async function ImpactMetricsStrip() {
                         <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-6">
                             <Users className="w-8 h-8 text-impact-gold" />
                         </div>
-                        <div className="text-5xl font-heading font-bold text-white mb-2 tracking-tight">
-                            {metrics.teachersTrained.toLocaleString()}
-                        </div>
-                        <div className="text-trust-blue font-bold uppercase tracking-wider text-sm mb-3">
-                            Teachers Empowered
+                        <div className="text-center">
+                            <p className="text-4xl font-light text-cinematic-dark mb-2">
+                                {metrics.mealsProvided.toLocaleString()}
+                            </p>
+                            <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">
+                                Meals Provided
+                            </p>
                         </div>
                         <p className="text-white/60 text-sm font-body max-w-[200px]">
-                            Salaries stabilized and pedagogical training provided.
+                            Nourishing meals provided to children and families in need.
                         </p>
                     </div>
 

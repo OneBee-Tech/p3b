@@ -34,7 +34,7 @@ export function FounderStory() {
                     <div className="order-1 md:order-2">
                         <span className="block text-trust-blue font-bold tracking-wider text-sm uppercase mb-4">The Origin Story</span>
                         <h2 className="text-4xl md:text-5xl font-heading font-bold mb-8 leading-tight">
-                            "I couldn't walk away."
+                            "I could not look away."
                         </h2>
 
                         <div className="space-y-6 text-lg text-gray-700 font-body leading-relaxed">

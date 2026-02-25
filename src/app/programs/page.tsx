@@ -24,7 +24,7 @@ const children = [
         bio: "Raju is a math prodigy who had to drop out to help his family. Sponsorship will cover his re-enrollment fees and provide a monthly stipend to his household so he can return to class."
     },
     {
-        id: "3", name: "Fatima", age: 6, gender: "Female", location: "KPK, PK", dream: "Teacher", image: "/images/impact/child3.jpg", isUrgent: true,
+        id: "3", name: "Fatima", age: 6, gender: "Female", location: "KPK, PK", dream: "Doctor", image: "/images/impact/child3.jpg", isUrgent: true,
         bio: "Fatima walks 3 miles a day to reach the nearest charity school. Your support provides safe transportation and uniform costs, ensuring she stays enrolled safely."
     },
     {

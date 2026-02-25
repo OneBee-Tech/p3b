@@ -22,7 +22,7 @@ export default function OurStoryPage() {
             <section className="bg-cinematic-dark text-white pt-36 pb-24 mb-12">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
                     <h1 className="text-4xl md:text-5xl font-heading font-bold tracking-tight">
-                        We Believe in the Power of <span className="text-impact-gold">Community</span>.
+                        We Believe in the Power of Community.
                     </h1>
                     <p className="text-xl text-white/80 leading-relaxed max-w-3xl mx-auto">
                         Hope for Humanity was founded on a simple premise: education is not an individual luxury, but a structural necessity. We don't just sponsor children; we empower the ecosystems that support them.

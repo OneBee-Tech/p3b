@@ -60,7 +60,7 @@ export async function DashboardTransparencyPreview() {
                             <div className="flex items-center justify-between border-b border-gray-100 pb-4">
                                 <div className="flex items-center gap-3">
                                     <div className="w-2 h-2 rounded-full bg-impact-gold" />
-                                    <span className="font-medium text-gray-700">Teacher Stability Fund</span>
+                                    <span className="font-medium text-gray-700">Child Health Fund</span>
                                 </div>
                                 <span className="font-bold text-cinematic-dark">25%</span>
                             </div>

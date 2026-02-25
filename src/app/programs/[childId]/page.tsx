@@ -16,7 +16,7 @@ const children = [
         story: "Raju is a brilliant young student..."
     },
     {
-        id: "3", name: "Fatima", age: 6, gender: "Female", location: "KPK, PK", dream: "Teacher", image: "/images/impact/child3.jpg", isUrgent: true,
+        id: "3", name: "Fatima", age: 6, gender: "Female", location: "KPK, PK", dream: "Doctor", image: "/images/impact/child3.jpg", isUrgent: true,
         bio: "Fatima walks 3 miles a day to reach the nearest charity school. Your support provides safe transportation and uniform costs, ensuring she stays enrolled safely.",
         story: "Fatima dreams of teaching..."
     },

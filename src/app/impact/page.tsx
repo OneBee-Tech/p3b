@@ -13,7 +13,20 @@ export const metadata = {
     },
 };
 
-export default function ImpactPage() {
+import prisma from "@/lib/prisma";
+
+export const revalidate = 60; // 1 minute cache for transparency reports
+
+export default async function ImpactPage() {
+    const documents = await prisma.verificationDocument.findMany({
+        where: {
+            entityType: "DOCUMENT",
+            status: "VERIFIED"
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 8
+    });
+
     return (
         <main className="min-h-screen bg-gray-50 pb-20">
             <section className="bg-cinematic-dark text-white pt-36 pb-24 mb-12">
@@ -68,23 +81,43 @@ export default function ImpactPage() {
                     </div>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {[
-                            { title: "2024 Annual Report", format: "PDF", icon: FileText },
-                            { title: "Financial Audit Q1", format: "PDF", icon: PieChart },
-                            { title: "NGO Documentation", format: "PDF", icon: FileBadge },
-                            { title: "NGO Registration", format: "PDF", icon: ShieldCheck },
-                        ].map((doc, idx) => (
-                            <a key={idx} href="#" className="flex items-start gap-4 p-4 rounded-xl border border-gray-100 hover:border-trust-blue/30 hover:bg-trust-blue/5 transition-all group">
-                                <div className="bg-gray-100 p-2 rounded-lg group-hover:bg-white group-hover:text-trust-blue transition-colors">
-                                    <doc.icon className="w-5 h-5 text-gray-500 group-hover:text-trust-blue" />
-                                </div>
-                                <div className="flex-1">
-                                    <p className="font-bold text-sm text-cinematic-dark group-hover:text-trust-blue transition-colors">{doc.title}</p>
-                                    <span className="text-xs text-gray-400 font-medium">{doc.format} Document</span>
-                                </div>
-                                <Download className="w-4 h-4 text-gray-300 group-hover:text-trust-blue transition-colors" />
-                            </a>
-                        ))}
+                        {documents.map((doc, idx) => {
+                            let title = "Compliance Document";
+                            let version = "";
+                            let cleanUrl = doc.documentUrl;
+
+                            try {
+                                const urlObj = new URL(doc.documentUrl);
+                                title = urlObj.searchParams.get("title") || "Compliance Document";
+                                version = urlObj.searchParams.get("v") || "";
+                                const displayUrlObj = new URL(doc.documentUrl);
+                                displayUrlObj.search = "";
+                                cleanUrl = displayUrlObj.toString();
+                            } catch (e) {
+                                // Fallback
+                            }
+
+                            return (
+                                <a key={doc.id} href={cleanUrl} target="_blank" rel="noopener noreferrer" className="flex items-start gap-4 p-4 rounded-xl border border-gray-100 hover:border-trust-blue/30 hover:bg-trust-blue/5 transition-all group">
+                                    <div className="bg-gray-100 p-2 rounded-lg group-hover:bg-white group-hover:text-trust-blue transition-colors">
+                                        <ShieldCheck className="w-5 h-5 text-gray-500 group-hover:text-trust-blue" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="font-bold text-sm text-cinematic-dark group-hover:text-trust-blue transition-colors truncate" title={title}>{title}</p>
+                                        <span className="text-xs text-gray-400 font-medium">Verified PDF {version ? `(v${version})` : ''}</span>
+                                    </div>
+                                    <Download className="w-4 h-4 text-gray-300 flex-shrink-0 group-hover:text-trust-blue transition-colors" />
+                                </a>
+                            );
+                        })}
+
+                        {documents.length === 0 && (
+                            <div className="col-span-full p-8 text-center bg-gray-50 rounded-2xl border border-gray-100">
+                                <FileText className="w-8 h-8 text-gray-300 mx-auto mb-3" />
+                                <p className="text-gray-500 font-medium">Live governance synchronization pending.</p>
+                                <p className="text-sm text-gray-400">Institutional documents are currently under review by our compliance node.</p>
+                            </div>
+                        )}
                     </div>
                 </div>
 

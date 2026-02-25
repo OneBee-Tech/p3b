@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { unstable_cache } from "next/cache";
 import { Button } from "@/components/ui/button";
-import { LogOut, CheckCircle2, AlertCircle, Star, Lock, ShieldCheck, Info } from "lucide-react";
+import { LogOut, CheckCircle2, AlertCircle, Star, Lock, ShieldCheck, Info, FileText } from "lucide-react";
 import Link from "next/link";
 import { AllocationPieChart } from "./AllocationPieChart";
 import { FundingCategoryBreakdown } from "./FundingCategoryBreakdown";
@@ -36,7 +36,8 @@ export default async function DashboardPage() {
         where: { id: session.user.id },
         include: {
             donations: {
-                where: { status: 'SUCCEEDED' }
+                where: { status: 'SUCCEEDED' },
+                include: { program: true }
             },
             sponsorships: {
                 include: {
@@ -250,6 +251,44 @@ export default async function DashboardPage() {
                     <section>
                         <h2 className="text-2xl font-bold text-cinematic-dark mb-6">Child Support</h2>
                         <ProgramContributionList contributions={userContributions} />
+
+                        {/* Recent Contributions & Invoices */}
+                        <div className="mt-8 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-md">
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="font-bold text-cinematic-dark text-lg">Recent Ledger Entries</h3>
+                            </div>
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left text-sm">
+                                    <thead>
+                                        <tr className="border-b border-gray-100 text-gray-400">
+                                            <th className="pb-3 font-medium">Date</th>
+                                            <th className="pb-3 font-medium">Amount</th>
+                                            <th className="pb-3 font-medium">Target</th>
+                                            <th className="pb-3 font-medium text-right">Receipt</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-50">
+                                        {donor.donations.filter(d => d.status === 'SUCCEEDED').slice(0, 5).map(d => (
+                                            <tr key={d.id} className="group">
+                                                <td className="py-3 text-cinematic-dark">{new Date(d.createdAt).toLocaleDateString()}</td>
+                                                <td className="py-3 font-bold text-trust-blue">${(Number(d.amount) / 100).toFixed(2)}</td>
+                                                <td className="py-3 text-gray-500 truncate max-w-[120px]">{d.program?.name || 'General Ledger'}</td>
+                                                <td className="py-3 text-right">
+                                                    <a href={`/api/invoices/${d.id}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-bold text-gray-400 hover:text-trust-blue transition-colors">
+                                                        <FileText className="w-3 h-3" /> PDF
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                        {donor.donations.filter(d => d.status === 'SUCCEEDED').length === 0 && (
+                                            <tr>
+                                                <td colSpan={4} className="py-6 text-center text-gray-400">No verified contributions on ledger yet.</td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
                         {/* System 4: Impact Certificate Engine Placeholder */}
                         <div className="mt-8 bg-warm-ivory p-6 rounded-2xl border border-impact-gold/30 transition-all duration-300 hover:shadow-md">

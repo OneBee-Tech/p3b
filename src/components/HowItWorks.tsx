@@ -11,7 +11,7 @@ const steps = [
     },
     {
         title: "The Growth",
-        description: "Students attend safe classrooms with trained teachers.",
+        description: "Students attend safe classrooms with essential supplies.",
         icon: School,
         amount: "$30 = 1 Month of Education",
         color: "bg-blue-100 text-trust-blue",

@@ -35,7 +35,7 @@ export function ContextRibbon() {
                         className="group flex items-center gap-2 bg-gray-50 hover:bg-trust-blue/5 text-trust-blue px-4 py-2 rounded-xl transition-all font-medium text-sm border border-gray-200 hover:border-trust-blue/20"
                     >
                         <HeartHandshake className="w-4 h-4" />
-                        <span>Support Communities</span>
+                        <span>Support Children</span>
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Link>
                 </div>

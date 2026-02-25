@@ -21,7 +21,7 @@ export function AllocationPreviewCard() {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-impact-gold" />
-                        <span className="text-sm font-medium text-gray-700">Teacher Salaries</span>
+                        <span className="text-sm font-medium text-gray-700">Child Wellbeing & Health</span>
                     </div>
                     <span className="text-sm font-bold text-cinematic-dark">25%</span>
                 </div>
