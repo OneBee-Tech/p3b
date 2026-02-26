@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Heart, MapPin, BookOpen, ShieldCheck, DollarSign, AlertCircle } from "lucide-react";
+import { Heart, MapPin, BookOpen, ShieldCheck, DollarSign, AlertCircle, Trophy, FileText, BarChart3 } from "lucide-react";
 import { notFound } from "next/navigation";
 import prisma from "@/lib/prisma";
 
@@ -15,7 +15,29 @@ export default async function ChildSponsorPage({ params }: { params: Promise<{ c
             isArchived: false,
             deletedAt: null,
         },
+        include: {
+            progressReports: {
+                where: {
+                    verificationStatus: "VERIFIED",
+                    OR: [
+                        { publishAt: { lte: new Date() } },
+                        { publishAt: null }
+                    ]
+                },
+                orderBy: { createdAt: 'desc' }
+            },
+            milestones: {
+                orderBy: { achievedAt: 'desc' }
+            }
+        }
     });
+
+    if (!child) return notFound();
+
+    const timeline = [
+        ...child.progressReports.map(r => ({ ...r, type: 'REPORT', date: r.createdAt })),
+        ...child.milestones.map(m => ({ ...m, type: 'MILESTONE', date: m.achievedAt }))
+    ].sort((a, b) => b.date.getTime() - a.date.getTime());
 
     if (!child) return notFound();
 
@@ -56,6 +78,55 @@ export default async function ChildSponsorPage({ params }: { params: Promise<{ c
                                 <p className="text-gray-400 italic">Case details are being prepared. Check back soon.</p>
                             )}
                         </div>
+
+                        {/* Progress Timeline */}
+                        {timeline.length > 0 && (
+                            <div className="bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-gray-100 mt-8">
+                                <h3 className="text-2xl font-bold font-heading text-cinematic-dark mb-8 flex items-center gap-2">
+                                    <BarChart3 className="w-6 h-6 text-trust-blue" />
+                                    Progress Timeline
+                                </h3>
+                                <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 md:before:left-1/2 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-gray-300 before:via-gray-200 before:to-transparent">
+                                    {timeline.map((item: any, i) => (
+                                        <div key={i} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                            {/* Icon */}
+                                            <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-blue-50 text-trust-blue shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-sm z-10 absolute left-0 md:left-1/2 -ml-5 md:ml-0">
+                                                {item.type === 'MILESTONE' ? <Trophy className="w-4 h-4" /> : <FileText className="w-4 h-4" />}
+                                            </div>
+                                            {/* Card */}
+                                            <div className="w-[calc(100%-3.5rem)] md:w-[calc(50%-2.5rem)] bg-gray-50 p-5 rounded-xl border border-gray-100 shadow-sm ml-14 md:ml-0">
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <span className="font-bold text-cinematic-dark">
+                                                        {item.type === 'MILESTONE' ? 'Impact Milestone' : `Progress Report - ${item.reportingPeriod}`}
+                                                    </span>
+                                                    <span className="text-xs font-bold text-gray-500 bg-white px-2 py-1 rounded-full border border-gray-100 shadow-sm">
+                                                        {new Date(item.date).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })}
+                                                    </span>
+                                                </div>
+                                                {item.type === 'MILESTONE' ? (
+                                                    <p className="text-sm text-gray-600 mt-2">
+                                                        <span className="font-bold text-impact-gold block mb-1">{item.milestoneType.replace("_", " ")}</span>
+                                                        {item.description}
+                                                    </p>
+                                                ) : (
+                                                    <div className="text-sm text-gray-600 mt-2 space-y-2">
+                                                        <p className="font-medium text-cinematic-dark">Academic Overview</p>
+                                                        <p className="opacity-90">{item.academicPerformance}</p>
+                                                        {item.attendanceRate !== null && (
+                                                            <div className="mt-3 flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-gray-100 inline-block text-gray-600">
+                                                                <span className="font-bold text-trust-blue">Attendance:</span> {item.attendanceRate}%
+                                                            </div>
+                                                        )}
+                                                        {/* Privacy governance explicitly restricts teacher feedback and source documents on public profiles */}
+                                                        <p className="text-[10px] text-gray-400 mt-4 uppercase tracking-widest font-bold">Safeguarding Public Notice</p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                         <div className="bg-warm-ivory p-8 rounded-2xl border border-impact-gold/30">
                             <h3 className="font-bold text-impact-gold mb-3 flex items-center gap-2">

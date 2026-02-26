@@ -12,8 +12,11 @@ const navItems = [
     { name: "Referrals Intake", href: "/admin/referrals", icon: FileText },
     { name: "Inquiries", href: "/admin/inquiries", icon: Mail },
     { name: "Impact Reports", href: "/admin/reports", icon: BarChart3 },
+    { name: "Progress Reports", href: "/admin/progress", icon: FileText },
+    { name: "Milestones", href: "/admin/milestones", icon: BarChart3 },
     { name: "Compliance Docs", href: "/admin/compliance", icon: ShieldCheck },
     { name: "Sponsorship Health", href: "/admin/sponsorship-health", icon: Activity },
+    { name: "Impact Intelligence", href: "/admin/impact-intelligence", icon: Activity },
     { name: "Impact Stories CMS", href: "/admin/stories", icon: Globe },
     { name: "Settings", href: "/admin/settings", icon: Settings },
 ];

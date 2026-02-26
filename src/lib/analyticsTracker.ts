@@ -92,3 +92,32 @@ export async function generateSponsorshipAnalytics(): Promise<SponsorshipAnalyti
         avgSponsorSlotsFilled
     };
 }
+
+/**
+ * Super lightweight tracking layer for Impact + Retention events.
+ * 10% sampling rule is enforced to prevent performance overhead on the DB.
+ */
+export async function trackImpactEvent(eventType: "EMAIL_OPENED" | "DASHBOARD_NARRATIVE_VIEWED" | "MILESTONE_CLICKED", donorId: string, childId?: string) {
+    // 10% sampling rule - only ingest 1 out of 10 events directly to DB. 
+    // The rest would theoretically go to a faster timeseries DB or simply be discarded for performance.
+    if (Math.random() > 0.10) {
+        return;
+    }
+
+    try {
+        await prisma.adminActionLog.create({
+            data: {
+                adminId: donorId, // Using admin action log as a generic event sink for this system
+                actionType: "UPDATE_IMPACT_METRIC",
+                targetEntity: "CHILD",
+                targetId: childId || "SYS",
+                previousValue: "N/A",
+                newValue: `[IMPACT_ANALYTICS] Type: ${eventType}`
+            }
+        });
+        console.log(`[Analytics] Tracked ${eventType} for Donor ${donorId}`);
+    } catch (e) {
+        // Silently fail to not blow up runtime
+        console.error("[Analytics] Failed to track event", e);
+    }
+}

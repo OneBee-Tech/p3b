@@ -13,7 +13,11 @@ export async function createImpactStory(formData: FormData) {
     const title = formData.get("title") as string;
     const content = formData.get("content") as string;
     const imageUrl = formData.get("imageUrl") as string;
-    const published = formData.get("published") === "true";
+    const status = formData.get("status") as any || "DRAFT";
+    const guardianConsent = formData.get("guardianConsent") === "true";
+    const consentDocumentUrl = formData.get("consentDocumentUrl") as string;
+    const consentExpiryStr = formData.get("consentExpiry") as string;
+    const publishAtStr = formData.get("publishAt") as string;
 
     if (!title || !content) {
         throw new Error("Title and content are required.");
@@ -24,7 +28,11 @@ export async function createImpactStory(formData: FormData) {
             title,
             content,
             imageUrl: imageUrl || null,
-            published
+            status,
+            guardianConsent,
+            consentDocumentUrl: consentDocumentUrl || null,
+            consentExpiry: consentExpiryStr ? new Date(consentExpiryStr) : null,
+            publishAt: publishAtStr ? new Date(publishAtStr) : null,
         }
     });
 

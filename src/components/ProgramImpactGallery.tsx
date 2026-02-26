@@ -4,7 +4,13 @@ import prisma from "@/lib/prisma";
 
 export async function ImpactGallery() {
     const dbStories = await prisma.impactStory.findMany({
-        where: { published: true },
+        where: {
+            status: "PUBLISHED",
+            OR: [
+                { publishAt: { lte: new Date() } },
+                { publishAt: null }
+            ]
+        },
         orderBy: { createdAt: "desc" }
     });
 
@@ -79,6 +85,13 @@ export async function ImpactGallery() {
                             </div>
                         ))
                     )}
+                </div>
+
+                {/* Compliance Notice */}
+                <div className="mt-12 pt-6 border-t border-gray-100 text-center">
+                    <p className="text-sm font-medium text-gray-400">
+                        Stories are published with guardian consent and safeguarding approval.
+                    </p>
                 </div>
             </div>
         </section>

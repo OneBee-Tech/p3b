@@ -3,13 +3,14 @@ import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { unstable_cache } from "next/cache";
 import { Button } from "@/components/ui/button";
-import { LogOut, CheckCircle2, AlertCircle, Star, Lock, ShieldCheck, Info, FileText } from "lucide-react";
+import { LogOut, CheckCircle2, AlertCircle, Star, Lock, ShieldCheck, Info, FileText, Trophy, BarChart3, BookOpen } from "lucide-react";
 import Link from "next/link";
 import { AllocationPieChart } from "./AllocationPieChart";
 import { FundingCategoryBreakdown } from "./FundingCategoryBreakdown";
 import { ProgramContributionList } from "./ProgramContributionList";
 import { DownloadCertificateButton } from "./DownloadCertificateButton";
 import { SnapshotIntelligenceChart } from "./SnapshotIntelligenceChart";
+import { ImpactNarrativeCard } from "@/components/dashboard/ImpactNarrativeCard";
 
 // System 1 Performance: Caching Global Aggregations
 const getCachedGlobalSnapshots = unstable_cache(
@@ -43,6 +44,30 @@ export default async function DashboardPage() {
                 include: {
                     program: true,
                     child: true
+                }
+            },
+            sponsorshipAssignments: {
+                where: { status: 'ACTIVE' },
+                include: {
+                    registryChild: {
+                        include: {
+                            progressReports: {
+                                where: {
+                                    verificationStatus: 'VERIFIED',
+                                    OR: [
+                                        { publishAt: { lte: new Date() } },
+                                        { publishAt: null }
+                                    ]
+                                },
+                                orderBy: { createdAt: 'desc' },
+                                take: 3
+                            },
+                            milestones: {
+                                orderBy: { achievedAt: 'desc' },
+                                take: 5
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -307,6 +332,65 @@ export default async function DashboardPage() {
                         </div>
                     </section>
                 </div>
+
+                {/* System 6: Your Impact in Action (Sponsor-Only Child Progress) */}
+                {(donor as any).sponsorshipAssignments && (donor as any).sponsorshipAssignments.length > 0 && (
+                    <section className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mt-12 transition-all duration-300 hover:shadow-md">
+                        <div className="flex items-center gap-3 mb-2">
+                            <BookOpen className="w-6 h-6 text-trust-blue" />
+                            <h2 className="text-2xl font-bold text-cinematic-dark">Your Impact in Action</h2>
+                        </div>
+                        <p className="text-gray-500 text-sm mb-8">Detailed progress updates for children you directly sponsor. This information is exclusive to active sponsors.</p>
+
+                        <div className="space-y-8">
+                            {(donor as any).sponsorshipAssignments.map((assignment: any) => {
+                                const child = assignment.registryChild;
+                                if (!child) return null;
+                                return (
+                                    <div key={assignment.id} className="border border-gray-100 rounded-xl p-6 bg-gray-50/50">
+                                        <div className="flex items-center gap-4 mb-6">
+                                            <img
+                                                src={child.avatarIllustrationUrl || `https://api.dicebear.com/9.x/micah/svg?seed=${child.id}&backgroundColor=transparent`}
+                                                alt={child.displayName}
+                                                className="w-14 h-14 rounded-full bg-white border-2 border-trust-blue/20 object-cover"
+                                            />
+                                            <div>
+                                                <h3 className="font-bold text-cinematic-dark text-lg">{child.displayName}</h3>
+                                                <p className="text-xs text-gray-500">{child.region} &bull; {child.educationLevel} &bull; Age {child.age}</p>
+                                            </div>
+                                        </div>
+
+                                        {/* Milestones */}
+                                        {child.milestones && child.milestones.length > 0 && (
+                                            <div className="mb-6">
+                                                <h4 className="text-sm font-bold text-impact-gold uppercase tracking-widest mb-3 flex items-center gap-2"><Trophy className="w-4 h-4" /> Recent Milestones</h4>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {child.milestones.map((m: any) => (
+                                                        <span key={m.id} className="inline-flex items-center gap-1.5 bg-impact-gold/10 text-impact-gold border border-impact-gold/20 px-3 py-1 rounded-full text-xs font-bold">
+                                                            <Trophy className="w-3 h-3" /> {m.milestoneType.replace(/_/g, ' ')} — {new Date(m.achievedAt).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* AI Impact Narrative (Sponsor-Deep View) */}
+                                        <div className="mt-6">
+                                            <ImpactNarrativeCard
+                                                childId={child.id}
+                                                childName={child.displayName}
+                                                donorId={donor.id}
+                                                latestAttendance={child.progressReports?.[0]?.attendanceRate}
+                                                latestMilestoneType={child.milestones?.[0]?.milestoneType}
+                                            />
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        <p className="text-[10px] text-gray-400 mt-6 uppercase tracking-widest font-bold text-center">Data shared under guardian consent. Governed by organizational safeguarding policy.</p>
+                    </section>
+                )}
 
                 {/* System 5: Macro Impact Visualization */}
                 <section className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mt-12 transition-all duration-300 hover:shadow-md">

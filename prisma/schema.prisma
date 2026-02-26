@@ -113,6 +113,12 @@ enum ReferralStatus {
   ARCHIVED
 }
 
+enum StoryStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
 enum SafeguardingReviewStatus {
   PENDING
   VERIFIED
@@ -226,6 +232,7 @@ model User {
   preferredLanguage String    @default("en")
   isActive          Boolean   @default(true)
   archivedAt        DateTime?
+  lastImpactEmailSentAt DateTime?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
@@ -560,6 +567,8 @@ model RegistryChild {
   updatedAt                DateTime                 @updatedAt
 
   assignments              SponsorshipAssignment[]
+  progressReports          ProgressReport[]
+  milestones               ImpactMilestone[]
 }
 
 model SponsorshipAssignment {
@@ -598,14 +607,86 @@ model AdminActionLog {
 // ----------------------------------------------------------------------
 
 model ImpactStory {
-  id               String    @id @default(cuid())
-  title            String
-  content          String    @db.Text
-  imageUrl         String?
+  id                 String      @id @default(cuid())
+  title              String
+  content            String      @db.Text
+  imageUrl           String?
   
-  // Governance
-  published        Boolean   @default(true)
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  // Governance & Safeguarding
+  status             StoryStatus @default(DRAFT)
+  guardianConsent    Boolean     @default(false)
+  consentDocumentUrl String?
+  consentExpiry      DateTime?
+  publishAt          DateTime?
+  viewCount          Int         @default(0)
+  engagementScore    Float       @default(0)
+
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+}
+
+// ----------------------------------------------------------------------
+// PHASE 8: CHILD PROGRESS & IMPACT REPORTING SYSTEM
+// ----------------------------------------------------------------------
+
+enum MilestoneType {
+  ENROLLED
+  GRADE_PROMOTED
+  EXAM_PASSED
+  SCHOLARSHIP_AWARDED
+  GRADUATED
+}
+
+enum ReportVerificationStatus {
+  PENDING
+  VERIFIED
+  FLAGGED
+}
+
+enum ProgressRiskScore {
+  STABLE
+  MONITOR
+  INTERVENTION_REQUIRED
+}
+
+model ProgressReport {
+  id                       String                   @id @default(cuid())
+  registryChildId          String
+  reportingPeriod          String   // e.g. "Term 1, 2026"
+  academicPerformance      String   @db.Text
+  attendanceRate           Float?
+  teacherFeedback          String?  @db.Text
+  wellbeingNotes           String?  @db.Text
+  reportDocumentUrl        String?  // Cloudinary/S3 only
+  
+  // Verification Governance
+  verificationStatus       ReportVerificationStatus @default(PENDING)
+  verifiedByAdminId        String?
+  verifiedAt               DateTime?
+  
+  // Consent & Publishing Governance
+  guardianConsentConfirmed Boolean                  @default(false)
+  consentDocumentUrl       String?
+  publishAt                DateTime?
+  
+  // Derived Risk Metric
+  riskScore                ProgressRiskScore        @default(STABLE)
+  
+  createdByAdminId         String
+  createdAt                DateTime                 @default(now())
+
+  registryChild            RegistryChild            @relation(fields: [registryChildId], references: [id])
+}
+
+model ImpactMilestone {
+  id               String        @id @default(cuid())
+  registryChildId  String
+  milestoneType    MilestoneType @default(ENROLLED)
+  description      String        @db.Text
+  achievedAt       DateTime
+  createdByAdminId String
+  createdAt        DateTime      @default(now())
+
+  registryChild    RegistryChild @relation(fields: [registryChildId], references: [id])
 }
 
