@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import prisma from '@/lib/prisma';
 import Stripe from 'stripe';
+import { triggerPaymentFailedAlert, triggerSponsorshipEndedAlert } from '@/lib/lifecycleAlerts';
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -36,6 +37,42 @@ export async function POST(req: Request) {
                 if (invoice.billing_reason === 'subscription_cycle') {
                     // Handle renewal
                     await handleSuccessfulSubscriptionPayment(invoice);
+                }
+                break;
+            }
+            case 'customer.subscription.updated': {
+                const subscription = event.data.object as Stripe.Subscription;
+                // Read-only extension: Check for past_due or canceled for lifecycle alerts
+                if (subscription.status === 'past_due' || subscription.status === 'unpaid') {
+                    const sponsorship = await prisma.sponsorship.findFirst({
+                        where: { stripeSubscriptionId: subscription.id, status: 'ACTIVE' }
+                    });
+                    if (sponsorship) {
+                        const assignment = await prisma.sponsorshipAssignment.findFirst({
+                            where: { donorId: sponsorship.userId, registryChildId: sponsorship.childId || "" }
+                        });
+                        if (assignment) {
+                            await triggerPaymentFailedAlert(assignment.id, "Stripe subscription marked past_due");
+                        }
+                    }
+                } else if (subscription.status === 'canceled') {
+                    const sponsorship = await prisma.sponsorship.findFirst({
+                        where: { stripeSubscriptionId: subscription.id }
+                    });
+                    if (sponsorship) {
+                        const assignment = await prisma.sponsorshipAssignment.findFirst({
+                            where: { donorId: sponsorship.userId, registryChildId: sponsorship.childId || "" }
+                        });
+                        if (assignment) {
+                            await triggerSponsorshipEndedAlert(assignment.id, "Stripe subscription canceled");
+
+                            // Also pause the assignment
+                            await prisma.sponsorshipAssignment.update({
+                                where: { id: assignment.id },
+                                data: { status: 'PAUSED', endedAt: new Date() }
+                            });
+                        }
+                    }
                 }
                 break;
             }

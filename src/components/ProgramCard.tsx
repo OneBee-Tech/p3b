@@ -10,7 +10,7 @@ interface RegistryChildCardData {
     region: string;
     educationLevel: string;
     sponsorshipNeededMonthly: number | string | { toNumber: () => number };
-    caseNotes: string | null;
+    story?: string | null;
     avatarIllustrationUrl: string | null;
     status: string;
     safeguardingReviewStatus: string;
@@ -86,9 +86,9 @@ export function SponsorshipCard({ child }: SponsorshipCardProps) {
                     </div>
                 </div>
 
-                {child.caseNotes && (
+                {child.story && (
                     <p className="text-gray-600 text-sm line-clamp-3 leading-relaxed mb-4 flex-grow">
-                        {child.caseNotes}
+                        {child.story}
                     </p>
                 )}
 

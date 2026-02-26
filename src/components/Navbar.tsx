@@ -59,7 +59,7 @@ export function Navbar({ session }: { session?: any }) {
     }, [lastScrollY]);
 
     const navLinks = [
-        { href: "/programs", label: "Explore Communities" },
+        { href: "/programs", label: "Support a Child" },
         { href: "/impact", label: "Impact" },
         { href: "/our-story", label: "Our Story" },
         { href: "/contact", label: "Contact" },

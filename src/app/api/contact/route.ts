@@ -23,6 +23,13 @@ function isRateLimited(ip: string): boolean {
 
 const VALID_TYPES = ["GENERAL", "SPONSORSHIP", "REFER_CHILD", "REQUEST_ASSISTANCE", "PARTNERSHIP", "MEDIA"];
 
+// Generate a cuid-like unique ID without depending on Prisma's cuid generator
+function generateId(): string {
+    const timestamp = Date.now().toString(36);
+    const random = Math.random().toString(36).slice(2, 10);
+    return `c${timestamp}${random}`;
+}
+
 export async function POST(req: Request) {
     try {
         // --- Rate limiting ------------------------------------------------
@@ -50,29 +57,38 @@ export async function POST(req: Request) {
         if (message.length > 1000) errors.push("Message must be 1000 characters or fewer.");
         if (errors.length) return NextResponse.json({ error: errors.join(" ") }, { status: 400 });
 
-        // --- DB write (primary) ------------------------------------------
-        const inquiry = await prisma.contactInquiry.create({
-            data: {
-                name,
-                email,
-                inquiryType: inquiryType as any,
-                message,
-            }
-        });
+        // --- DB write via raw SQL (bypasses generated client model issues) -
+        const id = generateId();
+        const now = new Date();
+
+        await prisma.$executeRaw`
+            INSERT INTO "ContactInquiry" (id, name, email, "inquiryType", message, status, "isArchived", "createdAt", "updatedAt")
+            VALUES (
+                ${id},
+                ${name},
+                ${email},
+                ${inquiryType}::"InquiryType",
+                ${message},
+                'NEW'::"InquiryStatus",
+                false,
+                ${now},
+                ${now}
+            )
+        `;
 
         // --- Email notification (non-blocking) ----------------------------
         const formattedType = inquiryType.replace(/_/g, " ");
-        const timestamp = new Date().toLocaleString("en-US", { timeZone: "Asia/Karachi" });
+        const timestamp = now.toLocaleString("en-US", { timeZone: "Asia/Karachi" });
 
         sendEmailNotification({ name, email, inquiryType: formattedType, message, timestamp }).catch(err => {
             console.error("[CONTACT] Email notification failed (non-fatal):", err);
         });
 
-        return NextResponse.json({ success: true, id: inquiry.id });
+        return NextResponse.json({ success: true, id });
 
     } catch (err: any) {
-        console.error("[CONTACT] Error:", err);
-        return NextResponse.json({ error: "Internal server error." }, { status: 500 });
+        console.error("[CONTACT] Error:", err.message ?? err);
+        return NextResponse.json({ error: "Could not save your message. Please try again." }, { status: 500 });
     }
 }
 
@@ -96,7 +112,7 @@ async function sendEmailNotification(data: {
 
     await transport.sendMail({
         from: process.env.EMAIL_FROM,
-        to: process.env.EMAIL_FROM, // NGO inbox
+        to: process.env.EMAIL_FROM,
         subject: `New Contact Inquiry: ${data.inquiryType}`,
         html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; background: #f9f9f9; border-radius: 12px;">

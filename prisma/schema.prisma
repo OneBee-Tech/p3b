@@ -142,6 +142,33 @@ enum InquiryStatus {
   ARCHIVED
 }
 
+// Phase 6: Sponsorship Lifecycle Automation & Funding Stability Engine
+enum SponsorshipHealthStatus {
+  HEALTHY
+  AT_RISK
+  PAYMENT_FAILED
+  ENDED
+}
+
+model SponsorshipHealthLog {
+  id               String   @id @default(cuid())
+  sponsorshipId    String
+  donorId          String
+  registryChildId  String
+  healthStatus     SponsorshipHealthStatus
+  reason           String?
+  createdAt        DateTime @default(now())
+}
+
+model SponsorshipPriorityQueue {
+  id                String   @id @default(cuid())
+  registryChildId   String
+  priorityLevel     String   // HIGH, CRITICAL
+  fundingGap        Int
+  createdAt         DateTime @default(now())
+  resolvedAt        DateTime?
+}
+
 model ContactInquiry {
   id          String        @id @default(cuid())
   name        String
@@ -512,6 +539,7 @@ model RegistryChild {
   safeguardingConsent      Boolean                  @default(false)
   avatarIllustrationUrl    String?
   caseNotes                String?                  @db.Text
+  story                    String?                  @db.Text
   
   // Sponsorship Capacity
   maxSponsors              Int                      @default(1)
@@ -563,5 +591,21 @@ model AdminActionLog {
   previousValue    String?   @db.Text
   newValue         String?   @db.Text
   timestamp        DateTime  @default(now())
+}
+
+// ----------------------------------------------------------------------
+// PHASE 7: STORY & IMPACT CMS
+// ----------------------------------------------------------------------
+
+model ImpactStory {
+  id               String    @id @default(cuid())
+  title            String
+  content          String    @db.Text
+  imageUrl         String?
+  
+  // Governance
+  published        Boolean   @default(true)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 }
 

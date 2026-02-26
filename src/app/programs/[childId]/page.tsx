@@ -46,9 +46,9 @@ export default async function ChildSponsorPage({ params }: { params: Promise<{ c
                     <div className="lg:col-span-7 space-y-8">
                         <div className="bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-gray-100">
                             <h2 className="text-2xl font-bold font-heading text-cinematic-dark mb-6">About {child.displayName}</h2>
-                            {child.caseNotes ? (
+                            {(child as any).story ? (
                                 <div className="prose prose-lg text-gray-600 prose-p:leading-relaxed">
-                                    {child.caseNotes.split('\n\n').map((paragraph, index) => (
+                                    {(child as any).story.split('\n\n').map((paragraph: string, index: number) => (
                                         <p key={index} className="mb-4">{paragraph}</p>
                                     ))}
                                 </div>

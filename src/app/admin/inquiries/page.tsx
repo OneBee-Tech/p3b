@@ -9,13 +9,14 @@ export default async function AdminInquiriesPage() {
     const session = await auth();
     if (!session?.user || (session.user as any).role !== "ADMIN") redirect("/");
 
-    const inquiries = await prisma.contactInquiry.findMany({
-        where: {
-            deletedAt: null,
-            isArchived: false,
-        },
-        orderBy: { createdAt: "desc" },
-    });
+    // Raw SQL query — bypasses generated client, works even if prisma generate hasn't updated yet
+    const inquiries = await prisma.$queryRaw<any[]>`
+        SELECT id, name, email, "inquiryType", message, status, "createdAt"
+        FROM "ContactInquiry"
+        WHERE "deletedAt" IS NULL
+          AND "isArchived" = false
+        ORDER BY "createdAt" DESC
+    `;
 
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">

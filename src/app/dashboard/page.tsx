@@ -169,7 +169,7 @@ export default async function DashboardPage() {
                         <AlertCircle className="text-red-500 w-6 h-6 flex-shrink-0" />
                         <div>
                             <h3 className="text-red-800 font-bold mb-1">Action Required: Failed Subscription</h3>
-                            <p className="text-red-700 text-sm mb-4">We were unable to process your recent contribution for {pastDueSponsorships.length} child support plan(s). Please update your payment method to ensure continuous funding.</p>
+                            <p className="text-red-700 text-sm mb-4">We’re having trouble processing your sponsorship. Please update payment details.</p>
                             {/* In a real app, integrate Stripe Customer Portal here */}
                             <Button variant="impact" size="sm">Fix Payment</Button>
                         </div>

@@ -22,6 +22,7 @@ export async function createRegistryChild(formData: FormData) {
     const safeguardingConsent = formData.get("safeguardingConsent") === "true";
     const avatarIllustrationUrl = formData.get("avatarIllustrationUrl") as string;
     const caseNotes = formData.get("caseNotes") as string;
+    const story = formData.get("story") as string;
     const referralId = formData.get("referralId") as string;
 
     const child = await prisma.registryChild.create({
@@ -37,6 +38,7 @@ export async function createRegistryChild(formData: FormData) {
             safeguardingConsent,
             avatarIllustrationUrl: avatarIllustrationUrl || null,
             caseNotes: caseNotes || null,
+            story: story || null,
             referralId: referralId || null,
             createdByAdminId: session.user.id as string,
             safeguardingReviewStatus: "PENDING", // Enforce audit workflow
@@ -76,6 +78,7 @@ export async function updateRegistryChild(formData: FormData) {
     const safeguardingReviewStatus = formData.get("safeguardingReviewStatus") as any;
     const avatarIllustrationUrl = formData.get("avatarIllustrationUrl") as string;
     const caseNotes = formData.get("caseNotes") as string;
+    const story = formData.get("story") as string;
 
     const child = await prisma.registryChild.update({
         where: { id },
@@ -91,6 +94,7 @@ export async function updateRegistryChild(formData: FormData) {
             safeguardingReviewStatus,
             avatarIllustrationUrl: avatarIllustrationUrl || null,
             caseNotes: caseNotes || null,
+            story: story || null,
         }
     });
 

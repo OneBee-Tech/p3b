@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import Link from "next/link";
-import { LayoutDashboard, Users, HeartHandshake, FileText, BarChart3, ShieldCheck, Settings, Mail, LogOut } from "lucide-react";
+import { LayoutDashboard, Users, HeartHandshake, FileText, BarChart3, ShieldCheck, Settings, Mail, LogOut, Activity, Globe } from "lucide-react";
 import Image from "next/image";
 import { AdminAccessTracker } from "./AdminAccessTracker";
 
@@ -13,6 +13,8 @@ const navItems = [
     { name: "Inquiries", href: "/admin/inquiries", icon: Mail },
     { name: "Impact Reports", href: "/admin/reports", icon: BarChart3 },
     { name: "Compliance Docs", href: "/admin/compliance", icon: ShieldCheck },
+    { name: "Sponsorship Health", href: "/admin/sponsorship-health", icon: Activity },
+    { name: "Impact Stories CMS", href: "/admin/stories", icon: Globe },
     { name: "Settings", href: "/admin/settings", icon: Settings },
 ];
 

@@ -94,30 +94,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
             return session;
         },
-        async jwt({ token, user, trigger, session, account }) {
-            // Initial sign-in
+        async jwt({ token, user, trigger, session }) {
+            // Role is stamped into the token at initial sign-in only.
+            // No DB query on subsequent requests — avoids Neon cold-start
+            // timeout spam. Role changes require the user to sign out & back in.
             if (user) {
                 token.role = (user as any).role || "USER";
                 token.sub = user.id;
-                // Flag a fresh login so the redirect callback can act on it
-                token.isNewLogin = true;
-            } else {
-                token.isNewLogin = false;
-            }
-
-            if (token.sub && !user) {
-                // Background sync on subsequent requests
-                try {
-                    const dbUser = await prisma.user.findUnique({
-                        where: { id: token.sub },
-                        select: { role: true }
-                    });
-                    if (dbUser) {
-                        token.role = dbUser.role;
-                    }
-                } catch (e) {
-                    console.error("JWT role sync failed", e);
-                }
             }
 
             if (trigger === "update" && session) {

@@ -65,6 +65,16 @@ export default async function EditChildPage({
                     </div>
                 </div>
 
+                {/* Child Story / Bio */}
+                <div className="space-y-4 pt-4">
+                    <h3 className="text-lg font-bold text-impact-gold border-b border-white/10 pb-2">Public Story & Background</h3>
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-white/70">Child's Story</label>
+                        <textarea name="story" defaultValue={child.story || ""} rows={4} placeholder="Write a brief background story or update to be displayed on the public sponsorship page..." className="w-full bg-cinematic-dark/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-trust-blue resize-none"></textarea>
+                        <p className="text-xs text-white/40">This story will be visible to potential sponsors on the platform.</p>
+                    </div>
+                </div>
+
                 {/* Sponsorship Logistics */}
                 <div className="space-y-4 pt-4">
                     <h3 className="text-lg font-bold text-impact-gold border-b border-white/10 pb-2">Sponsorship Logistics</h3>

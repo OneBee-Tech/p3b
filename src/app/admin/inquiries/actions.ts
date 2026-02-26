@@ -9,33 +9,29 @@ async function requireAdmin() {
     if (!session?.user || (session.user as any).role !== "ADMIN") {
         throw new Error("Unauthorized");
     }
-    return session.user;
+    return session.user as any;
 }
 
 export async function updateInquiryStatus(inquiryId: string, newStatus: "IN_PROGRESS" | "RESOLVED") {
     const user = await requireAdmin();
 
-    const existing = await prisma.contactInquiry.findUnique({
-        where: { id: inquiryId, deletedAt: null, isArchived: false },
-        select: { status: true },
-    });
-    if (!existing) throw new Error("Inquiry not found");
+    // Get previous status for audit log
+    const rows = await prisma.$queryRaw<{ status: string }[]>`
+        SELECT status FROM "ContactInquiry" WHERE id = ${inquiryId} AND "deletedAt" IS NULL AND "isArchived" = false
+    `;
+    if (!rows.length) throw new Error("Inquiry not found");
+    const previousStatus = rows[0].status;
 
-    await prisma.contactInquiry.update({
-        where: { id: inquiryId },
-        data: { status: newStatus },
-    });
+    await prisma.$executeRaw`
+        UPDATE "ContactInquiry"
+        SET status = ${newStatus}::"InquiryStatus", "updatedAt" = NOW()
+        WHERE id = ${inquiryId}
+    `;
 
-    await prisma.adminActionLog.create({
-        data: {
-            adminId: (user as any).id,
-            actionType: "UPDATE_INQUIRY_STATUS",
-            targetEntity: "ContactInquiry",
-            targetId: inquiryId,
-            previousValue: existing.status,
-            newValue: newStatus,
-        },
-    });
+    await prisma.$executeRaw`
+        INSERT INTO "AdminActionLog" (id, "adminId", "actionType", "targetEntity", "targetId", "previousValue", "newValue", timestamp)
+        VALUES (gen_random_uuid()::text, ${user.id}, 'UPDATE_INQUIRY_STATUS', 'ContactInquiry', ${inquiryId}, ${previousStatus}, ${newStatus})
+    `;
 
     revalidatePath("/admin/inquiries");
 }
@@ -43,21 +39,16 @@ export async function updateInquiryStatus(inquiryId: string, newStatus: "IN_PROG
 export async function archiveInquiry(inquiryId: string) {
     const user = await requireAdmin();
 
-    await prisma.contactInquiry.update({
-        where: { id: inquiryId },
-        data: { isArchived: true, status: "ARCHIVED" },
-    });
+    await prisma.$executeRaw`
+        UPDATE "ContactInquiry"
+        SET "isArchived" = true, status = 'ARCHIVED'::"InquiryStatus", "updatedAt" = NOW()
+        WHERE id = ${inquiryId}
+    `;
 
-    await prisma.adminActionLog.create({
-        data: {
-            adminId: (user as any).id,
-            actionType: "ARCHIVE_INQUIRY",
-            targetEntity: "ContactInquiry",
-            targetId: inquiryId,
-            previousValue: "active",
-            newValue: "archived",
-        },
-    });
+    await prisma.$executeRaw`
+        INSERT INTO "AdminActionLog" (id, "adminId", "actionType", "targetEntity", "targetId", "previousValue", "newValue", timestamp)
+        VALUES (gen_random_uuid()::text, ${user.id}, 'ARCHIVE_INQUIRY', 'ContactInquiry', ${inquiryId}, 'active', 'archived')
+    `;
 
     revalidatePath("/admin/inquiries");
 }
@@ -65,21 +56,16 @@ export async function archiveInquiry(inquiryId: string) {
 export async function softDeleteInquiry(inquiryId: string) {
     const user = await requireAdmin();
 
-    await prisma.contactInquiry.update({
-        where: { id: inquiryId },
-        data: { deletedAt: new Date() },
-    });
+    await prisma.$executeRaw`
+        UPDATE "ContactInquiry"
+        SET "deletedAt" = NOW(), "updatedAt" = NOW()
+        WHERE id = ${inquiryId}
+    `;
 
-    await prisma.adminActionLog.create({
-        data: {
-            adminId: (user as any).id,
-            actionType: "SOFT_DELETE_INQUIRY",
-            targetEntity: "ContactInquiry",
-            targetId: inquiryId,
-            previousValue: "visible",
-            newValue: "deleted",
-        },
-    });
+    await prisma.$executeRaw`
+        INSERT INTO "AdminActionLog" (id, "adminId", "actionType", "targetEntity", "targetId", "previousValue", "newValue", timestamp)
+        VALUES (gen_random_uuid()::text, ${user.id}, 'SOFT_DELETE_INQUIRY', 'ContactInquiry', ${inquiryId}, 'visible', 'deleted')
+    `;
 
     revalidatePath("/admin/inquiries");
 }

@@ -43,7 +43,7 @@ export default async function SignInPage(props: { searchParams: Promise<{ callba
                     <form
                         action={async () => {
                             "use server"
-                            await signIn("google", { redirectTo: callbackUrl })
+                            await signIn("google")
                         }}
                     >
                         <Button
@@ -113,7 +113,6 @@ export default async function SignInPage(props: { searchParams: Promise<{ callba
                             <p className="mt-2 text-xs text-gray-500 text-center">
                                 No password required. We’ll send you a private access link.
                             </p>
-                            <input type="hidden" name="redirectTo" value={callbackUrl} />
                         </div>
 
                         <Button
