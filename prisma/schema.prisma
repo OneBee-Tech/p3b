@@ -236,6 +236,11 @@ model User {
   
   // Corporate Sponsorship Mapping
   corporateSponsor       CorporateSponsor?
+  // Communications & Notifications
+  emailSuppressed   Boolean   @default(false)
+  emailPreferences  EmailPreferences?
+  emailLogs         EmailLog[]
+
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
@@ -775,5 +780,61 @@ model CSRImpactSnapshot {
   generatedAt                  DateTime         @default(now())
 
   corporateSponsor             CorporateSponsor @relation(fields: [corporateSponsorId], references: [id])
+}
+
+// ----------------------------------------------------------------------
+// PHASE 10: SCALABLE EMAIL ECOSYSTEM
+// ----------------------------------------------------------------------
+
+enum RecipientType {
+  DONOR
+  CORPORATE
+  ADMIN
+}
+
+enum EmailEventType {
+  REPORT_VERIFIED
+  MILESTONE_LOGGED
+  RISK_SCORE_CHANGED
+  SPONSOR_COOLING
+  SPONSOR_CHURNED
+  CORPORATE_RENEWAL_WINDOW
+  CONTRACT_EXPIRY_WARNING
+  CSR_SNAPSHOT_READY
+  GRADUATED // For Graduation announcements
+}
+
+enum DeliveryStatus {
+  PENDING
+  SENT
+  FAILED
+  BOUNCED
+}
+
+model EmailPreferences {
+  id                  String   @id @default(cuid())
+  userId              String   @unique
+  receiveImpactUpdates Boolean  @default(true)
+  receiveMilestones   Boolean  @default(true)
+  receiveRiskAlerts   Boolean  @default(true)
+  receiveCSRReports   Boolean  @default(true)
+  updatedAt           DateTime @updatedAt
+
+  user                User     @relation(fields: [userId], references: [id])
+}
+
+model EmailLog {
+  id              String         @id @default(cuid())
+  eventId         String         @unique // Idempotency Enforcement: ${eventType}-${recipientId}-${entityId}
+  recipientId     String
+  recipientType   RecipientType
+  eventType       EmailEventType
+  templateVersion String
+  sentAt          DateTime?
+  deliveryStatus  DeliveryStatus @default(PENDING)
+  errorMessage    String?        @db.Text
+  createdAt       DateTime       @default(now())
+
+  user            User           @relation(fields: [recipientId], references: [id], onDelete: Cascade)
 }
 

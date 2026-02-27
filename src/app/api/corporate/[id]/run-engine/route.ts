@@ -4,7 +4,7 @@ import { allocateChildrenToCorporateSponsor } from "@/lib/corporateAllocationEng
 
 export async function POST(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const session = await auth();
@@ -13,7 +13,8 @@ export async function POST(
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        const result = await allocateChildrenToCorporateSponsor(params.id, session.user);
+        const resolvedParams = await params;
+        const result = await allocateChildrenToCorporateSponsor(resolvedParams.id, session.user);
 
         if (!result.success) {
             return NextResponse.json({ error: result.error }, { status: 400 });

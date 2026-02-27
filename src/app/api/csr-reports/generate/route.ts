@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { dispatchEmailEvent } from "@/lib/email/emailEventBus";
 
 export async function POST(req: Request) {
     try {
@@ -63,6 +64,21 @@ export async function POST(req: Request) {
         const mockPdfUrl = `https://storage.ngo.org/csr-reports/${sponsor.id}/${snapshot.id}.pdf`;
 
         // We return the external Mock PDF URL to the caller instead of saving it on the Snapshot (since schema was simplified).
+
+        // Phase 10 Integration: Dispatch email event to the Corporate Portal User
+        if (sponsor.userId) {
+            await dispatchEmailEvent({
+                eventType: "CSR_SNAPSHOT_READY",
+                recipientId: sponsor.userId,
+                recipientType: "CORPORATE",
+                entityId: snapshot.id,
+                data: {
+                    childrenCount: totalChildrenSponsored,
+                    reportUrl: mockPdfUrl
+                }
+            });
+        }
+
         return NextResponse.json({ success: true, snapshotId: snapshot.id, reportUrl: mockPdfUrl });
 
     } catch (error: any) {

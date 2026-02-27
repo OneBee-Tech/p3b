@@ -20,6 +20,7 @@ const navItems = [
     { name: "Corporate Sponsors", href: "/admin/corporate", icon: ShieldCheck },
     { name: "Institutional CSR", href: "/admin/corporate-impact", icon: Activity },
     { name: "Impact Stories CMS", href: "/admin/stories", icon: Globe },
+    { name: "Email Outbox Logs", href: "/admin/email-logs", icon: Mail },
     { name: "Settings", href: "/admin/settings", icon: Settings },
 ];
 

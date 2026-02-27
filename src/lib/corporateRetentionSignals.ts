@@ -1,5 +1,5 @@
-// src/lib/corporateRetentionSignals.ts
 import { prisma } from "./prisma";
+import { dispatchEmailEvent } from "./email/emailEventBus";
 
 /**
  * PHASE 9.7 - CORPORATE RETENTION SIGNALS
@@ -22,12 +22,32 @@ export async function checkCorporateRenewalReadiness(sponsorId: string) {
         ? sponsor.allocations.length / sponsor.sponsorshipCapacity
         : 0;
 
-    const renewalWindow = daysUntilExpiry <= 90; // 90-day renewal cycle for enterprise
+    const renewalWindowOpen = daysUntilExpiry <= 90; // 90-day renewal cycle for enterprise
+
+    // Phase 10 Integration: Dispatch automated alerts if triggered appropriately
+    if (daysUntilExpiry === 60) {
+        await dispatchEmailEvent({
+            eventType: "CONTRACT_EXPIRY_WARNING",
+            recipientId: sponsor.userId!,
+            recipientType: "CORPORATE",
+            entityId: sponsor.id,
+            isCritical: true, // Warnings are flagged as critical
+            data: { organizationName: sponsor.organizationName }
+        });
+    } else if (daysUntilExpiry === 90) {
+        await dispatchEmailEvent({
+            eventType: "CORPORATE_RENEWAL_WINDOW",
+            recipientId: sponsor.userId!,
+            recipientType: "CORPORATE",
+            entityId: sponsor.id,
+            data: { organizationName: sponsor.organizationName }
+        });
+    }
 
     return {
         sponsorId,
         daysUntilExpiry,
-        renewalWindowOpen: renewalWindow,
+        renewalWindowOpen,
         fulfillmentRate, // e.g. 0.8 = 80% capacity filled
         healthScore: calculateHealthScore(fulfillmentRate, daysUntilExpiry)
     };

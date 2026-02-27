@@ -1,6 +1,6 @@
-import prisma from "@/lib/prisma";
+import { prisma } from "../prisma";
 import { getChildImpactSummary } from "../impactNarrativeEngine";
-import { sendProgressUpdateEmail, sendMilestoneCelebrationEmail } from "../donorImpactMailer";
+import { dispatchEmailEvent } from "../email/emailEventBus";
 
 /**
  * Event map for the Background Queue
@@ -40,18 +40,22 @@ async function handleEvent(event: QueueEvent) {
     console.log(`[ImpactQueue] Processing ${event.type} for child ${event.childId}`);
 
     // Fetch the child + their assignments to find sponsors to notify
-    const child = await prisma.registryChild.findUnique({
+    const child = await (prisma as any).registryChild.findUnique({
         where: { id: event.childId },
         include: {
             assignments: {
                 where: { status: "ACTIVE" },
                 include: { donor: true }
+            },
+            corporateAllocations: {
+                where: { revokedAt: null },
+                include: { corporateSponsor: true }
             }
         }
     });
 
     if (!child) throw new Error("Child not found for event");
-    if (child.assignments.length === 0) {
+    if (child.assignments.length === 0 && child.corporateAllocations.length === 0) {
         console.log(`[ImpactQueue] No active sponsors found for child ${child.id}. Skipping email dispatch.`);
         return;
     }
@@ -67,23 +71,45 @@ async function handleEvent(event: QueueEvent) {
 
     const attendanceStr = latestReport?.attendanceRate !== null ? `${latestReport?.attendanceRate}%` : "Not available";
 
-    // Dispatch emails to all active sponsors
-    const dispatchPromises = child.assignments.map(async (assignment) => {
-        const donor = assignment.donor;
-        if (!donor.email || !donor.name) return;
+    // Build a flattened array of all recipients
+    const recipients: { id: string; type: "DONOR" | "CORPORATE" }[] = [];
+    child.assignments.forEach((a: any) => recipients.push({ id: a.donor.id, type: "DONOR" }));
+    child.corporateAllocations.forEach((a: any) => {
+        if (a.corporateSponsor?.userId) {
+            recipients.push({ id: a.corporateSponsor.userId, type: "CORPORATE" });
+        }
+    });
 
+    // Dispatch emails to all active sponsors
+    const dispatchPromises = recipients.map(async (recipient) => {
         switch (event.type) {
             case "REPORT_VERIFIED":
-                await sendProgressUpdateEmail(donor.id, donor.email, donor.name, child.displayName, aiSummary, attendanceStr);
+                await dispatchEmailEvent({
+                    eventType: "REPORT_VERIFIED",
+                    recipientId: recipient.id,
+                    recipientType: recipient.type,
+                    entityId: event.childId,
+                    data: { childName: child.displayName, narrative: aiSummary }
+                });
                 break;
             case "MILESTONE_LOGGED":
-                await sendMilestoneCelebrationEmail(donor.id, donor.email, donor.name, child.displayName, event.milestoneType, aiSummary);
-                // The master prompt dictates milestone celebrations might auto-trigger extra actions later.
+                await dispatchEmailEvent({
+                    eventType: "MILESTONE_LOGGED",
+                    recipientId: recipient.id,
+                    recipientType: recipient.type,
+                    entityId: event.childId,
+                    data: { childName: child.displayName, milestoneTitle: event.milestoneType }
+                });
                 break;
-            // RISK_SCORE_CHANGED is currently handled similarly via the mailer's intervention alert in a deeper implementation,
-            // but we'll log it for now to adhere to the core rule without spamming right away unless explicitly designed.
             case "RISK_SCORE_CHANGED":
-                console.log(`[ImpactQueue] Risk score changed for ${child.displayName}. Triggering analytics tracking.`);
+                await dispatchEmailEvent({
+                    eventType: "RISK_SCORE_CHANGED",
+                    recipientId: recipient.id,
+                    recipientType: recipient.type,
+                    entityId: event.childId,
+                    isCritical: true,
+                    data: { childName: child.displayName }
+                });
                 break;
         }
     });

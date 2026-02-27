@@ -4,7 +4,7 @@ import { revokeCorporateAllocation } from "@/lib/corporateAllocationEngine";
 
 export async function POST(
     req: Request,
-    { params }: { params: { id: string; allocationId: string } }
+    { params }: { params: Promise<{ id: string; allocationId: string }> }
 ) {
     try {
         const session = await auth();
@@ -20,7 +20,8 @@ export async function POST(
             return NextResponse.json({ error: "Revocation reason is required for governance tracking." }, { status: 400 });
         }
 
-        const result = await revokeCorporateAllocation(params.allocationId, reason, session.user);
+        const resolvedParams = await params;
+        const result = await revokeCorporateAllocation(resolvedParams.allocationId, reason, session.user);
 
         if (!result.success) {
             return NextResponse.json({ error: "Failed to revoke allocation." }, { status: 400 });
