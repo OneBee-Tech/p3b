@@ -232,7 +232,10 @@ model User {
   preferredLanguage String    @default("en")
   isActive          Boolean   @default(true)
   archivedAt        DateTime?
-  lastImpactEmailSentAt DateTime?
+  lastImpactEmailSentAt DateTime? // 48-hour throttling for impact narrative updates
+  
+  // Corporate Sponsorship Mapping
+  corporateSponsor       CorporateSponsor?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
@@ -569,6 +572,7 @@ model RegistryChild {
   assignments              SponsorshipAssignment[]
   progressReports          ProgressReport[]
   milestones               ImpactMilestone[]
+  corporateAllocations     CorporateSponsorshipAllocation[]
 }
 
 model SponsorshipAssignment {
@@ -688,5 +692,88 @@ model ImpactMilestone {
   createdAt        DateTime      @default(now())
 
   registryChild    RegistryChild @relation(fields: [registryChildId], references: [id])
+}
+
+// ----------------------------------------------------------------------
+// PHASE 9: CORPORATE & CSR SPONSORSHIP ENGINE
+// ----------------------------------------------------------------------
+
+enum CorporateStatus {
+  ACTIVE
+  PAUSED
+  ENDED
+}
+
+enum FundingModel {
+  SLOT_BASED
+  POOL_BASED
+}
+
+enum CorporateAllocationStatus {
+  OPEN
+  PARTIALLY_FILLED
+  FULLY_ALLOCATED
+}
+
+model CorporateSponsor {
+  id                   String            @id @default(cuid())
+  organizationName     String
+  contactPersonName    String
+  contactEmail         String
+  contactPhone         String?
+  headquartersCountry  String
+  
+  // Sponsorship Definitions
+  fundingModel         FundingModel      @default(SLOT_BASED)
+  sponsorshipCapacity  Int
+  
+  // Governance & Lifecycle
+  contractStartDate    DateTime          @default(now())
+  contractEndDate      DateTime?
+  status               CorporateStatus   @default(ACTIVE)
+  
+  // Auth Integration (Optional Link to User table for Portal Login)
+  userId               String?           @unique
+  user                 User?             @relation(fields: [userId], references: [id])
+
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+
+  allocations          CorporateSponsorshipAllocation[]
+  impactSnapshots      CSRImpactSnapshot[]
+}
+
+model CorporateSponsorshipAllocation {
+  id                 String           @id @default(cuid())
+  corporateSponsorId String
+  registryChildId    String
+  allocatedSlots     Int              @default(1)
+  filledSlots        Int              @default(0)
+  allocationStatus   CorporateAllocationStatus @default(OPEN)
+  
+  // Reversal Governance
+  revokedAt          DateTime?
+  revokedReason      String?          @db.Text
+
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  corporateSponsor   CorporateSponsor @relation(fields: [corporateSponsorId], references: [id])
+  registryChild      RegistryChild    @relation(fields: [registryChildId], references: [id])
+}
+
+model CSRImpactSnapshot {
+  id                           String           @id @default(cuid())
+  corporateSponsorId           String
+  
+  // Aggregated ESG Metrics
+  childrenSponsored            Int
+  activeSponsorships           Int
+  educationProgramsSupported   Int
+  
+  // Snapshot Governance (Append Only)
+  generatedAt                  DateTime         @default(now())
+
+  corporateSponsor             CorporateSponsor @relation(fields: [corporateSponsorId], references: [id])
 }
 

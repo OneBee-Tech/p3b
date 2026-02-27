@@ -152,6 +152,9 @@ export function Navbar({ session }: { session?: any }) {
                                         <Link onClick={() => setProfileOpen(false)} href="/dashboard" className="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-trust-blue transition-colors">
                                             My Dashboard
                                         </Link>
+                                        <Link onClick={() => setProfileOpen(false)} href="/corporate-portal" className="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-trust-blue transition-colors">
+                                            Corporate CSR Portal
+                                        </Link>
                                         <button
                                             onClick={() => { setProfileOpen(false); signOut({ callbackUrl: '/' }); }}
                                             className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors mt-1"
@@ -245,6 +248,9 @@ export function Navbar({ session }: { session?: any }) {
                                     </div>
                                     <Link onClick={() => setIsOpen(false)} href="/dashboard" className="block py-2 text-sm text-white/80 hover:text-white transition-colors">
                                         My Dashboard
+                                    </Link>
+                                    <Link onClick={() => setIsOpen(false)} href="/corporate-portal" className="block py-2 text-sm text-white/80 hover:text-white transition-colors">
+                                        Corporate CSR Portal
                                     </Link>
                                     <button
                                         onClick={() => { setIsOpen(false); signOut({ callbackUrl: '/' }); }}

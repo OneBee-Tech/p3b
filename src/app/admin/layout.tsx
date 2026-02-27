@@ -17,6 +17,8 @@ const navItems = [
     { name: "Compliance Docs", href: "/admin/compliance", icon: ShieldCheck },
     { name: "Sponsorship Health", href: "/admin/sponsorship-health", icon: Activity },
     { name: "Impact Intelligence", href: "/admin/impact-intelligence", icon: Activity },
+    { name: "Corporate Sponsors", href: "/admin/corporate", icon: ShieldCheck },
+    { name: "Institutional CSR", href: "/admin/corporate-impact", icon: Activity },
     { name: "Impact Stories CMS", href: "/admin/stories", icon: Globe },
     { name: "Settings", href: "/admin/settings", icon: Settings },
 ];

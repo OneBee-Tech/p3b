@@ -9,6 +9,9 @@ export interface SponsorshipAnalytics {
     priorityQueueSize: number;
     criticalChildrenCount: number;
     avgSponsorSlotsFilled: number;
+    // Phase 9: CSR Specific Metrics
+    corporateFundingShare: number;
+    corporateRetentionDuration: number;
 }
 
 /**
@@ -82,6 +85,30 @@ export async function generateSponsorshipAnalytics(): Promise<SponsorshipAnalyti
     // Grace Recovery Rate (Placeholder until successful payment webhooks log HEALTHY)
     const graceRecoveryRate = 0;
 
+    // PHASE 9: CSR Metrics calculation
+    const corporateAllocations = await (prisma as any).corporateSponsorshipAllocation.findMany({
+        select: {
+            filledSlots: true,
+            createdAt: true,
+            revokedAt: true,
+        }
+    });
+
+    const activeCorporateSlots = corporateAllocations
+        .filter((a: any) => !a.revokedAt)
+        .reduce((sum: number, current: any) => sum + current.filledSlots, 0);
+
+    const corporateFundingShare = totalFilledSlots === 0 ? 0 : (activeCorporateSlots / totalFilledSlots) * 100;
+
+    let totalCorporateDuration = 0;
+    corporateAllocations.forEach((a: any) => {
+        const end = a.revokedAt ? new Date(a.revokedAt) : new Date();
+        const start = new Date(a.createdAt);
+        totalCorporateDuration += Math.ceil(Math.abs(end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+    });
+
+    const corporateRetentionDuration = corporateAllocations.length === 0 ? 0 : totalCorporateDuration / corporateAllocations.length;
+
     return {
         cancellationRate: parseFloat(cancellationRate.toFixed(2)),
         avgSponsorshipDurationDays: Math.round(avgSponsorshipDurationDays),
@@ -89,7 +116,9 @@ export async function generateSponsorshipAnalytics(): Promise<SponsorshipAnalyti
         graceRecoveryRate,
         priorityQueueSize,
         criticalChildrenCount,
-        avgSponsorSlotsFilled
+        avgSponsorSlotsFilled,
+        corporateFundingShare: parseFloat(corporateFundingShare.toFixed(2)),
+        corporateRetentionDuration: Math.round(corporateRetentionDuration)
     };
 }
 
