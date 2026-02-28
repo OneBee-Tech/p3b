@@ -1,6 +1,7 @@
 import { prisma } from "../prisma";
 import { EmailEventType, RecipientType } from "@prisma/client";
-import { dispatchEmailEvent } from "./emailEventBus";
+import { emailQueue } from "../queue/queueClient";
+import { logger } from "../logger";
 
 export interface BatchInstruction {
     eventType: EmailEventType;
@@ -10,6 +11,8 @@ export interface BatchInstruction {
 }
 
 export async function processEmailBatch(instruction: BatchInstruction) {
+    const { recipients, eventType, recipientType, isCritical } = instruction;
+
     // 1. Backpressure Protection
     // Check pending queue length before ingestion
     const pendingCount = await prisma.emailLog.count({
@@ -17,12 +20,10 @@ export async function processEmailBatch(instruction: BatchInstruction) {
     });
 
     if (pendingCount > 500) {
-        console.error(`[BATCH_PROCESSOR] Backpressure active. ${pendingCount} emails pending. Pausing ingestion for batch ${instruction.eventType}.`);
-        // In a real system we'd use a dead letter queue or notify ops.
+        logger.error({ pendingCount, eventType }, `[BATCH_PROCESSOR] Backpressure active. Pausing ingestion.`);
+        // Phase 12: In a real system, ops would be alerted via DLQ/Sentry
         return false;
     }
-
-    const { recipients, eventType, recipientType, isCritical } = instruction;
 
     // 2. Batch Chunking (Max 50 per execution cycle)
     const CHUNK_SIZE = 50;
@@ -32,30 +33,36 @@ export async function processEmailBatch(instruction: BatchInstruction) {
         chunks.push(recipients.slice(i, i + CHUNK_SIZE));
     }
 
-    console.log(`[BATCH_PROCESSOR] Processing ${recipients.length} emails in ${chunks.length} chunks for ${eventType}.`);
+    logger.info({ total: recipients.length, chunks: chunks.length, eventType }, `[BATCH_PROCESSOR] Ingesting emails into BullMQ.`);
 
     for (const [index, chunk] of chunks.entries()) {
-        console.log(`[BATCH_PROCESSOR] Dispatching chunk ${index + 1}/${chunks.length}`);
+        const jobs = chunk.map(r => {
+            const eventId = `${eventType}-${r.recipientId}-${r.entityId}`;
+            return {
+                name: `BatchEmail-${eventId}`,
+                data: {
+                    eventType,
+                    recipientId: r.recipientId,
+                    recipientType,
+                    entityId: r.entityId,
+                    data: r.data,
+                    isCritical
+                },
+                opts: {
+                    jobId: eventId // Base Deduplication
+                }
+            };
+        });
 
-        const promises = chunk.map(r => dispatchEmailEvent({
-            eventType,
-            recipientId: r.recipientId,
-            recipientType,
-            entityId: r.entityId,
-            data: r.data,
-            isCritical
-        }));
+        // Add chunk to Redis in massive parallel bulk transaction
+        await emailQueue.addBulk(jobs);
 
-        // Await all dispatch promises in the current chunk. 
-        // Note: dispatchEmailEvent is already unblocking the main thread internally via Promise.resolve
-        await Promise.all(promises);
-
-        // 3. Optional memory/rate-limiting buffer between chunks
+        // 3. Optional buffer between chunks during ingestion
         if (index < chunks.length - 1) {
-            await new Promise(resolve => setTimeout(resolve, 2000)); // 2-second rate limit buffer
+            await new Promise(resolve => setTimeout(resolve, 1000));
         }
     }
 
-    console.log(`[BATCH_PROCESSOR] Finished dispatching all chunks for ${eventType}.`);
+    logger.info({ eventType }, `[BATCH_PROCESSOR] Finished bulk enqueueing.`);
     return true;
 }

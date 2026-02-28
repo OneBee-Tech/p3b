@@ -1,7 +1,8 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { dispatchEmailEvent } from "@/lib/email/emailEventBus";
+import { csrReportQueue } from "@/lib/queue/queueClient";
+import { logger } from "@/lib/logger";
 
 export async function POST(req: Request) {
     try {
@@ -60,36 +61,31 @@ export async function POST(req: Request) {
             }
         });
 
-        // 2. We mock out the actual @react-pdf/renderer execution here due to heavy rendering requirements.
-        // In full production, this would queue a worker to generate the PDF and upload it to Object Storage (S3).
+        // Phase 12 Queue Refactor: Push to BullMQ rather than executing inline or awaiting
+        // We still generate the immutable snapshot in the HTTP request for immediate UI tracking,
+        // but offload the "Heavy PDF Generation + Dispatch" to the background.
 
-        // Phase 11 Localized Immutable Mapping
-        const localeContext = sponsor.user?.preferredLocale || "EN";
-        const currencyContext = sponsor.user?.preferredCurrency || "USD";
-        console.log(`[CSR_REPORT] Generating immutable PDF report. Locale: ${localeContext}, Display Currency: ${currencyContext}`);
+        const jobId = `CSRGen-${sponsorId}-${snapshot.id}`;
 
-        const mockPdfUrl = `https://storage.ngo.org/csr-reports/${sponsor.id}/${snapshot.id}-${localeContext}.pdf`;
+        await csrReportQueue.add(
+            `GenerateCSR-${triggerType}`,
+            {
+                sponsorId,
+                triggerType,
+                snapshotId: snapshot.id,
+                totalChildrenSponsored,
+            },
+            {
+                jobId // Review Rule: Idempotency enforcement
+            }
+        );
 
-        // We return the external Mock PDF URL to the caller instead of saving it on the Snapshot (since schema was simplified).
+        logger.info({ jobId, sponsorId }, `[CSR_API] Successfully enqueued CSR Report generation.`);
 
-        // Phase 10 Integration: Dispatch email event to the Corporate Portal User
-        if (sponsor.userId) {
-            await dispatchEmailEvent({
-                eventType: "CSR_SNAPSHOT_READY",
-                recipientId: sponsor.userId,
-                recipientType: "CORPORATE",
-                entityId: snapshot.id,
-                data: {
-                    childrenCount: totalChildrenSponsored,
-                    reportUrl: mockPdfUrl
-                }
-            });
-        }
-
-        return NextResponse.json({ success: true, snapshotId: snapshot.id, reportUrl: mockPdfUrl });
+        return NextResponse.json({ success: true, snapshotId: snapshot.id, status: "QUEUED" });
 
     } catch (error: any) {
-        console.error("ESG Report Generation Error:", error);
+        logger.error({ error: error.message }, "ESG Report Generation API Error");
         return NextResponse.json(
             { error: error.message || "Failed to generate ESG Impact Report" },
             { status: 500 }

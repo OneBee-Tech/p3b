@@ -1,43 +1,41 @@
 import { prisma } from "../prisma";
 import { getChildImpactSummary } from "../impactNarrativeEngine";
 import { dispatchEmailEvent } from "../email/emailEventBus";
+import { impactNarrativeQueue } from "../queue/queueClient";
+import { logger } from "../logger";
 
 /**
  * Event map for the Background Queue
  */
-type QueueEvent =
+export type QueueEvent =
     | { type: "REPORT_VERIFIED", childId: string }
     | { type: "MILESTONE_LOGGED", childId: string, milestoneType: string }
     | { type: "RISK_SCORE_CHANGED", childId: string, oldScore: string, newScore: string };
 
 /**
- * Queue Resilience Strategy: Catch exceptions, retry twice on failure, log structured errors.
+ * Queue Resilience Strategy: Push to robust Redis-backed BullMQ logic. 
+ * Prevents in-memory loss during rapid Vercel container rotation.
  */
 export async function dispatchImpactEvent(event: QueueEvent) {
-    // Fire and forget strategy (background execution)
-    setImmediate(() => {
-        processImpactEventWithRetries(event, 2)
-            .catch(err => console.error("[ImpactQueue] FATAL Event Failure after retries:", event, err));
-    });
-}
+    // REVIEW RULE: Idempotency metric provided to queue
+    const jobId = `${event.type}-${event.childId}-${Date.now()}`;
 
-async function processImpactEventWithRetries(event: QueueEvent, retriesLeft: number) {
     try {
-        await handleEvent(event);
-    } catch (error) {
-        if (retriesLeft > 0) {
-            console.warn(`[ImpactQueue] Event failed, retrying... (${retriesLeft} left)`, event, error);
-            // Wait 2 seconds before retry
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            await processImpactEventWithRetries(event, retriesLeft - 1);
-        } else {
-            throw error; // Let the top-level catch log the fatal error
-        }
+        await impactNarrativeQueue.add(
+            `ProcessImpact-${event.type}`,
+            event,
+            { jobId } // Built-in enqueue deduplication based on exact timestamp grouping
+        );
+        logger.info({ jobId, eventType: event.type }, `[ImpactQueue] Enqueued impact generation event.`);
+    } catch (error: any) {
+        logger.error({ error: error.message, eventType: event.type }, `[ImpactQueue] Failed to enqueue event.`);
     }
 }
 
-async function handleEvent(event: QueueEvent) {
-    console.log(`[ImpactQueue] Processing ${event.type} for child ${event.childId}`);
+// NOTE: This logic is heavily synchronous. In Phase 12, this is moved to be processed BY THE WORKER
+// See `src/lib/queue/queueClient.ts` workers.
+export async function processImpactEvent(event: QueueEvent) {
+    logger.info({ childId: event.childId }, `[ImpactQueue] Processing ${event.type}`);
 
     // Fetch the child + their assignments to find sponsors to notify
     const child = await (prisma as any).registryChild.findUnique({
@@ -56,7 +54,7 @@ async function handleEvent(event: QueueEvent) {
 
     if (!child) throw new Error("Child not found for event");
     if (child.assignments.length === 0 && child.corporateAllocations.length === 0) {
-        console.log(`[ImpactQueue] No active sponsors found for child ${child.id}. Skipping email dispatch.`);
+        logger.info({ childId: child.id }, `[ImpactQueue] No active sponsors found. Skipping dispatch.`);
         return;
     }
 

@@ -35,3 +35,14 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 # p3b
+---
+
+## 🛡️ Production Operations & SLA
+
+### Backup & Recovery Policy
+As a financial NGO platform handling Corporate ESG and Individual Sponsorship allocations, stringent data integrity protocols are enforced:
+
+- **Automated Snapshots**: Daily Database backups are automated via Neon Postgres.
+- **Retention**: Minimum 14-day continuous point-in-time recovery retention.
+- **Security**: All persistent disks and object storage buckets are Encrypted at Rest (AES-256).
+- **Drill Contingency**: System Administrators MUST execute and document a comprehensive Staging-environment Restore Test quarterly.
