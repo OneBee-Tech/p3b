@@ -21,6 +21,7 @@ export async function POST(req: Request) {
         const sponsor = await prisma.corporateSponsor.findUnique({
             where: { id: sponsorId },
             include: {
+                user: true,
                 allocations: {
                     where: { revokedAt: null },
                     include: {
@@ -61,7 +62,13 @@ export async function POST(req: Request) {
 
         // 2. We mock out the actual @react-pdf/renderer execution here due to heavy rendering requirements.
         // In full production, this would queue a worker to generate the PDF and upload it to Object Storage (S3).
-        const mockPdfUrl = `https://storage.ngo.org/csr-reports/${sponsor.id}/${snapshot.id}.pdf`;
+
+        // Phase 11 Localized Immutable Mapping
+        const localeContext = sponsor.user?.preferredLocale || "EN";
+        const currencyContext = sponsor.user?.preferredCurrency || "USD";
+        console.log(`[CSR_REPORT] Generating immutable PDF report. Locale: ${localeContext}, Display Currency: ${currencyContext}`);
+
+        const mockPdfUrl = `https://storage.ngo.org/csr-reports/${sponsor.id}/${snapshot.id}-${localeContext}.pdf`;
 
         // We return the external Mock PDF URL to the caller instead of saving it on the Snapshot (since schema was simplified).
 

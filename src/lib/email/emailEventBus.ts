@@ -2,6 +2,7 @@ import { prisma } from "../prisma";
 import { EmailEventType, RecipientType } from "@prisma/client";
 import { TemplateRegistry } from "./templateRegistry";
 import { sendEmailWithTracking } from "./emailClient";
+import { calculateDispatchDelay } from "../scheduling/timezoneDispatcher";
 
 interface DispatchPayload {
     eventType: EmailEventType;
@@ -65,25 +66,52 @@ export async function dispatchEmailEvent(payload: DispatchPayload, retryCount = 
             }
 
             // 5. Template Resolution
-            const template = TemplateRegistry[payload.eventType];
+            const template = TemplateRegistry.getTemplate(payload.eventType, user.preferredLocale);
             if (!template) throw new Error("Template not found for EventType");
 
             const subject = template.subject(payload.data);
             const html = template.html(payload.data);
 
-            // 6. Dispatch to Client
-            await sendEmailWithTracking({
-                to: user.email,
-                subject,
-                html,
-                eventId,
-                recipientId: payload.recipientId,
-                recipientType: payload.recipientType,
-                eventType: payload.eventType,
-                templateVersion: template.version
-            });
+            // 5.5. Timezone Aware Scheduling
+            let delayMs = 0;
+            if (!payload.isCritical) {
+                delayMs = calculateDispatchDelay(user.timezone);
+            }
 
-            console.log(`[EVENT_BUS] Successfully processed ${eventId}`);
+            if (delayMs > 0) {
+                console.log(`[EVENT_BUS] ${eventId} delayed by ${delayMs}ms to match 8AM-6PM local window in ${user.timezone}`);
+                setTimeout(async () => {
+                    try {
+                        await sendEmailWithTracking({
+                            to: user.email,
+                            subject,
+                            html,
+                            eventId,
+                            recipientId: payload.recipientId,
+                            recipientType: payload.recipientType,
+                            eventType: payload.eventType,
+                            templateVersion: template.version
+                        });
+                        console.log(`[EVENT_BUS] Successfully processed delayed ${eventId}`);
+                    } catch (e) {
+                        console.error(`[EVENT_BUS] Delayed dispatch failed for ${eventId}`, e);
+                    }
+                }, delayMs);
+            } else {
+                // 6. Dispatch to Client
+                await sendEmailWithTracking({
+                    to: user.email,
+                    subject,
+                    html,
+                    eventId,
+                    recipientId: payload.recipientId,
+                    recipientType: payload.recipientType,
+                    eventType: payload.eventType,
+                    templateVersion: template.version
+                });
+
+                console.log(`[EVENT_BUS] Successfully processed ${eventId}`);
+            }
 
         } catch (error) {
             console.error(`[EVENT_BUS] Processing failed for ${payload.eventType}`, error);

@@ -241,6 +241,12 @@ model User {
   emailPreferences  EmailPreferences?
   emailLogs         EmailLog[]
 
+  // Globalization
+  preferredLocale   SupportedLocale @default(EN)
+  preferredCurrency SupportedCurrency @default(USD)
+  timezone          String?          // e.g. "America/Toronto"
+  regionCode        String?          // ISO country code (CA, US, IN)
+
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
@@ -838,3 +844,28 @@ model EmailLog {
   user            User           @relation(fields: [recipientId], references: [id], onDelete: Cascade)
 }
 
+// ----------------------------------------------------------------------
+// PHASE 11: INTERNATIONALIZATION & LOCALIZATION ENGINE
+// ----------------------------------------------------------------------
+
+enum SupportedLocale {
+  EN
+  FR
+  ES
+  HI
+}
+
+enum SupportedCurrency {
+  USD
+  CAD
+  INR
+  EUR
+}
+
+model ExchangeRateSnapshot {
+  id            String   @id @default(cuid())
+  baseCurrency  SupportedCurrency
+  targetCurrency SupportedCurrency
+  rate          Float
+  capturedAt    DateTime @default(now())
+}

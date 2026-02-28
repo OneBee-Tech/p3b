@@ -12,6 +12,11 @@ export interface SponsorshipAnalytics {
     // Phase 9: CSR Specific Metrics
     corporateFundingShare: number;
     corporateRetentionDuration: number;
+    // Phase 11: Internationalization Metrics
+    donorRegionDistribution: Record<string, number>;
+    corporateRegionDistribution: Record<string, number>;
+    fundingByCurrencyDisplay: Record<string, number>;
+    localeEngagementBreakdown: Record<string, number>;
 }
 
 /**
@@ -109,6 +114,26 @@ export async function generateSponsorshipAnalytics(): Promise<SponsorshipAnalyti
 
     const corporateRetentionDuration = corporateAllocations.length === 0 ? 0 : totalCorporateDuration / corporateAllocations.length;
 
+    // PHASE 11: Geo Analytics
+    const users = await prisma.user.findMany({ where: { role: 'USER' } });
+    const donorRegionDistribution: Record<string, number> = {};
+    const fundingByCurrencyDisplay: Record<string, number> = {};
+    const localeEngagementBreakdown: Record<string, number> = {};
+
+    users.forEach((u: any) => {
+        if (u.regionCode) donorRegionDistribution[u.regionCode] = (donorRegionDistribution[u.regionCode] || 0) + 1;
+        fundingByCurrencyDisplay[u.preferredCurrency] = (fundingByCurrencyDisplay[u.preferredCurrency] || 0) + 1;
+        localeEngagementBreakdown[u.preferredLocale] = (localeEngagementBreakdown[u.preferredLocale] || 0) + 1;
+    });
+
+    const corporateSponsors = await prisma.corporateSponsor.findMany({ include: { user: true } });
+    const corporateRegionDistribution: Record<string, number> = {};
+    corporateSponsors.forEach(c => {
+        if (c.user?.regionCode) {
+            corporateRegionDistribution[c.user.regionCode] = (corporateRegionDistribution[c.user.regionCode] || 0) + 1;
+        }
+    });
+
     return {
         cancellationRate: parseFloat(cancellationRate.toFixed(2)),
         avgSponsorshipDurationDays: Math.round(avgSponsorshipDurationDays),
@@ -118,7 +143,11 @@ export async function generateSponsorshipAnalytics(): Promise<SponsorshipAnalyti
         criticalChildrenCount,
         avgSponsorSlotsFilled,
         corporateFundingShare: parseFloat(corporateFundingShare.toFixed(2)),
-        corporateRetentionDuration: Math.round(corporateRetentionDuration)
+        corporateRetentionDuration: Math.round(corporateRetentionDuration),
+        donorRegionDistribution,
+        corporateRegionDistribution,
+        fundingByCurrencyDisplay,
+        localeEngagementBreakdown
     };
 }
 
