@@ -46,3 +46,11 @@ As a financial NGO platform handling Corporate ESG and Individual Sponsorship al
 - **Retention**: Minimum 14-day continuous point-in-time recovery retention.
 - **Security**: All persistent disks and object storage buckets are Encrypted at Rest (AES-256).
 - **Drill Contingency**: System Administrators MUST execute and document a comprehensive Staging-environment Restore Test quarterly.
+
+### Versioning & Release Governance
+To ensure platform stability and audit compliance:
+
+- **Semantic Versioning:** The project adheres to strict Semantic Versioning (`vMAJOR.MINOR.PATCH`).
+- **Changelog Mandate:** No hotfixes or patches, regardless of size, may be deployed without updating the centralized Release Changelog.
+- **Schema Traceability:** Any modifications to `prisma/schema.prisma` must be heavily documented to preserve financial isolation guarantees.
+- **Deployment Discipline:** Production deployments must **NOT** occur on Fridays or immediately prior to public holidays unless reacting to a Severity-1 emergency. All deployments must pass the `handover/deployment-checklist.md` validation, requiring explicit post-deployment sign-off from at least one Administrator.
