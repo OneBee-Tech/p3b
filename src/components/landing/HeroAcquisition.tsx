@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, PlayCircle, Heart } from "lucide-react";
+import { ArrowRight, Heart } from "lucide-react";
 import Image from "next/image";
 
 export function HeroAcquisition() {
@@ -28,7 +28,7 @@ export function HeroAcquisition() {
 
                 {/* Main Headline */}
                 <h1 className="text-5xl md:text-7xl font-heading font-bold text-white tracking-tight leading-tight drop-shadow-2xl">
-                    Sponsor a Child's Future<br />
+                    Sponsor a Child&apos;s Future<br />
                     <span className="text-impact-gold">for Just $1 a Day</span>
                 </h1>
 

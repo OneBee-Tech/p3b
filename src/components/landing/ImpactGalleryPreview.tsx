@@ -1,31 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ImageIcon } from "lucide-react";
+import { prisma } from "@/lib/prisma";
 
-export function ImpactGalleryPreview() {
-    const previewStories = [
-        {
-            src: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=2670&auto=format&fit=crop",
-            alt: "Educational supplies and notebooks",
-            region: "Kigali, Rwanda",
-            title: "The Digital Jumpstart",
-            impact: "120 Children Connected",
-        },
-        {
-            src: "https://images.unsplash.com/photo-1427504494785-3a9a27b8bfbc?q=80&w=2670&auto=format&fit=crop",
-            alt: "Clean and safe learning environments",
-            region: "Nairobi, Kenya",
-            title: "Safe Learning Environments",
-            impact: "New Classrooms Furnished",
-        },
-        {
-            src: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2670&auto=format&fit=crop",
-            alt: "Stack of educational books",
-            region: "Accra, Ghana",
-            title: "Empowering Through Literacy",
-            impact: "Learning Materials Provided",
-        }
-    ];
+export async function ImpactGalleryPreview() {
+    const previewStories = await prisma.impactStory.findMany({
+        where: { status: "PUBLISHED" },
+        orderBy: { publishAt: "desc" },
+        take: 3
+    });
+
+    if (previewStories.length === 0) return null;
 
     return (
         <section className="bg-warm-bg py-24 relative overflow-hidden">
@@ -51,39 +36,36 @@ export function ImpactGalleryPreview() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {previewStories.map((story, index) => (
+                    {previewStories.map((story) => (
                         <Link
-                            href="/stories"
-                            key={index}
-                            className="group relative h-[450px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 block"
+                            href={`/stories/${story.id}`}
+                            key={story.id}
+                            className="group relative h-[450px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 block bg-gray-900"
                         >
-                            <Image
-                                src={story.src}
-                                alt={story.alt}
-                                fill
-                                loading="lazy"
-                                sizes="(max-width: 768px) 100vw, 33vw"
-                                className="object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
+                            {story.imageUrl && (
+                                <Image
+                                    src={story.imageUrl}
+                                    alt={story.title}
+                                    fill
+                                    loading="lazy"
+                                    sizes="(max-width: 768px) 100vw, 33vw"
+                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                />
+                            )}
                             {/* Rich Gradient Overlay */}
                             <div className="absolute inset-0 bg-gradient-to-t from-cinematic-dark/90 via-cinematic-dark/40 to-transparent transition-opacity duration-300 group-hover:opacity-90" />
-
-                            {/* Privacy Disclaimer */}
-                            <div className="absolute top-4 right-4 bg-cinematic-dark/80 backdrop-blur-md rounded-lg p-2 border border-white/20 text-[10px] text-white/80 max-w-[200px] text-right z-20">
-                                Images are representative. Child identities are protected for safety.
-                            </div>
 
                             {/* Card Content */}
                             <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col justify-end h-full">
                                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-white text-xs font-bold uppercase tracking-wider w-fit mb-3 border border-white/20">
-                                    {story.region}
+                                    Verified Impact
                                 </div>
                                 <h3 className="text-2xl font-heading font-bold text-white mb-2 leading-tight">
                                     {story.title}
                                 </h3>
-                                <p className="text-impact-gold font-medium text-sm flex items-center gap-2">
+                                <p className="text-impact-gold font-medium text-sm flex items-center gap-2 line-clamp-1">
                                     <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
-                                    {story.impact}
+                                    Read Full Report
                                 </p>
                             </div>
                         </Link>

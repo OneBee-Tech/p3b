@@ -25,7 +25,7 @@ export default function OurStoryPage() {
                         We Believe in the Power of Community.
                     </h1>
                     <p className="text-xl text-white/80 leading-relaxed max-w-3xl mx-auto">
-                        Hope for Humanity was founded on a simple premise: education is not an individual luxury, but a structural necessity. We don't just sponsor children; we empower the ecosystems that support them.
+                        Hope for Humanity was founded on a simple premise: education is not an individual luxury, but a structural necessity. We don&apos;t just sponsor children; we empower the ecosystems that support them.
                     </p>
                 </div>
             </section>

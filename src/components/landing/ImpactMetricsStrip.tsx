@@ -3,35 +3,34 @@ import { Users, GraduationCap, Map } from "lucide-react";
 
 async function getImpactMetrics() {
     try {
-        // 6️⃣ IMPACT DATA BINDING (SAFE MODE)
-        // Attempt to aggregate real data from the database.
+        const childrenCount = await prisma.registryChild.count({
+            where: { deletedAt: null, isArchived: false }
+        });
 
-        // Total Programs (Communities Served)
-        const programCount = await prisma.program.count();
+        const programCount = await prisma.program.count({
+            where: { status: "ACTIVE" }
+        });
 
-        // For educational impact, we aggregate total funded amounts or count unique donations.
-        // As a proxy for "Children Educated", we can use total donations.
-        const allocationsCount = await prisma.donation.count();
+        const donationStats = await prisma.donation.aggregate({
+            _sum: { amount: true },
+            where: { status: "SUCCEEDED" }
+        });
 
-        // For meals provided, proxy with a base number + recent campaigns
-        const mealsBase = 1500 + (programCount * 50); // Example metric mapping
-
-        if (programCount === 0 && allocationsCount === 0) {
-            throw new Error("No data available, dropping to safe mode seeds");
-        }
+        // Dynamic formula: e.g. 2 meals provided per $1 raised
+        const mealsProvided = Math.floor(Number(donationStats._sum.amount || 0) * 2);
 
         return {
-            childrenEducated: 5000 + (allocationsCount * 10), // Seed base + live data scaling
-            communitiesServed: 12 + programCount,
-            mealsProvided: mealsBase,
+            childrenEducated: childrenCount,
+            communitiesServed: programCount,
+            mealsProvided: mealsProvided,
             isLive: true
         };
     } catch (error) {
-        // If DB is empty, unreachable, or errors out, fallback to seeded metrics. No crashes allowed.
+        // Strict adherence to NO hardcoded proxy data
         return {
-            childrenEducated: 5430,
-            communitiesServed: 14,
-            mealsProvided: 2150,
+            childrenEducated: 0,
+            communitiesServed: 0,
+            mealsProvided: 0,
             isLive: false
         };
     }

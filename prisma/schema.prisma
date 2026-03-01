@@ -3,9 +3,534 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DATABASE_URL")
+}
+
+model SponsorshipHealthLog {
+  id              String                  @id @default(cuid())
+  sponsorshipId   String
+  donorId         String
+  registryChildId String
+  healthStatus    SponsorshipHealthStatus
+  reason          String?
+  createdAt       DateTime                @default(now())
+}
+
+model SponsorshipPriorityQueue {
+  id              String    @id @default(cuid())
+  registryChildId String
+  priorityLevel   String
+  fundingGap      Int
+  createdAt       DateTime  @default(now())
+  resolvedAt      DateTime?
+}
+
+model ContactInquiry {
+  id          String        @id @default(cuid())
+  name        String
+  email       String
+  inquiryType InquiryType
+  message     String
+  status      InquiryStatus @default(NEW)
+  deletedAt   DateTime?
+  isArchived  Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Program {
+  id             String            @id @default(cuid())
+  name           String
+  slug           String            @unique
+  description    String
+  location       String
+  status         ProgramStatus     @default(ACTIVE)
+  fundingGoal    Decimal
+  fundingCurrent Decimal           @default(0)
+  isLocked       Boolean           @default(false)
+  isActive       Boolean           @default(true)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  schoolId       String?
+  campaignId     String?
+  children       Child[]
+  donations      Donation[]
+  posts          Post[]
+  campaign       Campaign?         @relation(fields: [campaignId], references: [id])
+  school         School?           @relation(fields: [schoolId], references: [id])
+  snapshots      ProgramSnapshot[]
+  sponsorships   Sponsorship[]
+  stories        Story[]
+}
+
+model User {
+  id                     String                  @id @default(cuid())
+  email                  String                  @unique
+  role                   Role                    @default(USER)
+  name                   String?
+  stripeCustomerId       String?
+  country                String?
+  preferredLanguage      String                  @default("en")
+  isActive               Boolean                 @default(true)
+  archivedAt             DateTime?
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  emailVerified          DateTime?
+  image                  String?
+  lastImpactEmailSentAt  DateTime?
+  emailSuppressed        Boolean                 @default(false)
+  preferredCurrency      SupportedCurrency       @default(USD)
+  preferredLocale        SupportedLocale         @default(EN)
+  regionCode             String?
+  timezone               String?
+  accounts               Account[]
+  auditLogs              AdminAuditLog[]
+  corporateSponsor       CorporateSponsor?
+  donations              Donation[]
+  emailLogs              EmailLog[]
+  emailPreferences       EmailPreferences?
+  sessions               Session[]
+  sponsorships           Sponsorship[]
+  sponsorshipAssignments SponsorshipAssignment[]
+}
+
+model Child {
+  id               String                 @id @default(cuid())
+  name             String
+  dob              DateTime
+  bio              String
+  story            String
+  photoUrl         String
+  status           ChildStatus            @default(WAITING)
+  sponsorshipSlots Int                    @default(1)
+  annualCost       Decimal
+  gender           String
+  region           String
+  educationLevel   String
+  moderationStatus ModerationStatus       @default(PENDING)
+  visibilityScope  VisibilityScope        @default(PUBLIC)
+  waitlistPosition Int?
+  allocationMap    Json?
+  isActive         Boolean                @default(true)
+  archivedAt       DateTime?
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+  schoolId         String
+  programId        String?
+  consentExpiry    DateTime?
+  consentFlag      Boolean                @default(true)
+  isAnonymized     Boolean                @default(false)
+  usageScope       String?
+  program          Program?               @relation(fields: [programId], references: [id])
+  school           School                 @relation(fields: [schoolId], references: [id])
+  updates          Post[]
+  sponsorships     Sponsorship[]
+  documents        VerificationDocument[]
+}
+
+model School {
+  id                 String                 @id @default(cuid())
+  name               String
+  location           String
+  capacity           Int
+  establishedDate    DateTime
+  contactPerson      String?
+  verificationStatus VerificationStatus     @default(PENDING)
+  partnerSince       DateTime               @default(now())
+  isActive           Boolean                @default(true)
+  archivedAt         DateTime?
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+  children           Child[]
+  updates            Post[]
+  programs           Program[]
+  documents          VerificationDocument[]
+}
+
+model Sponsorship {
+  id                   String            @id @default(cuid())
+  startDate            DateTime          @default(now())
+  endDate              DateTime?
+  status               SponsorshipStatus @default(ACTIVE)
+  monthlyAmount        Decimal
+  stripeSubscriptionId String?
+  tier                 SponsorshipTier   @default(FULL)
+  userId               String
+  programId            String
+  childId              String?
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+  child                Child?            @relation(fields: [childId], references: [id])
+  program              Program           @relation(fields: [programId], references: [id])
+  user                 User              @relation(fields: [userId], references: [id])
+}
+
+model Donation {
+  id                  String           @id @default(cuid())
+  amount              Decimal
+  currency            String           @default("USD")
+  baseAmountUSD       Decimal?
+  fxRate              Decimal?
+  status              DonationStatus   @default(PENDING)
+  stripePaymentId     String?          @unique
+  type                DonationType
+  fundType            DonationFundType @default(UNRESTRICTED)
+  receiptUrl          String?
+  invoiceNumber       String?
+  allocationStatus    AllocationStatus @default(AUTOMATED)
+  allocationTag       String?
+  allocationBreakdown Json?
+  userId              String
+  programId           String?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  program             Program?         @relation(fields: [programId], references: [id])
+  user                User             @relation(fields: [userId], references: [id])
+}
+
+model Post {
+  id               String           @id @default(cuid())
+  title            String
+  content          String
+  mediaUrl         String?
+  moderationStatus ModerationStatus @default(PENDING)
+  childId          String?
+  schoolId         String?
+  programId        String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  child            Child?           @relation(fields: [childId], references: [id])
+  program          Program?         @relation(fields: [programId], references: [id])
+  school           School?          @relation(fields: [schoolId], references: [id])
+}
+
+model AdminAuditLog {
+  id           String      @id @default(cuid())
+  action       AuditAction
+  targetEntity String
+  targetId     String?
+  changes      Json?
+  ipAddress    String?
+  adminId      String
+  createdAt    DateTime    @default(now())
+  admin        User        @relation(fields: [adminId], references: [id])
+}
+
+model VerificationDocument {
+  id          String             @id @default(cuid())
+  entityType  EntityType
+  documentUrl String
+  status      VerificationStatus @default(PENDING)
+  uploadedBy  String
+  reviewedBy  String?
+  childId     String?
+  schoolId    String?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  child       Child?             @relation(fields: [childId], references: [id])
+  school      School?            @relation(fields: [schoolId], references: [id])
+}
+
+model MonthlySnapshot {
+  id                String   @id @default(cuid())
+  month             Int
+  year              Int
+  totalDonations    Decimal
+  totalSponsorships Int
+  activeChildren    Int
+  churnRate         Decimal?
+  createdAt         DateTime @default(now())
+
+  @@unique([month, year])
+}
+
+model ProgramSnapshot {
+  id               String   @id @default(cuid())
+  month            Int
+  year             Int
+  fundsRaised      Decimal
+  studentsImpacted Int
+  programId        String
+  createdAt        DateTime @default(now())
+  program          Program  @relation(fields: [programId], references: [id])
+
+  @@unique([programId, month, year])
+}
+
+model FailedWebhook {
+  id         String   @id @default(cuid())
+  eventId    String   @unique
+  eventType  String
+  payload    Json
+  error      String?
+  retryCount Int      @default(0)
+  status     String   @default("PENDING")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Campaign {
+  id             String         @id @default(cuid())
+  title          String
+  slug           String         @unique
+  urgencyLevel   UrgencyLevel   @default(LOW)
+  status         CampaignStatus @default(ACTIVE)
+  fundingGoal    Decimal
+  fundingCurrent Decimal        @default(0)
+  deadline       DateTime?
+  heroMedia      String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  programs       Program[]
+}
+
+model Story {
+  id          String           @id @default(cuid())
+  title       String
+  region      String
+  narrative   String
+  mediaUrl    String?
+  publishDate DateTime         @default(now())
+  status      ModerationStatus @default(PENDING)
+  programId   String
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  program     Program          @relation(fields: [programId], references: [id])
+}
+
+model Referral {
+  id              String         @id @default(cuid())
+  referrerName    String
+  email           String
+  childLocation   String
+  educationStatus String
+  urgencyLevel    UrgencyLevel   @default(LOW)
+  notes           String?
+  status          ReferralStatus @default(PENDING)
+  deletedAt       DateTime?
+  isArchived      Boolean        @default(false)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model RegistryChild {
+  id                       String                           @id @default(cuid())
+  displayName              String
+  age                      Int
+  region                   String
+  educationLevel           String
+  sponsorshipNeededMonthly Decimal
+  status                   ChildStatus                      @default(WAITING)
+  privacyMode              VisibilityScope                  @default(PUBLIC)
+  safeguardingConsent      Boolean                          @default(false)
+  avatarIllustrationUrl    String?
+  caseNotes                String?
+  maxSponsors              Int                              @default(1)
+  referralId               String?                          @unique
+  createdByAdminId         String
+  lastReviewedAt           DateTime?
+  safeguardingReviewStatus SafeguardingReviewStatus         @default(PENDING)
+  deletedAt                DateTime?
+  isArchived               Boolean                          @default(false)
+  createdAt                DateTime                         @default(now())
+  updatedAt                DateTime                         @updatedAt
+  story                    String?
+  corporateAllocations     CorporateSponsorshipAllocation[]
+  milestones               ImpactMilestone[]
+  progressReports          ProgressReport[]
+  assignments              SponsorshipAssignment[]
+}
+
+model SponsorshipAssignment {
+  id              String                      @id @default(cuid())
+  donorId         String
+  registryChildId String
+  startedAt       DateTime                    @default(now())
+  endedAt         DateTime?
+  status          SponsorshipAssignmentStatus @default(ACTIVE)
+  donor           User                        @relation(fields: [donorId], references: [id])
+  registryChild   RegistryChild               @relation(fields: [registryChildId], references: [id])
+}
+
+model AdminAccessLog {
+  id            String   @id @default(cuid())
+  adminId       String
+  routeAccessed String
+  timestamp     DateTime @default(now())
+  ipAddress     String?
+}
+
+model AdminActionLog {
+  id            String   @id @default(cuid())
+  adminId       String
+  actionType    String
+  targetEntity  String
+  targetId      String
+  previousValue String?
+  newValue      String?
+  timestamp     DateTime @default(now())
+}
+
+model ImpactStory {
+  id                 String      @id @default(cuid())
+  title              String
+  content            String
+  imageUrl           String?
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+  consentDocumentUrl String?
+  consentExpiry      DateTime?
+  engagementScore    Float       @default(0)
+  guardianConsent    Boolean     @default(false)
+  publishAt          DateTime?
+  status             StoryStatus @default(DRAFT)
+  viewCount          Int         @default(0)
+}
+
+model ProgressReport {
+  id                       String                   @id @default(cuid())
+  registryChildId          String
+  reportingPeriod          String
+  academicPerformance      String
+  attendanceRate           Float?
+  teacherFeedback          String?
+  wellbeingNotes           String?
+  reportDocumentUrl        String?
+  verificationStatus       ReportVerificationStatus @default(PENDING)
+  verifiedByAdminId        String?
+  verifiedAt               DateTime?
+  guardianConsentConfirmed Boolean                  @default(false)
+  consentDocumentUrl       String?
+  publishAt                DateTime?
+  riskScore                ProgressRiskScore        @default(STABLE)
+  createdByAdminId         String
+  createdAt                DateTime                 @default(now())
+  registryChild            RegistryChild            @relation(fields: [registryChildId], references: [id])
+}
+
+model ImpactMilestone {
+  id               String        @id @default(cuid())
+  registryChildId  String
+  milestoneType    MilestoneType @default(ENROLLED)
+  description      String
+  achievedAt       DateTime
+  createdByAdminId String
+  createdAt        DateTime      @default(now())
+  registryChild    RegistryChild @relation(fields: [registryChildId], references: [id])
+}
+
+model CorporateSponsor {
+  id                  String                           @id @default(cuid())
+  organizationName    String
+  contactPersonName   String
+  contactEmail        String
+  contactPhone        String?
+  headquartersCountry String
+  fundingModel        FundingModel                     @default(SLOT_BASED)
+  sponsorshipCapacity Int
+  contractStartDate   DateTime                         @default(now())
+  contractEndDate     DateTime?
+  status              CorporateStatus                  @default(ACTIVE)
+  userId              String?                          @unique
+  createdAt           DateTime                         @default(now())
+  updatedAt           DateTime                         @updatedAt
+  impactSnapshots     CSRImpactSnapshot[]
+  user                User?                            @relation(fields: [userId], references: [id])
+  allocations         CorporateSponsorshipAllocation[]
+}
+
+model CorporateSponsorshipAllocation {
+  id                 String                    @id @default(cuid())
+  corporateSponsorId String
+  registryChildId    String
+  allocatedSlots     Int                       @default(1)
+  filledSlots        Int                       @default(0)
+  allocationStatus   CorporateAllocationStatus @default(OPEN)
+  revokedAt          DateTime?
+  revokedReason      String?
+  createdAt          DateTime                  @default(now())
+  updatedAt          DateTime                  @updatedAt
+  corporateSponsor   CorporateSponsor          @relation(fields: [corporateSponsorId], references: [id])
+  registryChild      RegistryChild             @relation(fields: [registryChildId], references: [id])
+}
+
+model CSRImpactSnapshot {
+  id                         String           @id @default(cuid())
+  corporateSponsorId         String
+  childrenSponsored          Int
+  activeSponsorships         Int
+  educationProgramsSupported Int
+  generatedAt                DateTime         @default(now())
+  corporateSponsor           CorporateSponsor @relation(fields: [corporateSponsorId], references: [id])
+}
+
+model EmailPreferences {
+  id                   String   @id @default(cuid())
+  userId               String   @unique
+  receiveImpactUpdates Boolean  @default(true)
+  receiveMilestones    Boolean  @default(true)
+  receiveRiskAlerts    Boolean  @default(true)
+  receiveCSRReports    Boolean  @default(true)
+  updatedAt            DateTime @updatedAt
+  user                 User     @relation(fields: [userId], references: [id])
+}
+
+model EmailLog {
+  id              String         @id @default(cuid())
+  eventId         String         @unique
+  recipientId     String
+  recipientType   RecipientType
+  eventType       EmailEventType
+  templateVersion String
+  sentAt          DateTime?
+  deliveryStatus  DeliveryStatus @default(PENDING)
+  errorMessage    String?
+  createdAt       DateTime       @default(now())
+  user            User           @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+}
+
+model ExchangeRateSnapshot {
+  id             String            @id @default(cuid())
+  baseCurrency   SupportedCurrency
+  targetCurrency SupportedCurrency
+  rate           Float
+  capturedAt     DateTime          @default(now())
 }
 
 enum Role {
@@ -131,7 +656,6 @@ enum SponsorshipAssignmentStatus {
   ENDED
 }
 
-// Phase 8: Contact & Inquiry System (isolated module)
 enum InquiryType {
   GENERAL
   SPONSORSHIP
@@ -148,501 +672,12 @@ enum InquiryStatus {
   ARCHIVED
 }
 
-// Phase 6: Sponsorship Lifecycle Automation & Funding Stability Engine
 enum SponsorshipHealthStatus {
   HEALTHY
   AT_RISK
   PAYMENT_FAILED
   ENDED
 }
-
-model SponsorshipHealthLog {
-  id               String   @id @default(cuid())
-  sponsorshipId    String
-  donorId          String
-  registryChildId  String
-  healthStatus     SponsorshipHealthStatus
-  reason           String?
-  createdAt        DateTime @default(now())
-}
-
-model SponsorshipPriorityQueue {
-  id                String   @id @default(cuid())
-  registryChildId   String
-  priorityLevel     String   // HIGH, CRITICAL
-  fundingGap        Int
-  createdAt         DateTime @default(now())
-  resolvedAt        DateTime?
-}
-
-model ContactInquiry {
-  id          String        @id @default(cuid())
-  name        String
-  email       String
-  inquiryType InquiryType
-  message     String        @db.Text
-  status      InquiryStatus @default(NEW)
-
-  // Governance
-  deletedAt   DateTime?
-  isArchived  Boolean       @default(false)
-
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-}
-
-model Program {
-  id              String   @id @default(cuid())
-  name            String
-  slug            String   @unique
-  description     String
-  location        String
-  
-  status          ProgramStatus @default(ACTIVE)
-
-  fundingGoal     Decimal
-  fundingCurrent  Decimal  @default(0)
-  
-  isLocked        Boolean  @default(false) // Prevents overfunding
-  isActive        Boolean  @default(true)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  
-  children        Child[]
-  donations       Donation[]
-  sponsorships    Sponsorship[]
-  posts           Post[]
-  snapshots       ProgramSnapshot[]
-  schoolId        String?
-  school          School?  @relation(fields: [schoolId], references: [id])
-  campaignId      String?
-  campaign        Campaign? @relation(fields: [campaignId], references: [id])
-  stories         Story[]
-}
-
-model User {
-  id                String    @id @default(cuid())
-  email             String    @unique
-  emailVerified     DateTime?
-  role              Role      @default(USER)
-  name              String?
-  image             String?
-  stripeCustomerId  String?
-  country           String?
-  preferredLanguage String    @default("en")
-  isActive          Boolean   @default(true)
-  archivedAt        DateTime?
-  lastImpactEmailSentAt DateTime? // 48-hour throttling for impact narrative updates
-  
-  // Corporate Sponsorship Mapping
-  corporateSponsor       CorporateSponsor?
-  // Communications & Notifications
-  emailSuppressed   Boolean   @default(false)
-  emailPreferences  EmailPreferences?
-  emailLogs         EmailLog[]
-
-  // Globalization
-  preferredLocale   SupportedLocale @default(EN)
-  preferredCurrency SupportedCurrency @default(USD)
-  timezone          String?          // e.g. "America/Toronto"
-  regionCode        String?          // ISO country code (CA, US, IN)
-
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-
-  sponsorships      Sponsorship[]
-  donations         Donation[]
-  auditLogs         AdminAuditLog[]
-  accounts          Account[]
-  sessions          Session[]
-  sponsorshipAssignments SponsorshipAssignment[]
-}
-
-model Child {
-  id               String           @id @default(cuid())
-  name             String
-  dob              DateTime
-  bio              String
-  story            String
-  photoUrl         String
-  status           ChildStatus      @default(WAITING)
-  sponsorshipSlots Int              @default(1)
-  annualCost       Decimal
-  gender           String
-  region           String
-  educationLevel   String
-  moderationStatus ModerationStatus @default(PENDING)
-  visibilityScope  VisibilityScope  @default(PUBLIC)
-  waitlistPosition Int?
-  allocationMap    Json?            // Stores fund routing logic { "school": 80, "program": 20 }
-  
-  // Media Ethics & Consent Governance
-  consentFlag      Boolean          @default(true)
-  usageScope       String?
-  consentExpiry    DateTime?
-  isAnonymized     Boolean          @default(false)
-  
-  isActive         Boolean          @default(true)
-  archivedAt       DateTime?
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
-
-  schoolId         String
-  school           School           @relation(fields: [schoolId], references: [id])
-  
-  programId        String?
-  program          Program?         @relation(fields: [programId], references: [id])
-
-  sponsorships     Sponsorship[]    // Optional reference for dashboard "representative" child
-  updates          Post[]
-  documents        VerificationDocument[]
-}
-
-model School {
-  id                 String             @id @default(cuid())
-  name               String
-  location           String
-  capacity           Int
-  establishedDate    DateTime
-  contactPerson      String?
-  verificationStatus VerificationStatus @default(PENDING)
-  partnerSince       DateTime           @default(now())
-  
-  isActive           Boolean            @default(true)
-  archivedAt         DateTime?
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
-
-  programs           Program[]
-  children           Child[]
-  updates            Post[]
-  documents          VerificationDocument[]
-}
-
-model Sponsorship {
-  id                   String            @id @default(cuid())
-  startDate            DateTime          @default(now())
-  endDate              DateTime?
-  status               SponsorshipStatus @default(ACTIVE)
-  monthlyAmount        Decimal
-  stripeSubscriptionId String?
-  tier                 SponsorshipTier   @default(FULL)
-
-  userId               String
-  user                 User              @relation(fields: [userId], references: [id])
-  
-  programId            String
-  program              Program           @relation(fields: [programId], references: [id])
-
-  childId              String?           // Optional "Representative" Child
-  child                Child?            @relation(fields: [childId], references: [id])
-
-  createdAt            DateTime          @default(now())
-  updatedAt            DateTime          @updatedAt
-}
-
-model Donation {
-  id                  String           @id @default(cuid())
-  amount              Decimal
-  currency            String           @default("USD")
-  baseAmountUSD       Decimal?         // For normalized reporting
-  fxRate              Decimal?
-  status              DonationStatus   @default(PENDING)
-  stripePaymentId     String?          @unique
-  type                DonationType
-  fundType            DonationFundType @default(UNRESTRICTED)
-  receiptUrl          String?
-  invoiceNumber       String?
-  
-  allocationStatus    AllocationStatus @default(AUTOMATED)
-  allocationTag       String?          // "General Fund", "School Build", etc.
-  allocationBreakdown Json?            // Breakdown: { "tuition": 20, "supplies": 10 }
-
-  userId              String
-  user                User             @relation(fields: [userId], references: [id])
-  
-  programId           String?
-  program             Program?         @relation(fields: [programId], references: [id])
-
-  createdAt           DateTime         @default(now())
-  updatedAt           DateTime         @updatedAt
-}
-
-model Post {
-  id               String           @id @default(cuid())
-  title            String
-  content          String
-  mediaUrl         String?
-  moderationStatus ModerationStatus @default(PENDING)
-
-  childId          String?
-  child            Child?   @relation(fields: [childId], references: [id])
-  schoolId         String?
-  school           School?  @relation(fields: [schoolId], references: [id])
-  programId        String?
-  program          Program? @relation(fields: [programId], references: [id])
-
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-}
-
-model AdminAuditLog {
-  id           String      @id @default(cuid())
-  action       AuditAction
-  targetEntity String
-  targetId     String?
-  changes      Json?       // Stores before/after snapshot
-  ipAddress    String?
-  
-  adminId      String
-  admin        User        @relation(fields: [adminId], references: [id])
-  
-  createdAt    DateTime    @default(now())
-}
-
-model VerificationDocument {
-  id          String             @id @default(cuid())
-  entityType  EntityType
-  documentUrl String
-  status      VerificationStatus @default(PENDING)
-  uploadedBy  String
-  reviewedBy  String?
-  
-  childId     String?
-  child       Child?             @relation(fields: [childId], references: [id])
-  schoolId    String?
-  school      School?            @relation(fields: [schoolId], references: [id])
-  
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
-}
-
-model MonthlySnapshot {
-  id                String   @id @default(cuid())
-  month             Int
-  year              Int
-  totalDonations    Decimal
-  totalSponsorships Int
-  activeChildren    Int
-  churnRate         Decimal?
-  
-  createdAt         DateTime @default(now())
-
-  @@unique([month, year])
-}
-
-model ProgramSnapshot {
-  id                String   @id @default(cuid())
-  month             Int
-  year              Int
-  fundsRaised       Decimal
-  studentsImpacted  Int
-  
-  programId         String
-  program           Program  @relation(fields: [programId], references: [id])
-
-  createdAt         DateTime @default(now())
-  
-  @@unique([programId, month, year])
-}
-
-model FailedWebhook {
-  id         String   @id @default(cuid())
-  eventId    String   @unique
-  eventType  String
-  payload    Json
-  error      String?
-  retryCount Int      @default(0)
-  status     String   @default("PENDING") // PENDING, RESOLVED, FAILED
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-}
-
-model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
-}
-
-model Campaign {
-  id              String         @id @default(cuid())
-  title           String
-  slug            String         @unique
-  urgencyLevel    UrgencyLevel   @default(LOW)
-  status          CampaignStatus @default(ACTIVE)
-  fundingGoal     Decimal
-  fundingCurrent  Decimal        @default(0)
-  deadline        DateTime?
-  heroMedia       String?
-  
-  programs        Program[]
-  
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-}
-
-model Story {
-  id              String           @id @default(cuid())
-  title           String
-  region          String
-  narrative       String           @db.Text
-  mediaUrl        String?
-  publishDate     DateTime         @default(now())
-  status          ModerationStatus @default(PENDING)
-  
-  programId       String
-  program         Program          @relation(fields: [programId], references: [id])
-  
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-}
-
-// ----------------------------------------------------------------------
-// PHASE 5: ADMIN MANAGEMENT & ISOLATED CMS GOVERNANCE
-// ----------------------------------------------------------------------
-
-model Referral {
-  id               String         @id @default(cuid())
-  referrerName     String
-  email            String
-  childLocation    String
-  educationStatus  String
-  urgencyLevel     UrgencyLevel   @default(LOW)
-  notes            String?        @db.Text
-  status           ReferralStatus @default(PENDING)
-  
-  // Soft Delete & Governance
-  deletedAt        DateTime?
-  isArchived       Boolean        @default(false)
-
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
-}
-
-model RegistryChild {
-  id                       String                   @id @default(cuid())
-  displayName              String
-  age                      Int
-  region                   String
-  educationLevel           String
-  sponsorshipNeededMonthly Decimal
-  status                   ChildStatus              @default(WAITING)
-  privacyMode              VisibilityScope          @default(PUBLIC)
-  safeguardingConsent      Boolean                  @default(false)
-  avatarIllustrationUrl    String?
-  caseNotes                String?                  @db.Text
-  story                    String?                  @db.Text
-  
-  // Sponsorship Capacity
-  maxSponsors              Int                      @default(1)
-  
-  // Referral Traceability
-  referralId               String?                  @unique
-  
-  // Safeguarding & Audit
-  createdByAdminId         String
-  lastReviewedAt           DateTime?
-  safeguardingReviewStatus SafeguardingReviewStatus @default(PENDING)
-  
-  // Soft Delete & Governance
-  deletedAt                DateTime?
-  isArchived               Boolean                  @default(false)
-
-  createdAt                DateTime                 @default(now())
-  updatedAt                DateTime                 @updatedAt
-
-  assignments              SponsorshipAssignment[]
-  progressReports          ProgressReport[]
-  milestones               ImpactMilestone[]
-  corporateAllocations     CorporateSponsorshipAllocation[]
-}
-
-model SponsorshipAssignment {
-  id                String                      @id @default(cuid())
-  donorId           String
-  registryChildId   String
-  startedAt         DateTime                    @default(now())
-  endedAt           DateTime?
-  status            SponsorshipAssignmentStatus @default(ACTIVE)
-
-  donor             User                        @relation(fields: [donorId], references: [id])
-  registryChild     RegistryChild               @relation(fields: [registryChildId], references: [id])
-}
-
-model AdminAccessLog {
-  id               String    @id @default(cuid())
-  adminId          String
-  routeAccessed    String
-  timestamp        DateTime  @default(now())
-  ipAddress        String?
-}
-
-model AdminActionLog {
-  id               String    @id @default(cuid())
-  adminId          String
-  actionType       String
-  targetEntity     String
-  targetId         String
-  previousValue    String?   @db.Text
-  newValue         String?   @db.Text
-  timestamp        DateTime  @default(now())
-}
-
-// ----------------------------------------------------------------------
-// PHASE 7: STORY & IMPACT CMS
-// ----------------------------------------------------------------------
-
-model ImpactStory {
-  id                 String      @id @default(cuid())
-  title              String
-  content            String      @db.Text
-  imageUrl           String?
-  
-  // Governance & Safeguarding
-  status             StoryStatus @default(DRAFT)
-  guardianConsent    Boolean     @default(false)
-  consentDocumentUrl String?
-  consentExpiry      DateTime?
-  publishAt          DateTime?
-  viewCount          Int         @default(0)
-  engagementScore    Float       @default(0)
-
-  createdAt          DateTime    @default(now())
-  updatedAt          DateTime    @updatedAt
-}
-
-// ----------------------------------------------------------------------
-// PHASE 8: CHILD PROGRESS & IMPACT REPORTING SYSTEM
-// ----------------------------------------------------------------------
 
 enum MilestoneType {
   ENROLLED
@@ -664,51 +699,6 @@ enum ProgressRiskScore {
   INTERVENTION_REQUIRED
 }
 
-model ProgressReport {
-  id                       String                   @id @default(cuid())
-  registryChildId          String
-  reportingPeriod          String   // e.g. "Term 1, 2026"
-  academicPerformance      String   @db.Text
-  attendanceRate           Float?
-  teacherFeedback          String?  @db.Text
-  wellbeingNotes           String?  @db.Text
-  reportDocumentUrl        String?  // Cloudinary/S3 only
-  
-  // Verification Governance
-  verificationStatus       ReportVerificationStatus @default(PENDING)
-  verifiedByAdminId        String?
-  verifiedAt               DateTime?
-  
-  // Consent & Publishing Governance
-  guardianConsentConfirmed Boolean                  @default(false)
-  consentDocumentUrl       String?
-  publishAt                DateTime?
-  
-  // Derived Risk Metric
-  riskScore                ProgressRiskScore        @default(STABLE)
-  
-  createdByAdminId         String
-  createdAt                DateTime                 @default(now())
-
-  registryChild            RegistryChild            @relation(fields: [registryChildId], references: [id])
-}
-
-model ImpactMilestone {
-  id               String        @id @default(cuid())
-  registryChildId  String
-  milestoneType    MilestoneType @default(ENROLLED)
-  description      String        @db.Text
-  achievedAt       DateTime
-  createdByAdminId String
-  createdAt        DateTime      @default(now())
-
-  registryChild    RegistryChild @relation(fields: [registryChildId], references: [id])
-}
-
-// ----------------------------------------------------------------------
-// PHASE 9: CORPORATE & CSR SPONSORSHIP ENGINE
-// ----------------------------------------------------------------------
-
 enum CorporateStatus {
   ACTIVE
   PAUSED
@@ -726,72 +716,6 @@ enum CorporateAllocationStatus {
   FULLY_ALLOCATED
 }
 
-model CorporateSponsor {
-  id                   String            @id @default(cuid())
-  organizationName     String
-  contactPersonName    String
-  contactEmail         String
-  contactPhone         String?
-  headquartersCountry  String
-  
-  // Sponsorship Definitions
-  fundingModel         FundingModel      @default(SLOT_BASED)
-  sponsorshipCapacity  Int
-  
-  // Governance & Lifecycle
-  contractStartDate    DateTime          @default(now())
-  contractEndDate      DateTime?
-  status               CorporateStatus   @default(ACTIVE)
-  
-  // Auth Integration (Optional Link to User table for Portal Login)
-  userId               String?           @unique
-  user                 User?             @relation(fields: [userId], references: [id])
-
-  createdAt            DateTime          @default(now())
-  updatedAt            DateTime          @updatedAt
-
-  allocations          CorporateSponsorshipAllocation[]
-  impactSnapshots      CSRImpactSnapshot[]
-}
-
-model CorporateSponsorshipAllocation {
-  id                 String           @id @default(cuid())
-  corporateSponsorId String
-  registryChildId    String
-  allocatedSlots     Int              @default(1)
-  filledSlots        Int              @default(0)
-  allocationStatus   CorporateAllocationStatus @default(OPEN)
-  
-  // Reversal Governance
-  revokedAt          DateTime?
-  revokedReason      String?          @db.Text
-
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @updatedAt
-
-  corporateSponsor   CorporateSponsor @relation(fields: [corporateSponsorId], references: [id])
-  registryChild      RegistryChild    @relation(fields: [registryChildId], references: [id])
-}
-
-model CSRImpactSnapshot {
-  id                           String           @id @default(cuid())
-  corporateSponsorId           String
-  
-  // Aggregated ESG Metrics
-  childrenSponsored            Int
-  activeSponsorships           Int
-  educationProgramsSupported   Int
-  
-  // Snapshot Governance (Append Only)
-  generatedAt                  DateTime         @default(now())
-
-  corporateSponsor             CorporateSponsor @relation(fields: [corporateSponsorId], references: [id])
-}
-
-// ----------------------------------------------------------------------
-// PHASE 10: SCALABLE EMAIL ECOSYSTEM
-// ----------------------------------------------------------------------
-
 enum RecipientType {
   DONOR
   CORPORATE
@@ -807,7 +731,7 @@ enum EmailEventType {
   CORPORATE_RENEWAL_WINDOW
   CONTRACT_EXPIRY_WARNING
   CSR_SNAPSHOT_READY
-  GRADUATED // For Graduation announcements
+  GRADUATED
 }
 
 enum DeliveryStatus {
@@ -816,37 +740,6 @@ enum DeliveryStatus {
   FAILED
   BOUNCED
 }
-
-model EmailPreferences {
-  id                  String   @id @default(cuid())
-  userId              String   @unique
-  receiveImpactUpdates Boolean  @default(true)
-  receiveMilestones   Boolean  @default(true)
-  receiveRiskAlerts   Boolean  @default(true)
-  receiveCSRReports   Boolean  @default(true)
-  updatedAt           DateTime @updatedAt
-
-  user                User     @relation(fields: [userId], references: [id])
-}
-
-model EmailLog {
-  id              String         @id @default(cuid())
-  eventId         String         @unique // Idempotency Enforcement: ${eventType}-${recipientId}-${entityId}
-  recipientId     String
-  recipientType   RecipientType
-  eventType       EmailEventType
-  templateVersion String
-  sentAt          DateTime?
-  deliveryStatus  DeliveryStatus @default(PENDING)
-  errorMessage    String?        @db.Text
-  createdAt       DateTime       @default(now())
-
-  user            User           @relation(fields: [recipientId], references: [id], onDelete: Cascade)
-}
-
-// ----------------------------------------------------------------------
-// PHASE 11: INTERNATIONALIZATION & LOCALIZATION ENGINE
-// ----------------------------------------------------------------------
 
 enum SupportedLocale {
   EN
@@ -860,12 +753,4 @@ enum SupportedCurrency {
   CAD
   INR
   EUR
-}
-
-model ExchangeRateSnapshot {
-  id            String   @id @default(cuid())
-  baseCurrency  SupportedCurrency
-  targetCurrency SupportedCurrency
-  rate          Float
-  capturedAt    DateTime @default(now())
 }

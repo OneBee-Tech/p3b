@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowUpRight, Globe, Calendar } from "lucide-react";
 import prisma from "@/lib/prisma";
 
@@ -77,9 +78,9 @@ export async function ImpactGallery() {
 
                                     {/* Hover Reveal Action */}
                                     <div className="mt-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                                        <button className="text-white hover:text-impact-gold font-bold flex items-center gap-2 text-sm">
+                                        <Link href={`/stories/${story.id}`} className="text-white hover:text-impact-gold font-bold flex items-center gap-2 text-sm">
                                             Read Full Report <ArrowUpRight className="w-4 h-4" />
-                                        </button>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

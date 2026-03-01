@@ -11,11 +11,11 @@ async function getTransparencyMetrics() {
         });
 
         return {
-            fundsRouted: stats._sum.fundsRaised ? Number(stats._sum.fundsRaised) : 142050,
+            fundsRouted: stats._sum.fundsRaised ? Number(stats._sum.fundsRaised) : 0,
             isLive: !!stats._sum.fundsRaised
         };
     } catch {
-        return { fundsRouted: 142050, isLive: false };
+        return { fundsRouted: 0, isLive: false };
     }
 }
 

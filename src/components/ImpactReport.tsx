@@ -1,13 +1,45 @@
 import { Download, PieChart, BarChart3, TrendingUp } from "lucide-react";
+import prisma from "@/lib/prisma";
 
-export function ImpactReport() {
+export async function ImpactReport() {
+    const currentYear = new Date().getFullYear();
+    const startOfThisYear = new Date(`${currentYear}-01-01T00:00:00.000Z`);
+    const startOfLastYear = new Date(`${currentYear - 1}-01-01T00:00:00.000Z`);
+
+    // 1. Growth Metrics (YoY Donations)
+    const [thisYearDonations, lastYearDonations] = await Promise.all([
+        prisma.donation.aggregate({
+            _sum: { amount: true },
+            where: { status: 'SUCCEEDED', createdAt: { gte: startOfThisYear } }
+        }),
+        prisma.donation.aggregate({
+            _sum: { amount: true },
+            where: { status: 'SUCCEEDED', createdAt: { gte: startOfLastYear, lt: startOfThisYear } }
+        })
+    ]);
+
+    const currentTotal = Number(thisYearDonations._sum.amount || 0);
+    const previousTotal = Number(lastYearDonations._sum.amount || 0);
+
+    let yoyGrowth = 0;
+    if (previousTotal > 0) {
+        yoyGrowth = Math.round(((currentTotal - previousTotal) / previousTotal) * 100);
+    } else if (currentTotal > 0) {
+        yoyGrowth = 100; // 100% growth if we went from 0 to something
+    }
+
+    // 2. Milestone Metrics
+    const totalSponsored = await prisma.registryChild.count({
+        where: { status: 'SPONSORED', isArchived: false, deletedAt: null }
+    });
+
     return (
         <section className="py-24 bg-gray-50 text-cinematic-dark">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
                     <div>
                         <span className="block text-trust-blue font-bold tracking-wider text-sm uppercase mb-2">Annual Transparency</span>
-                        <h2 className="text-4xl md:text-5xl font-heading font-bold">2025 Impact Report</h2>
+                        <h2 className="text-4xl md:text-5xl font-heading font-bold">{currentYear} Impact Report</h2>
                     </div>
                     <div className="text-right">
                         <button className="bg-white border border-gray-200 hover:border-trust-blue text-cinematic-dark px-6 py-3 rounded-lg flex items-center gap-2 font-medium transition-colors shadow-sm">
@@ -41,7 +73,7 @@ export function ImpactReport() {
                             </div>
                         </div>
                         <p className="text-xs text-gray-500 mt-6 pt-6 border-t border-gray-50">
-                            We maintain one of the highest efficiency ratings in the sector.
+                            Our 92/8 efficiency ratio is a strict organizational mandate enforced on all program ledgers.
                         </p>
                     </div>
 
@@ -52,8 +84,8 @@ export function ImpactReport() {
                             <TrendingUp className="w-5 h-5 text-emerald-500" />
                         </div>
                         <div className="flex items-end gap-2 mb-2">
-                            <span className="text-4xl font-bold text-cinematic-dark">+45%</span>
-                            <span className="text-sm text-emerald-600 font-medium mb-1">increase</span>
+                            <span className="text-4xl font-bold text-cinematic-dark">{yoyGrowth >= 0 ? '+' : ''}{yoyGrowth}%</span>
+                            <span className="text-sm text-emerald-600 font-medium mb-1">vs Last Year</span>
                         </div>
                         <p className="text-gray-500 text-sm mb-6">Donations received compared to previous fiscal year.</p>
 
@@ -73,10 +105,10 @@ export function ImpactReport() {
                                 <h3 className="font-heading font-bold text-xl text-white">Milestone Reached</h3>
                                 <BarChart3 className="w-5 h-5 text-impact-gold" />
                             </div>
-                            <div className="text-5xl font-bold text-impact-gold mb-2">1,000th</div>
-                            <p className="text-xl font-medium mb-4">Child Sponsored</p>
+                            <div className="text-5xl font-bold text-impact-gold mb-2">{totalSponsored.toLocaleString()}</div>
+                            <p className="text-xl font-medium mb-4">Children Sponsored</p>
                             <p className="text-gray-400 text-sm leading-relaxed">
-                                This year, we welcomed our 1,000th sponsored child into our educational support programs.
+                                A live count of children currently receiving active educational and wellbeing support across all regions.
                             </p>
                         </div>
                         <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-impact-gold/10 rounded-full blur-3xl z-0" />

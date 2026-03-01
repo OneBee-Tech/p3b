@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, MapPin, Pickaxe, ArrowRight } from "lucide-react";
+import { BookOpen, MapPin, Pickaxe } from "lucide-react";
 
 export function SponsorshipImpactTiers() {
     return (
@@ -12,7 +12,7 @@ export function SponsorshipImpactTiers() {
                 <div className="text-center max-w-3xl mx-auto mb-16">
                     <h2 className="text-4xl font-heading font-bold text-cinematic-dark mb-6">Impact Participation Layers</h2>
                     <p className="text-lg text-gray-600 leading-relaxed font-body">
-                        Choose how you want to support a child's future. Your sponsorship tier defines your direct impact. Currency equivalents may vary by donor region and payment processor.
+                        Choose how you want to support a child&apos;s future. Your sponsorship tier defines your direct impact. Currency equivalents may vary by donor region and payment processor.
                     </p>
                 </div>
 
@@ -61,7 +61,7 @@ export function SponsorshipImpactTiers() {
                             <span className="text-4xl font-bold">$30</span>
                             <span className="text-white/60 font-medium">/ month</span>
                         </div>
-                        <p className="text-sm text-white/50 mb-6 italic">Supports a child's full learning cycle.</p>
+                        <p className="text-sm text-white/50 mb-6 italic">Supports a child&apos;s full learning cycle.</p>
                         <ul className="space-y-4 mb-8 text-white/80 flex-grow">
                             <li className="flex items-start gap-3">
                                 <div className="mt-1 w-1.5 h-1.5 rounded-full bg-impact-gold" />

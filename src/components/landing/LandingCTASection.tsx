@@ -13,7 +13,7 @@ export function LandingCTASection() {
 
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                 <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6 tracking-tight">
-                    Ready to change a child's life?
+                    Ready to change a child&apos;s life?
                 </h2>
                 <p className="text-xl text-white/80 mb-10 leading-relaxed font-body">
                     Join a collective of sponsors providing the education, supplies, and resources needed to break the cycle of poverty permanently. Your gift will support children with the most urgent needs.

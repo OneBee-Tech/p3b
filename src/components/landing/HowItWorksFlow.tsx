@@ -80,10 +80,7 @@ export function HowItWorksFlow() {
                         {/* Overlay Gradient */}
                         <div className="absolute inset-0 bg-gradient-to-t from-cinematic-dark via-cinematic-dark/20 to-transparent" />
 
-                        {/* Privacy Disclaimer */}
-                        <div className="absolute top-4 right-4 bg-cinematic-dark/80 backdrop-blur-md rounded-lg p-3 border border-white/20 text-xs text-white/80 max-w-[250px] text-right">
-                            Images are representative. Child identities are protected for safety.
-                        </div>
+
 
                         <div className="absolute bottom-8 left-8 right-8">
                             <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">

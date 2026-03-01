@@ -111,7 +111,7 @@ export default async function SignInPage(props: { searchParams: Promise<{ callba
                                 />
                             </div>
                             <p className="mt-2 text-xs text-gray-500 text-center">
-                                No password required. We’ll send you a private access link.
+                                No password required. We&apos;ll send you a private access link.
                             </p>
                         </div>
 
