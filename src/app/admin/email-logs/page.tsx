@@ -6,15 +6,17 @@ import { redirect } from "next/navigation";
 export default async function EmailLogsAdminPage({
     searchParams
 }: {
-    searchParams: { status?: string; event?: string }
+    searchParams: Promise<{ status?: string; event?: string }>;
 }) {
+    const resolvedSearchParams = await searchParams;
+
     // Basic Filtering
     const whereClause: any = {};
-    if (searchParams.status && searchParams.status !== "ALL") {
-        whereClause.deliveryStatus = searchParams.status;
+    if (resolvedSearchParams.status && resolvedSearchParams.status !== "ALL") {
+        whereClause.deliveryStatus = resolvedSearchParams.status;
     }
-    if (searchParams.event && searchParams.event !== "ALL") {
-        whereClause.eventType = searchParams.event;
+    if (resolvedSearchParams.event && resolvedSearchParams.event !== "ALL") {
+        whereClause.eventType = resolvedSearchParams.event;
     }
 
     const emailLogs = await (prisma as any).emailLog.findMany({
@@ -69,8 +71,8 @@ export default async function EmailLogsAdminPage({
                         {["ALL", "SENT", "PENDING", "FAILED", "BOUNCED"].map(status => (
                             <Link
                                 key={status}
-                                href={`?status=${status}&event=${searchParams.event || 'ALL'}`}
-                                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${(searchParams.status === status || (!searchParams.status && status === 'ALL'))
+                                href={`?status=${status}&event=${resolvedSearchParams.event || 'ALL'}`}
+                                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${(resolvedSearchParams.status === status || (!resolvedSearchParams.status && status === 'ALL'))
                                     ? 'bg-trust-blue text-white'
                                     : 'bg-white/5 text-white/60 hover:bg-white/10 hover:text-white'
                                     }`}

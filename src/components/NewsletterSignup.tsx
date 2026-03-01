@@ -71,7 +71,7 @@ export function NewsletterSignup() {
                         type="email"
                         required
                         placeholder="Enter your email address..."
-                        className="pl-10 h-12 bg-white rounded-xl"
+                        className="pl-10 h-12 bg-white rounded-xl text-cinematic-dark placeholder:text-gray-400"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         disabled={status === "loading"}

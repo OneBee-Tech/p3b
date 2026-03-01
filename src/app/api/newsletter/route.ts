@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { logger } from "@/lib/logger";
+import { createTransport } from "nodemailer";
+import prisma from "@/lib/prisma";
 
 // Simple in-memory rate limiter per IP
 // (For production scale, move this to Upstash Redis alongside BullMQ)
@@ -58,11 +60,42 @@ export async function POST(req: NextRequest) {
             domain: email.split('@')[1] // Log only the domain to avoid PII leak
         });
 
-        // 6. External Dispatcher Stub
-        // Integration point for Brevo/Mailchimp
-        if (process.env.MAILCHIMP_API_KEY || process.env.BREVO_API_KEY) {
-            // e.g., await fetch(`https://api.mailchimp.com/...`)
-            logger.info("External CRM webhook explicitly skipped in this implementation phase per requirements. Passed validation.");
+        // 6. Persist Subscriber to Database (upsert prevents duplicates)
+        await prisma.newsletterSubscriber.upsert({
+            where: { email },
+            update: { isActive: true }, // Re-activate if they previously unsubscribed
+            create: { email },
+        });
+
+        // 7. Send Welcome Auto-Response Email
+        try {
+            const transport = createTransport({
+                host: process.env.EMAIL_SERVER_HOST,
+                port: Number(process.env.EMAIL_SERVER_PORT),
+                auth: {
+                    user: process.env.EMAIL_SERVER_USER,
+                    pass: process.env.EMAIL_SERVER_PASSWORD,
+                },
+            });
+
+            await transport.sendMail({
+                from: process.env.EMAIL_FROM,
+                to: email, // Directly to the subscriber
+                subject: "Welcome to OneDollarOneChild!",
+                html: `
+                    <div style="font-family: sans-serif; padding: 20px; color: #1a202c; max-width: 600px; margin: 0 auto; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;">
+                        <h2 style="color: #020817; margin-top: 0;">Welcome to the Movement!</h2>
+                        <p>Thank you for subscribing to OneDollarOneChild.</p>
+                        <p>You have successfully joined our exclusive mailing list. You will now receive verifiable impact stories, emergency appeals, and transparency updates directly to this inbox.</p>
+                        <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 24px 0;" />
+                        <p style="font-size: 12px; color: #64748b; margin-bottom: 0;">If you received this in error, you can safely ignore it. You can unsubscribe at any time.</p>
+                    </div>
+                `,
+            });
+            logger.info({ msg: "Sent welcome email", domain: email.split('@')[1] });
+        } catch (emailErr: any) {
+            logger.error({ msg: "Failed to send welcome email", error: emailErr.message });
+            // Do not fail the request if the email dispatch drops
         }
 
         return NextResponse.json({ success: true, message: "Subscription received" }, { status: 200 });

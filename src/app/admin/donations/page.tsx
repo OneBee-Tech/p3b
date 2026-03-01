@@ -8,18 +8,19 @@ export const dynamic = "force-dynamic";
 export default async function DonationMonitorPage({
     searchParams
 }: {
-    searchParams: { page?: string, type?: string, status?: string }
+    searchParams: Promise<{ page?: string; type?: string; status?: string }>;
 }) {
     const session = await auth();
     if (!session?.user || (session.user as any).role !== "ADMIN") return null;
 
-    const page = Number(searchParams.page) || 1;
+    const resolvedSearchParams = await searchParams;
+    const page = Number(resolvedSearchParams.page) || 1;
     const limit = 20;
     const skip = (page - 1) * limit;
 
     const whereClause: any = {};
-    if (searchParams.type) whereClause.type = searchParams.type;
-    if (searchParams.status) whereClause.status = searchParams.status;
+    if (resolvedSearchParams.type) whereClause.type = resolvedSearchParams.type;
+    if (resolvedSearchParams.status) whereClause.status = resolvedSearchParams.status;
 
     // Fetch total count and paginated donations
     const [totalCount, donations] = await Promise.all([
@@ -67,15 +68,15 @@ export default async function DonationMonitorPage({
                     <Filter className="w-4 h-4" /> Filters:
                 </div>
 
-                <Link href={`/admin/donations?page=1`} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors border ${!searchParams.type && !searchParams.status ? 'bg-white/10 text-white border-white/20' : 'bg-transparent text-white/50 border-white/5 hover:bg-white/5'}`}>
+                <Link href={`/admin/donations?page=1`} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors border ${!resolvedSearchParams.type && !resolvedSearchParams.status ? 'bg-white/10 text-white border-white/20' : 'bg-transparent text-white/50 border-white/5 hover:bg-white/5'}`}>
                     All View
                 </Link>
 
-                <Link href={`/admin/donations?type=RECURRING_MONTHLY&page=1`} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors border ${searchParams.type === 'RECURRING_MONTHLY' ? 'bg-trust-blue/20 text-trust-blue border-trust-blue/30' : 'bg-transparent text-white/50 border-white/5 hover:bg-white/5'}`}>
+                <Link href={`/admin/donations?type=RECURRING_MONTHLY&page=1`} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors border ${resolvedSearchParams.type === 'RECURRING_MONTHLY' ? 'bg-trust-blue/20 text-trust-blue border-trust-blue/30' : 'bg-transparent text-white/50 border-white/5 hover:bg-white/5'}`}>
                     Recurring Only
                 </Link>
 
-                <Link href={`/admin/donations?status=SUCCEEDED&page=1`} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors border ${searchParams.status === 'SUCCEEDED' ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : 'bg-transparent text-white/50 border-white/5 hover:bg-white/5'}`}>
+                <Link href={`/admin/donations?status=SUCCEEDED&page=1`} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors border ${resolvedSearchParams.status === 'SUCCEEDED' ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : 'bg-transparent text-white/50 border-white/5 hover:bg-white/5'}`}>
                     Succeeded Only
                 </Link>
 
@@ -125,16 +126,16 @@ export default async function DonationMonitorPage({
                                     </td>
                                     <td className="p-4 text-center">
                                         <span className={`px-2 py-1 text-[10px] font-bold uppercase rounded-md ${d.status === "SUCCEEDED" ? "bg-emerald-500/20 text-emerald-400" :
-                                                d.status === "PENDING" ? "bg-impact-gold/20 text-impact-gold" :
-                                                    "bg-red-500/20 text-red-400"
+                                            d.status === "PENDING" ? "bg-impact-gold/20 text-impact-gold" :
+                                                "bg-red-500/20 text-red-400"
                                             }`}>
                                             {d.status}
                                         </span>
                                     </td>
                                     <td className="p-4 text-center">
                                         <span className={`px-2 py-1 text-[10px] font-bold uppercase rounded-md ${d.allocationStatus === "APPROVED" ? "bg-emerald-500/20 text-emerald-400" :
-                                                d.allocationStatus === "AUTOMATED" ? "bg-trust-blue/20 text-trust-blue" :
-                                                    "bg-white/10 text-white/60"
+                                            d.allocationStatus === "AUTOMATED" ? "bg-trust-blue/20 text-trust-blue" :
+                                                "bg-white/10 text-white/60"
                                             }`}>
                                             {d.allocationStatus}
                                         </span>
@@ -160,12 +161,12 @@ export default async function DonationMonitorPage({
                         <p className="text-xs text-white/40">Showing page {page} of {totalPages}</p>
                         <div className="flex items-center gap-2">
                             {page > 1 && (
-                                <Link href={`/admin/donations?page=${page - 1}${searchParams.type ? `&type=${searchParams.type}` : ''}${searchParams.status ? `&status=${searchParams.status}` : ''}`} className="px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs font-medium text-white transition-colors">
+                                <Link href={`/admin/donations?page=${page - 1}${resolvedSearchParams.type ? `&type=${resolvedSearchParams.type}` : ''}${resolvedSearchParams.status ? `&status=${resolvedSearchParams.status}` : ''}`} className="px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs font-medium text-white transition-colors">
                                     Previous
                                 </Link>
                             )}
                             {page < totalPages && (
-                                <Link href={`/admin/donations?page=${page + 1}${searchParams.type ? `&type=${searchParams.type}` : ''}${searchParams.status ? `&status=${searchParams.status}` : ''}`} className="px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs font-medium text-white transition-colors">
+                                <Link href={`/admin/donations?page=${page + 1}${resolvedSearchParams.type ? `&type=${resolvedSearchParams.type}` : ''}${resolvedSearchParams.status ? `&status=${resolvedSearchParams.status}` : ''}`} className="px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs font-medium text-white transition-colors">
                                     Next Page
                                 </Link>
                             )}

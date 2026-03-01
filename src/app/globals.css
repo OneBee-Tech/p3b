@@ -62,6 +62,11 @@ body {
   @apply bg-warm-bg text-cinematic-dark font-body antialiased;
 }
 
+/* Global interactive cursor */
+a, button, [role="button"], select, label[for], input[type="checkbox"], input[type="radio"] {
+  cursor: pointer;
+}
+
 h1, h2, h3, h4, h5, h6 {
   @apply font-heading tracking-tight;
 }

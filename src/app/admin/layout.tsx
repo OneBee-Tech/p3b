@@ -1,28 +1,10 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import Link from "next/link";
-import { LayoutDashboard, Users, HeartHandshake, FileText, BarChart3, ShieldCheck, Settings, Mail, LogOut, Activity, Globe } from "lucide-react";
 import Image from "next/image";
 import { AdminAccessTracker } from "./AdminAccessTracker";
-
-const navItems = [
-    { name: "Dashboard Overview", href: "/admin", icon: LayoutDashboard },
-    { name: "Children Registry", href: "/admin/children", icon: Users },
-    { name: "Donations Monitor", href: "/admin/donations", icon: HeartHandshake },
-    { name: "Referrals Intake", href: "/admin/referrals", icon: FileText },
-    { name: "Inquiries", href: "/admin/inquiries", icon: Mail },
-    { name: "Impact Reports", href: "/admin/reports", icon: BarChart3 },
-    { name: "Progress Reports", href: "/admin/progress", icon: FileText },
-    { name: "Milestones", href: "/admin/milestones", icon: BarChart3 },
-    { name: "Compliance Docs", href: "/admin/compliance", icon: ShieldCheck },
-    { name: "Sponsorship Health", href: "/admin/sponsorship-health", icon: Activity },
-    { name: "Impact Intelligence", href: "/admin/impact-intelligence", icon: Activity },
-    { name: "Corporate Sponsors", href: "/admin/corporate", icon: ShieldCheck },
-    { name: "Institutional CSR", href: "/admin/corporate-impact", icon: Activity },
-    { name: "Impact Stories CMS", href: "/admin/stories", icon: Globe },
-    { name: "Email Outbox Logs", href: "/admin/email-logs", icon: Mail },
-    { name: "Settings", href: "/admin/settings", icon: Settings },
-];
+import { AdminSidebarNav } from "./AdminSidebarNav";
+import prisma from "@/lib/prisma";
 
 export default async function AdminLayout({
     children,
@@ -31,10 +13,22 @@ export default async function AdminLayout({
 }) {
     const session = await auth();
 
-    // 1. Role-Based Access Control
     if (!session?.user || (session.user as any).role !== "ADMIN") {
         redirect("/");
     }
+
+    // Fetch unread/new counts for notification badges
+    const [newInquiries, newReferrals, newChildren] = await Promise.all([
+        prisma.contactInquiry.count({ where: { status: "NEW", isArchived: false } }),
+        prisma.referral.count({ where: { status: "PENDING", isArchived: false } }),
+        prisma.registryChild.count({ where: { deletedAt: null, isArchived: false, safeguardingReviewStatus: "PENDING" } }),
+    ]);
+
+    const badges = {
+        inquiries: newInquiries,
+        referrals: newReferrals,
+        children: newChildren,
+    };
 
     return (
         <div className="min-h-screen bg-cinematic-dark text-white flex">
@@ -52,39 +46,10 @@ export default async function AdminLayout({
                     </Link>
                 </div>
 
-                <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-                    {navItems.map((item) => {
-                        const Icon = item.icon;
-                        return (
-                            <Link
-                                key={item.name}
-                                href={item.href}
-                                className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-white/70 rounded-xl hover:text-white hover:bg-trust-blue/20 transition-all border border-transparent hover:border-trust-blue/30"
-                            >
-                                <Icon className="w-5 h-5" />
-                                {item.name}
-                            </Link>
-                        );
-                    })}
-                </nav>
-
-                <div className="p-4 border-t border-white/10">
-                    <div className="flex items-center gap-3 px-4 py-3 text-sm">
-                        <div className="w-8 h-8 rounded-full bg-trust-blue/30 text-trust-blue flex items-center justify-center font-bold">
-                            {session.user.name?.charAt(0) || "A"}
-                        </div>
-                        <div className="flex-1 overflow-hidden">
-                            <p className="font-bold text-white truncate">{session.user.name}</p>
-                            <p className="text-xs text-white/50 truncate">Administrator</p>
-                        </div>
-                    </div>
-                    <Link
-                        href="/"
-                        className="mt-2 flex items-center gap-3 px-4 py-2 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-xl transition-all"
-                    >
-                        <LogOut className="w-4 h-4" /> Exit Admin
-                    </Link>
-                </div>
+                <AdminSidebarNav
+                    badges={badges}
+                    adminName={session.user.name || "Admin"}
+                />
             </aside>
 
             {/* Main Content */}
