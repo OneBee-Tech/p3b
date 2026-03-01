@@ -14,6 +14,7 @@
     "@bull-board/api": "^6.20.3",
     "@bull-board/ui": "^6.20.3",
     "@google/genai": "^1.43.0",
+    "@next/third-parties": "^16.1.6",
     "@prisma/client": "6.19.2",
     "@radix-ui/react-progress": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",

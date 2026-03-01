@@ -11,6 +11,7 @@ import { FloatingWhatsAppButton } from "@/components/global/FloatingWhatsAppButt
 import { auth } from "@/auth";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/next"
+import { GoogleAnalytics } from "@next/third-parties/google"
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -31,8 +32,20 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "OneDollarOneChild",
-  description: "OneDollarOneChild",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://onedollaronechild.org'),
+  title: {
+    template: '%s | OneDollarOneChild',
+    default: 'OneDollarOneChild - Educating the Future',
+  },
+  description: 'Support a child’s education and future. Even one dollar a day creates lasting impact.',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'OneDollarOneChild',
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
 };
 
 export default async function RootLayout({
@@ -61,8 +74,35 @@ export default async function RootLayout({
         <FloatingWhatsAppButton />
         <AnalyticsTracker />
         <ClientAutoTranslator />
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "NGO",
+              name: "OneDollarOneChild",
+              url: process.env.NEXT_PUBLIC_SITE_URL || "https://onedollaronechild.org",
+              logo: `${process.env.NEXT_PUBLIC_SITE_URL || "https://onedollaronechild.org"}/logo.png`,
+              contactPoint: {
+                "@type": "ContactPoint",
+                email: "support@onedollaronechild.org",
+                contactType: "customer service"
+              },
+              sameAs: [
+                "https://facebook.com/onedollaronechild",
+                "https://x.com/onedollaronechild",
+                "https://linkedin.com/company/onedollaronechild"
+              ],
+            }),
+          }}
+        />
+
         <SpeedInsights />
         <Analytics />
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        )}
       </body>
     </html>
   );

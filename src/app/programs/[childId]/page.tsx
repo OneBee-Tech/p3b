@@ -3,10 +3,43 @@ import { Button } from "@/components/ui/button";
 import { Heart, MapPin, BookOpen, ShieldCheck, DollarSign, AlertCircle, Trophy, FileText, BarChart3 } from "lucide-react";
 import { notFound } from "next/navigation";
 import prisma from "@/lib/prisma";
+import type { Metadata, ResolvingMetadata } from "next";
 
 export const dynamic = "force-dynamic";
 
-export default async function ChildSponsorPage({ params }: { params: Promise<{ childId: string }> }) {
+type Props = {
+    params: Promise<{ childId: string }>
+}
+
+export async function generateMetadata(
+    { params }: Props,
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+    const { childId } = await params;
+
+    const child = await prisma.registryChild.findUnique({
+        where: { id: childId, deletedAt: null, isArchived: false, privacyMode: 'PUBLIC' },
+        select: { displayName: true, age: true, region: true, educationLevel: true }
+    });
+
+    if (!child) return { title: 'Child Not Found' };
+
+    const title = `Sponsor ${child.displayName}`;
+    const description = `Help support ${child.displayName}, a ${child.age}-year-old student from ${child.region} currently in ${child.educationLevel}. Join us in building a Brighter Future.`;
+
+    return {
+        title,
+        description,
+        openGraph: {
+            title,
+            description,
+            type: 'profile',
+            images: ['/og-image-sponsorship.jpg']
+        }
+    };
+}
+
+export default async function ChildSponsorPage({ params }: Props) {
     const { childId } = await params;
 
     const child = await prisma.registryChild.findUnique({

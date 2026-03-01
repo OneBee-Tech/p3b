@@ -4,10 +4,44 @@ import Image from "next/image";
 import { Calendar, Globe, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { ContextRibbon } from "@/components/ContextRibbon";
+import { SocialShare } from "@/components/SocialShare";
+import type { Metadata, ResolvingMetadata } from "next";
 
 export const revalidate = 60; // 1-minute cache
 
-export default async function StoryPage({ params }: { params: Promise<{ id: string }> }) {
+type Props = {
+    params: Promise<{ id: string }>
+}
+
+export async function generateMetadata(
+    { params }: Props,
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+    const { id } = await params;
+
+    const story = await prisma.impactStory.findUnique({
+        where: { id: id, status: 'PUBLISHED' },
+        select: { title: true, content: true, imageUrl: true }
+    });
+
+    if (!story) return { title: 'Story Not Found' };
+
+    const rawDescription = story.content.substring(0, 160).trim();
+    const description = rawDescription.length === 160 ? `${rawDescription}...` : rawDescription;
+
+    return {
+        title: story.title,
+        description,
+        openGraph: {
+            title: story.title,
+            description,
+            type: 'article',
+            images: story.imageUrl ? [story.imageUrl] : ['/og-image-impact.jpg'],
+        }
+    };
+}
+
+export default async function StoryPage({ params }: Props) {
     const { id: storyId } = await params;
 
     const story = await prisma.impactStory.findUnique({
@@ -66,9 +100,14 @@ export default async function StoryPage({ params }: { params: Promise<{ id: stri
                         {story.content}
 
                         <div className="mt-12 pt-8 border-t border-gray-100 italic text-gray-500 text-sm flex flex-col gap-2">
-                            <p className="font-medium text-gray-400 mt-4">
+                            <p className="font-medium text-gray-400">
+                                <span className="text-trust-blue font-bold tracking-wider uppercase text-xs">Verified Impact Report</span><br />
                                 This impact story has been verified by regional field coordinators and published in accordance with our safeguarding and privacy ethics.
                             </p>
+                        </div>
+
+                        <div className="mt-8">
+                            <SocialShare title={story.title} />
                         </div>
                     </div>
                 </div>
