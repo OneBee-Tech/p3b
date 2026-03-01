@@ -9,6 +9,7 @@ import { ImpactGalleryPreview } from '@/components/landing/ImpactGalleryPreview'
 import { FounderStoryBlock } from '@/components/landing/FounderStoryBlock';
 import { DashboardTransparencyPreview } from '@/components/landing/DashboardTransparencyPreview';
 import { LandingCTASection } from '@/components/landing/LandingCTASection';
+import { LandingNewsletterCTA } from '@/components/landing/LandingNewsletterCTA';
 import { TrustBadgeStrip } from '@/components/TrustBadgeStrip';
 
 export const metadata: Metadata = {
@@ -67,6 +68,9 @@ export default function MarketingLandingPage() {
 
             {/* Actionable Transparency Proof */}
             <DashboardTransparencyPreview />
+
+            {/* Newsletter Outreach Integration */}
+            <LandingNewsletterCTA />
 
             {/* 7. Final Conversion Hook */}
             <LandingCTASection />

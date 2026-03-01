@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Send, CheckCircle2, AlertCircle, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -15,9 +16,19 @@ const INQUIRY_TYPES = [
 ];
 
 export function ContactForm() {
+    const searchParams = useSearchParams();
+    const typeQuery = searchParams.get("type");
+
     const [form, setForm] = useState({ name: "", email: "", inquiryType: "", message: "" });
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMsg, setErrorMsg] = useState("");
+
+    // Initialize inquiryType from query string (if valid)
+    useEffect(() => {
+        if (typeQuery && INQUIRY_TYPES.some(t => t.value === typeQuery)) {
+            setForm(f => ({ ...f, inquiryType: typeQuery }));
+        }
+    }, [typeQuery]);
 
     const charsLeft = 1000 - form.message.length;
 

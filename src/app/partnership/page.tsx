@@ -1,4 +1,5 @@
 import { Building2, Mail } from "lucide-react";
+import Link from "next/link";
 
 export const metadata = {
     title: "Partnerships - OneDollarOneChild",
@@ -17,13 +18,13 @@ export default function PartnershipPage() {
                     We collaborate with corporations, foundations, and community organizations to amplify our impact. If your organization is interested in funding a program, corporate matching, or capacity building, please reach out to our partnerships team.
                 </p>
                 <div className="pt-6 border-t border-gray-100">
-                    <a
-                        href="mailto:partnerships@onedollaronechild.org?subject=Partnership%20Inquiry"
+                    <Link
+                        href="/contact?type=PARTNERSHIP"
                         className="inline-flex items-center justify-center gap-2 w-full px-6 py-4 bg-cinematic-dark hover:bg-cinematic-dark/90 text-white rounded-xl font-bold transition-all shadow-md hover:shadow-lg"
                     >
                         <Mail className="w-5 h-5" />
                         Email Partnerships Team
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

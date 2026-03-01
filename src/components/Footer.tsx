@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import { Heart, Facebook, Twitter, Instagram, Linkedin, Mail, MessageCircle } from "lucide-react";
 import Link from "next/link";
-import { NewsletterSignup } from "@/components/NewsletterSignup";
 
 export function Footer() {
     const pathname = usePathname();
@@ -25,12 +24,15 @@ export function Footer() {
                         </p>
                     </div>
 
-                    {/* Newsletter (Middle) */}
+                    {/* Transparency Links (Middle) */}
                     <div>
-                        <h4 className="font-heading font-semibold text-white mb-6">Stay Connected</h4>
-                        <div className="bg-white/5 p-6 rounded-2xl border border-white/10">
-                            <NewsletterSignup />
-                        </div>
+                        <h4 className="font-heading font-semibold text-white mb-6">Transparency</h4>
+                        <ul className="space-y-4 text-sm">
+                            <li><Link href="/impact" className="hover:text-white transition-colors">Financial Reports</Link></li>
+                            <li><Link href="/impact" className="hover:text-white transition-colors">Impact Data</Link></li>
+                            <li><Link href="/impact" className="hover:text-white transition-colors">Safeguarding Policy</Link></li>
+                            <li><Link href="/impact" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                        </ul>
                     </div>
 
                     {/* Contact Text Links (Right) */}

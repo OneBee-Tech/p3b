@@ -1,4 +1,5 @@
 import { LifeBuoy, Mail } from "lucide-react";
+import Link from "next/link";
 
 export const metadata = {
     title: "Request Assistance - OneDollarOneChild",
@@ -17,13 +18,13 @@ export default function AssistPage() {
                     If your family or community requires immediate educational or supply assistance, please reach out to our support coordination team. All requests are reviewed by our field officers to ensure resources are allocated effectively.
                 </p>
                 <div className="pt-6 border-t border-gray-100">
-                    <a
-                        href="mailto:support@onedollaronechild.org?subject=Request%20Assistance"
+                    <Link
+                        href="/contact?type=REQUEST_ASSISTANCE"
                         className="inline-flex items-center justify-center gap-2 w-full px-6 py-4 bg-trust-blue hover:bg-trust-blue/90 text-white rounded-xl font-bold transition-all shadow-md hover:shadow-lg"
                     >
                         <Mail className="w-5 h-5" />
                         Email Support Team
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>
