@@ -1,14 +1,16 @@
+"use client";
+import { useState } from "react";
 import React from 'react';
 import Head from 'next/head';
 
 export default function HomePage2() {
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <>
       <Head>
         <title>One Dollar. One Child. One Future.</title>
       </Head>
-      <style dangerouslySetInnerHTML={{
-        __html: `
+      <style dangerouslySetInnerHTML={{ __html: `
   :root{
     --navy:#0e2a4d;
     --navy-dark:#0a2040;
@@ -34,10 +36,14 @@ export default function HomePage2() {
   h1,h2,h3{font-family:Georgia,'Times New Roman',serif; margin:0;}
   a{color:inherit;text-decoration:none;}
   img{max-width:100%;display:block;}
-  .wrap{max-width:1500px;margin:0 auto;padding:0 48px;}
+  .wrap{max-width:1500px;margin:0 auto;padding:0 24px;}
+  @media(min-width: 768px) {
+    .wrap { padding: 0 48px; }
+  }
+
   .btn{
     display:inline-flex;align-items:center;gap:8px;
-    padding:14px 26px;border-radius:8px;font-weight:600;
+    padding:12px 24px;border-radius:8px;font-weight:600;
     font-size:0.95rem; cursor:pointer; border:2px solid transparent;
     transition:transform .15s ease, box-shadow .15s ease;
   }
@@ -57,7 +63,11 @@ export default function HomePage2() {
   }
   .header-inner{
     display:flex;align-items:center;justify-content:space-between;
-    padding:16px 48px; width:100%; max-width:1536px; margin:0 auto; box-sizing:border-box;
+    padding:16px 24px; width:100%; max-width:1536px; margin:0 auto; box-sizing:border-box;
+    position: relative;
+  }
+  @media(min-width: 768px) {
+    .header-inner { padding: 16px 48px; }
   }
   .brand{display:flex;align-items:center;gap:8px;font-family:Georgia,serif;font-weight:700;font-size:0.8rem;color:var(--navy);}
   .brand .mark{
@@ -65,10 +75,29 @@ export default function HomePage2() {
     background:var(--navy);color:var(--gold);
     display:flex;align-items:center;justify-content:center;font-size:1rem;
   }
-  nav{display:flex;gap:16px;font-size:0.86rem;font-weight:500;color:var(--ink);}
+  
+  .hamburger { 
+    display: none; 
+    background: none; 
+    border: none; 
+    cursor: pointer; 
+    color: var(--navy); 
+    padding: 4px;
+  }
+
+  nav{
+    display:flex;
+    gap:16px;
+    font-size:0.86rem;
+    font-weight:500;
+    color:var(--ink);
+    align-items:center;
+  }
   nav a{opacity:0.85;}
   nav a.active{color:var(--green);opacity:1;border-bottom:2px solid var(--green);padding-bottom:6px;}
   .header-cta{white-space:nowrap;}
+  .mobile-only-cta{display:none;}
+  .desktop-only-cta{display:inline-flex;}
 
   /* HERO */
   .hero{
@@ -95,7 +124,11 @@ export default function HomePage2() {
     border:1px solid rgba(255,255,255,0.08);
   }
   .hero-visual .glyph{font-size:5rem;opacity:0.9;}
+  
+
+  .hero-badge-container { position: relative; height: 100%; min-height: 350px; }
   .hero-badge{
+
     position:absolute;bottom:85px;left:475px;background:#fff;color:var(--ink);
     border-radius:12px;padding:16px 18px;box-shadow:0 12px 30px rgba(0,0,0,0.18);
     width:max-content;font-size:0.85rem;
@@ -148,15 +181,17 @@ export default function HomePage2() {
   .panel h3{font-size:1.05rem;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
   .panel.good h3{color:var(--green-dark);}
   .panel.bad h3{color:var(--red);}
+  
   .item-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px;}
   .panel.bad .item-grid{grid-template-columns:repeat(5,1fr);}
+  
   .item{text-align:center;font-size:0.78rem;color:var(--muted);}
   .item .ic{font-size:1.5rem;display:flex;justify-content:center;margin-bottom:6px;}
   .panel.good .item .ic{color:var(--green);}
   .panel.bad .item .ic{color:var(--red);}
   .item b{display:block;color:var(--ink);font-size:0.82rem;margin-bottom:2px;}
   .panel-photo{
-    height:120px;border-radius:8px;margin-top:6px;
+    height:160px;border-radius:8px;margin-top:6px;
     display:flex;align-items:center;justify-content:center;font-size:2.2rem;
     overflow:hidden;
   }
@@ -209,7 +244,7 @@ export default function HomePage2() {
   /* FOUNDER + TRANSPARENCY */
   .two-col{display:grid;grid-template-columns:47fr 53fr;gap:24px;}
   .card{border:1px solid var(--line);border-radius:12px;padding:26px;}
-  .founder{display:flex;gap:18px;}
+  .founder{display:flex;gap:18px;flex-wrap:wrap;}
   .founder-photo{
     width:110px;height:130px;border-radius:8px;flex-shrink:0;
     background:linear-gradient(135deg,#d9e4f0,#b9cbe0);
@@ -228,7 +263,7 @@ export default function HomePage2() {
   .checklist li:last-child{border-bottom:none;}
   .checklist .tick{color:var(--green);font-weight:700;}
 
-  .donut-row{display:flex;align-items:center;gap:24px;margin-top:16px;}
+  .donut-row{display:flex;align-items:center;gap:24px;margin-top:16px;flex-wrap:wrap;justify-content:center;}
   .donut{
     width:130px;height:130px;border-radius:50%;flex-shrink:0;
     background:conic-gradient(var(--green) 0% 70%, var(--gold) 70% 85%, #7a5fb0 85% 95%, #3b7fd1 95% 100%);
@@ -283,50 +318,100 @@ export default function HomePage2() {
     display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:0.78rem;color:#8fa0b3;}
   .socials{display:flex;gap:14px;margin-top:10px;}
 
-  @media (max-width:900px){
-    .header-inner{flex-direction:column-reverse; gap:12px; justify-content:center;}
-    .hero-inner{grid-template-columns:1fr; text-align:center;}
+  /* RESPONSIVE STYLES (NO NESTING!) */
+  @media (max-width:992px){
+    .header-inner{padding: 16px 24px;}
+    .hamburger { display: block; }
+    nav {
+      display: none;
+      flex-direction: column;
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: #fff; padding: 24px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      z-index: 100;
+      gap: 16px;
+      border-top: 1px solid var(--line);
+      align-items: flex-start;
+    }
+    nav.mobile-open { display: flex; }
+    nav a { 
+      padding: 10px 0; 
+      border-bottom: 1px solid var(--line); 
+      width: 100%; 
+      opacity: 1;
+    }
+    nav a.active { border-bottom: 2px solid var(--green); padding-bottom: 10px; }
+    nav .header-cta { width: 100%; text-align: center; justify-content: center; margin-top: 12px; }
+    .mobile-only-cta { display: inline-flex !important; }
+    .desktop-only-cta { display: none !important; }
+
+    .hero-inner{grid-template-columns:1fr; text-align:center; padding: 48px 24px;}
     .hero-actions{justify-content:center;}
+    
+    .hero-badge-container { min-height: auto; height: auto; }
+    .hero {
+      background: 
+        linear-gradient(180deg, rgba(14, 42, 77, 0.9) 0%, rgba(14, 42, 77, 0.6) 50%, rgba(14, 42, 77, 0.9) 100%),
+        url('/hero-bg.jpg') no-repeat right top/cover;
+    }
+    .hero-badge { position: relative; bottom: auto; left: auto; margin: 32px auto 0; width: 100%; max-width: 320px; }
+
+    
     .stats{grid-template-columns:repeat(3,1fr);}
     .stat:nth-child(3){border-right:none;}
+    
     .compare,.two-col{grid-template-columns:1fr;}
-    .item-grid{grid-template-columns:repeat(2,1fr);}
+    
+    .item-grid, .panel.bad .item-grid {grid-template-columns:repeat(2,1fr);}
+    
+    .steps-wrap { flex-direction: column; align-items: center; gap: 24px; }
+    .step-arrow { transform: rotate(90deg); margin: 0; }
+    
     .stories{grid-template-columns:1fr;}
     .give-grid{grid-template-columns:repeat(2,1fr);}
     .footer-grid{grid-template-columns:repeat(2,1fr);}
-    nav{display:none;}
+    .arrow{display:none;}
   }
-  @media (max-width:600px){
+
+  @media (max-width:768px){
     .stats{grid-template-columns:1fr;}
     .stat{border-right:none; border-bottom:1px solid var(--line);}
     .stat:last-child{border-bottom:none;}
-    .item-grid{grid-template-columns:1fr;}
+    .item-grid, .panel.bad .item-grid {grid-template-columns:1fr;}
     .give-grid{grid-template-columns:1fr;}
     .footer-grid{grid-template-columns:1fr;}
     .hero h1{font-size:2rem;}
+    .callout{flex-direction:column; text-align:center; padding: 24px;}
+    .give-option { border-left: none; border-bottom: 1px solid var(--line); padding: 16px 0; }
+    .give-option:last-child { border-bottom: none; }
   }
-`
-      }} />
+` }} />
 
 
 <header>
   <div className="header-inner">
-    <div className="brand">
-      <div className="mark">◆</div>
-      One Dollar. One Child. One Future.
+      <div className="brand">
+        <div className="mark">🍯</div>
+        One Dollar. One Child. One Future.
+      </div>
+      
+      <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
+        <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" strokeWidth="2" fill="none"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+
+      <nav className={menuOpen ? "mobile-open" : ""}>
+        <a href="#home" className="active" onClick={() => setMenuOpen(false)}>Home</a>
+        <a href="#story" onClick={() => setMenuOpen(false)}>Our Story</a>
+        <a href="#how" onClick={() => setMenuOpen(false)}>How It Works</a>
+        <a href="#impact" onClick={() => setMenuOpen(false)}>Our Impact</a>
+        <a href="#transparency" onClick={() => setMenuOpen(false)}>Transparency</a>
+        <a href="#involved" onClick={() => setMenuOpen(false)}>Get Involved</a>
+        <a href="#faq" onClick={() => setMenuOpen(false)}>FAQ</a>
+        <a className="btn btn-green header-cta mobile-only-cta" onClick={() => setMenuOpen(false)}>🌱 Give $1 a Day</a>
+      </nav>
+      <a className="btn btn-green header-cta desktop-only-cta">🌱 Give $1 a Day</a>
     </div>
-    <nav>
-      <a href="#home" className="active">Home</a>
-      <a href="#story">Our Story</a>
-      <a href="#how">How It Works</a>
-      <a href="#impact">Our Impact</a>
-      <a href="#transparency">Transparency</a>
-      <a href="#involved">Get Involved</a>
-      <a href="#faq">FAQ</a>
-    </nav>
-    <a className="btn btn-green header-cta">♥ Give $1 a Day</a>
-  </div>
-</header>
+  </header>
 
 <section className="hero" id="home" style={{ paddingTop: '0' }}>
   <div className="hero-inner wrap">
@@ -339,7 +424,7 @@ export default function HomePage2() {
         <a className="btn btn-play"><span className="play-circle">▶</span> See How It Works</a>
       </div>
     </div>
-    <div style={{ position: 'relative', height: '100%', minHeight: '350px' }}>
+    <div className="hero-badge-container">
       <div className="hero-badge">
         <div className="icon">♥</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', lineHeight: '1.3' }}>
