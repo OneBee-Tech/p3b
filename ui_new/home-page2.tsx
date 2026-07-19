@@ -510,10 +510,10 @@ export default function HomePage2() {
             viewBox="0 0 24 24"
             fill="currentColor">
 
-            <!-- Student -->
+            {/* Student */}
             <path d="M10 11c2.2 0 4-1.8 4-4S12.2 3 10 3 6 4.8 6 7s1.8 4 4 4zm0 2c-2.7 0-8 1.3-8 4v2h11v-2c0-1.1.4-2.1 1-2.9C12.8 13.4 11.4 13 10 13z"/>
 
-            <!-- Search -->
+            {/* Search */}
             <path d="M16.5 13a3.5 3.5 0 1 0 2.24 6.19l2.53 2.53 1.06-1.06-2.53-2.53A3.5 3.5 0 0 0 16.5 13zm0 1.5a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/>
           </svg>
           </div>
@@ -602,7 +602,7 @@ export default function HomePage2() {
 <section style={{ marginBottom: '60px' }}>
   <div className="wrap" style={{ display: 'flex', gap: '20px', alignItems: 'stretch' }}>
     
-    <!-- LEFT COLUMN -->
+    {/* LEFT COLUMN */}
     <div style={{ flex: '2.4', display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <h2 className="section-title" style={{ margin: '0' }}>Real Potential. Better Futures.</h2>
       
@@ -692,7 +692,7 @@ export default function HomePage2() {
       </div>
     </div>
 
-    <!-- RIGHT COLUMN -->
+    {/* RIGHT COLUMN */}
     <div style={{ flex: '1' }}>
       <div className="cta-banner">
         <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>

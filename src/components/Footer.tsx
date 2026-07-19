@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export function Footer() {
     const pathname = usePathname();
-    if (pathname?.startsWith("/admin")) return null;
+    if (pathname?.startsWith("/admin") || pathname === "/home2") return null;
     return (
         <footer className="bg-cinematic-dark text-white/60 pt-20 pb-10 border-t border-white/5">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

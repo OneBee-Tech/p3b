@@ -66,7 +66,7 @@ export function Navbar({ session }: { session?: any }) {
         { href: "/dashboard", label: "My Dashboard" },
     ];
 
-    if (pathname?.startsWith("/admin")) return null;
+    if (pathname?.startsWith("/admin") || pathname === "/home2") return null;
 
     return (
         <nav className={cn(
