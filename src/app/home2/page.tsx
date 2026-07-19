@@ -128,11 +128,11 @@ export default function HomePage2() {
 
   .hero-badge-container { position: relative; height: 100%; min-height: 350px; }
   .hero-badge{
-
     position:absolute;bottom:85px;left:475px;background:#fff;color:var(--ink);
     border-radius:12px;padding:16px 18px;box-shadow:0 12px 30px rgba(0,0,0,0.18);
     width:max-content;font-size:0.85rem;
     display:flex;align-items:center;gap:14px;
+    text-align:left;
   }
   .hero-badge .icon{
     background:#3a833a;color:#fff;
@@ -275,6 +275,9 @@ export default function HomePage2() {
   .donut-legend{font-size:0.8rem;}
   .donut-legend div{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
   .swatch{width:10px;height:10px;border-radius:2px;}
+  #transparency { display: flex; align-items: center; gap: 24px; }
+  .stories-ways-container { display: flex; gap: 20px; align-items: stretch; }
+  .give-options-container { flex: 1; display: flex; gap: 12px; }
 
   /* STORIES */
   .stories{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
@@ -344,6 +347,11 @@ export default function HomePage2() {
     nav .header-cta { width: 100%; text-align: center; justify-content: center; margin-top: 12px; }
     .mobile-only-cta { display: inline-flex !important; }
     .desktop-only-cta { display: none !important; }
+    #transparency { flex-direction: column; align-items: stretch; gap: 20px; }
+    .stories-ways-container { flex-direction: column; align-items: stretch; }
+    .give-options-container { flex-direction: column; gap: 16px; }
+    .give-option { border-left: none !important; border-bottom: 1px solid var(--line); padding: 16px 0; }
+    .give-option:last-child { border-bottom: none; }
 
     .hero-inner{grid-template-columns:1fr; text-align:center; padding: 48px 24px;}
     .hero-actions{justify-content:center;}
@@ -352,7 +360,7 @@ export default function HomePage2() {
     .hero {
       background: 
         linear-gradient(180deg, rgba(14, 42, 77, 0.9) 0%, rgba(14, 42, 77, 0.6) 50%, rgba(14, 42, 77, 0.9) 100%),
-        url('/hero-bg.jpg') no-repeat right top/cover;
+        url('/hero-bg.jpg') no-repeat 75% top/cover;
     }
     .hero-badge { position: relative; bottom: auto; left: auto; margin: 32px auto 0; width: 100%; max-width: 320px; }
 
@@ -382,8 +390,6 @@ export default function HomePage2() {
     .footer-grid{grid-template-columns:1fr;}
     .hero h1{font-size:2rem;}
     .callout{flex-direction:column; text-align:center; padding: 24px;}
-    .give-option { border-left: none; border-bottom: 1px solid var(--line); padding: 16px 0; }
-    .give-option:last-child { border-bottom: none; }
   }
 ` }} />
 
@@ -407,9 +413,9 @@ export default function HomePage2() {
         <a href="#transparency" onClick={() => setMenuOpen(false)}>Transparency</a>
         <a href="#involved" onClick={() => setMenuOpen(false)}>Get Involved</a>
         <a href="#faq" onClick={() => setMenuOpen(false)}>FAQ</a>
-        <a className="btn btn-green header-cta mobile-only-cta" onClick={() => setMenuOpen(false)}>🌱 Give $1 a Day</a>
+        <a className="btn btn-green header-cta mobile-only-cta" onClick={() => setMenuOpen(false)}>♥ Give $1 a Day</a>
       </nav>
-      <a className="btn btn-green header-cta desktop-only-cta">🌱 Give $1 a Day</a>
+      <a className="btn btn-green header-cta desktop-only-cta">♥ Give $1 a Day</a>
     </div>
   </header>
 
@@ -655,7 +661,7 @@ export default function HomePage2() {
       </div>
     </div>
 
-    <div className="card" id="transparency" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+    <div className="card" id="transparency">
       <div style={{ flex: '1' }}>
         <h3 style={{ marginBottom: '16px', color: 'var(--navy)', fontSize: '1.1rem', textAlign: 'center' }}>Our Commitment to Transparency</h3>
         <ul className="checklist">
@@ -685,7 +691,7 @@ export default function HomePage2() {
 </section>
 
 <section style={{ marginBottom: '60px' }}>
-  <div className="wrap" style={{ display: 'flex', gap: '20px', alignItems: 'stretch' }}>
+  <div className="wrap stories-ways-container">
     
     {/* LEFT COLUMN */}
     <div style={{ flex: '2.4', display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -721,7 +727,7 @@ export default function HomePage2() {
       <div className="card" style={{ padding: '16px', display: 'flex', alignItems: 'center', gap: '16px', flex: '1' }}>
         <h3 style={{ fontSize: '1.1rem', color: 'var(--navy)', width: '70px', lineHeight: '1.2', margin: '0' }}>Ways to Give</h3>
         
-        <div style={{ flex: '1', display: 'flex' }}>
+        <div className="give-options-container">
           <div className="give-option">
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
               <div className="ic" style={{ color: 'var(--green)' }}>
