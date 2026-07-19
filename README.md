@@ -54,3 +54,4 @@ To ensure platform stability and audit compliance:
 - **Changelog Mandate:** No hotfixes or patches, regardless of size, may be deployed without updating the centralized Release Changelog.
 - **Schema Traceability:** Any modifications to `prisma/schema.prisma` must be heavily documented to preserve financial isolation guarantees.
 - **Deployment Discipline:** Production deployments must **NOT** occur on Fridays or immediately prior to public holidays unless reacting to a Severity-1 emergency. All deployments must pass the `handover/deployment-checklist.md` validation, requiring explicit post-deployment sign-off from at least one Administrator.
+ 
