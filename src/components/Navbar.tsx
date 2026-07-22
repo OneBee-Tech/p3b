@@ -80,13 +80,19 @@ export function Navbar({ session }: { session?: any }) {
       )}
     >
       <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-12 items-center h-14 md:h-16">
-          {/* 1. Left Column: Brand Title Pinned to Far Left (3 cols) */}
-          <div className="col-span-8 lg:col-span-3 flex items-center shrink-0">
+        <div className="grid grid-cols-12 items-center h-14 md:h-16 gap-x-2">
+          {/* 1. Left Column: Brand Title Pinned to Far Left (4 cols) */}
+          <div className="col-span-8 lg:col-span-4 flex items-center shrink-0">
             <Link href="/" className="flex items-center gap-2 group">
+              {/* Mobile Logo Placeholder (visible on mobile, hidden on tablet/desktop) */}
+              <div className="md:hidden flex items-center justify-center w-8 h-8 rounded bg-[#fdc700] text-white font-extrabold text-xs shadow-sm shrink-0">
+                O1
+              </div>
+              
+              {/* Brand Text (hidden on mobile, visible on tablet/desktop) */}
               <span
                 className={cn(
-                  "font-heading font-extrabold text-sm md:text-base lg:text-lg tracking-tight transition-colors whitespace-nowrap",
+                  "hidden md:block font-heading font-extrabold text-sm md:text-base lg:text-lg tracking-tight transition-colors whitespace-nowrap",
                   isScrolled ? "text-cinematicDark" : "text-white"
                 )}
               >
@@ -95,8 +101,8 @@ export function Navbar({ session }: { session?: any }) {
             </Link>
           </div>
 
-          {/* 2. Center Column: Centered Navigation Links (6 cols) */}
-          <div className="hidden lg:flex col-span-6 items-center justify-center gap-5 xl:gap-7 flex-nowrap">
+          {/* 2. Center Column: Centered Navigation Links (5 cols) */}
+          <div className="hidden lg:flex col-span-5 items-center justify-center gap-4 xl:gap-6 flex-nowrap">
             {primaryNavLinks.map((link) => (
               <Link
                 key={link.href}
