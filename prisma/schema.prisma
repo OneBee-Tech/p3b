@@ -762,3 +762,33 @@ enum SupportedCurrency {
   INR
   EUR
 }
+
+model GlobalSettings {
+  id                  String   @id @default(cuid())
+  organizationName    String
+  registeredOffice    String
+  contactEmails       Json
+  socialLinks         Json
+  craStatus           String?
+  missionStatement    String
+  visionStatement     String
+  transparencyWording String
+  updatedAt           DateTime @updatedAt
+}
+
+model Faq {
+  id       String  @id @default(cuid())
+  question String
+  answer   String
+  order    Int     @default(0)
+  isActive Boolean @default(true)
+}
+
+model HomepageSection {
+  id         String  @id @default(cuid())
+  sectionKey String  @unique
+  title      String?
+  content    String
+  metadata   Json?
+  isActive   Boolean @default(true)
+}

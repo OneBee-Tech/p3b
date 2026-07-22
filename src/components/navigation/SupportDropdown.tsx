@@ -2,10 +2,10 @@
 
 import { useRef, useEffect } from "react";
 import Link from "next/link";
-import { ChevronDown, HeartHandshake, LifeBuoy, Users, Sparkles, Award } from "lucide-react";
+import { ChevronDown, Mail, HelpCircle, LifeBuoy, Newspaper } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export interface GetInvolvedDropdownProps {
+export interface SupportDropdownProps {
   isScrolled?: boolean;
   isOpen: boolean;
   onOpen: () => void;
@@ -13,13 +13,13 @@ export interface GetInvolvedDropdownProps {
   onToggle: () => void;
 }
 
-export function GetInvolvedDropdown({
+export function SupportDropdown({
   isScrolled = false,
   isOpen,
   onOpen,
   onClose,
   onToggle,
-}: GetInvolvedDropdownProps) {
+}: SupportDropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,37 +32,30 @@ export function GetInvolvedDropdown({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [onClose]);
 
-  // Clean centralized entry points routing to /contact?type=...
   const menuItems = [
     {
-      label: "Refer a Child",
-      href: "/contact?type=refer-child",
-      icon: <HeartHandshake className="w-4 h-4 text-trustBlue" />,
-      description: "Submit a referral for a child needing education support.",
+      label: "Contact Us",
+      href: "/contact",
+      icon: <Mail className="w-4 h-4 text-trustBlue" />,
+      description: "Send a direct message to our support teams.",
+    },
+    {
+      label: "FAQs",
+      href: "/faq",
+      icon: <HelpCircle className="w-4 h-4 text-amber-500" />,
+      description: "Find instant answers to common sponsorship questions.",
     },
     {
       label: "Request Assistance",
       href: "/contact?type=request-assistance",
-      icon: <LifeBuoy className="w-4 h-4 text-amber-500" />,
-      description: "Reach out for community or family education aid.",
+      icon: <LifeBuoy className="w-4 h-4 text-emerald-600" />,
+      description: "Submit an inquiry for child education assistance.",
     },
     {
-      label: "Volunteer",
-      href: "/contact?type=volunteer",
-      icon: <Users className="w-4 h-4 text-emerald-600" />,
-      description: "Share your professional skills with our global team.",
-    },
-    {
-      label: "Start a Fundraiser",
-      href: "/contact?type=fundraiser",
-      icon: <Sparkles className="w-4 h-4 text-purple-600" />,
-      description: "Create a birthday, memorial, or school campaign.",
-    },
-    {
-      label: "Youth Ambassador",
-      href: "/contact?type=youth-ambassador",
-      icon: <Award className="w-4 h-4 text-blue-500" />,
-      description: "Become a student advocate in your local school.",
+      label: "Media & Press",
+      href: "/contact?type=media",
+      icon: <Newspaper className="w-4 h-4 text-purple-600" />,
+      description: "Press inquiries and media resources.",
     },
   ];
 
@@ -80,7 +73,7 @@ export function GetInvolvedDropdown({
         aria-haspopup="true"
         aria-expanded={isOpen}
       >
-        <span>Ways to Help</span>
+        <span>Support</span>
         <ChevronDown
           className={cn("w-3.5 h-3.5 transition-transform duration-200", isOpen && "rotate-180")}
         />
