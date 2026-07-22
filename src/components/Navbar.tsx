@@ -60,6 +60,7 @@ export function Navbar({ session }: { session?: any }) {
   }, [lastScrollY]);
 
   const primaryNavLinks = [
+    { href: "/", label: "Home" },
     { href: "/our-story", label: "Our Story" },
     { href: "/how-it-works", label: "How It Works" },
     { href: "/sponsor", label: "Sponsor a Child" },
