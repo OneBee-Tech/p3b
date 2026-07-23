@@ -2,20 +2,26 @@ import { FounderStory } from "@/components/FounderStory";
 import { RealityStrip } from "@/components/RealityStrip";
 import { HowItWorks } from "@/components/HowItWorks";
 import { Shield, Users, Target, Clock } from "lucide-react";
-
 import { ContextRibbon } from "@/components/ContextRibbon";
+import { getGlobalSettings } from "@/lib/services/globalSettingsService";
+import { Metadata } from "next";
 
-export const metadata = {
-    title: "Our Story - Hope for Humanity",
-    description: "Learn about the mission, vision, and governance behind our community-first funding model.",
-    openGraph: {
-        title: "Our Story - Hope for Humanity",
-        description: "Learn about the mission, vision, and governance behind our community-first funding model.",
-        type: "website",
-    },
-};
+export async function generateMetadata(): Promise<Metadata> {
+    const settings = await getGlobalSettings();
+    return {
+        title: `Our Story - ${settings.organizationName}`,
+        description: settings.visionStatement,
+        openGraph: {
+            title: `Our Story - ${settings.organizationName}`,
+            description: settings.visionStatement,
+            type: "website",
+        },
+    };
+}
 
-export default function OurStoryPage() {
+export default async function OurStoryPage() {
+    const settings = await getGlobalSettings();
+
     return (
         <main className="min-h-screen bg-white pb-20">
             {/* Vision Statement Section */}

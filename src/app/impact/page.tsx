@@ -4,21 +4,28 @@ import { ShieldCheck, Download, FileText } from "lucide-react";
 
 import { ContextRibbon } from "@/components/ContextRibbon";
 
-export const metadata = {
-    title: "Our Impact - Hope for Humanity",
-    description: "Data-forward transparency and financial accountability metrics.",
-    openGraph: {
-        title: "Our Impact - Hope for Humanity",
+import { getGlobalSettings } from "@/lib/services/globalSettingsService";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+    const settings = await getGlobalSettings();
+    return {
+        title: `Our Impact - ${settings.organizationName}`,
         description: "Data-forward transparency and financial accountability metrics.",
-        type: "website",
-    },
-};
+        openGraph: {
+            title: `Our Impact - ${settings.organizationName}`,
+            description: "Data-forward transparency and financial accountability metrics.",
+            type: "website",
+        },
+    };
+}
 
 import prisma from "@/lib/prisma";
 
 export const revalidate = 60; // 1 minute cache for transparency reports
 
 export default async function ImpactPage() {
+    const settings = await getGlobalSettings();
     const documents = await prisma.verificationDocument.findMany({
         where: {
             entityType: "DOCUMENT",
@@ -81,7 +88,7 @@ export default async function ImpactPage() {
                                 <h3 className="text-3xl font-bold font-heading text-cinematic-dark">Financial Responsibility</h3>
                             </div>
                             <p className="text-gray-600 leading-relaxed max-w-3xl text-lg">
-                                Our model guarantees that 100% of your child sponsorships are directed efficiently entirely toward program execution. Our operational bandwidth is subsidized through a private endowment and specialized donor commitments, allowing your capital to perform directly in the field.
+                                {settings.transparencyWording}
                             </p>
                         </div>
 

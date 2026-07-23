@@ -2,10 +2,15 @@ import { Metadata } from "next";
 import { ContactForm } from "./ContactForm";
 import { Mail, MessageCircle, Clock, Shield } from "lucide-react";
 
-export const metadata: Metadata = {
-    title: "Contact Us - OneDollarOneChild",
-    description: "Get in touch with our team for sponsorships, partnerships, referrals, or general inquiries.",
-};
+import { getGlobalSettings } from "@/lib/services/globalSettingsService";
+
+export async function generateMetadata(): Promise<Metadata> {
+    const settings = await getGlobalSettings();
+    return {
+        title: `Contact Us - ${settings.organizationName}`,
+        description: `Get in touch with the ${settings.organizationName} team for sponsorships, partnerships, referrals, or general inquiries.`,
+    };
+}
 
 const contactPoints = [
     { icon: Clock, label: "Response Time", value: "48–72 hours" },

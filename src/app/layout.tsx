@@ -31,22 +31,28 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://onedollaronechild.org'),
-  title: {
-    template: '%s | OneDollarOneChild',
-    default: 'OneDollarOneChild - Educating the Future',
-  },
-  description: 'Support a child’s education and future. Even one dollar a day creates lasting impact.',
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    siteName: 'OneDollarOneChild',
-  },
-  twitter: {
-    card: 'summary_large_image',
-  },
-};
+import { getGlobalSettings } from "@/lib/services/globalSettingsService";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getGlobalSettings();
+  
+  return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://onedollaronechild.org'),
+    title: {
+      template: `%s | ${settings.organizationName}`,
+      default: `${settings.organizationName} - Educating the Future`,
+    },
+    description: settings.missionStatement,
+    openGraph: {
+      type: 'website',
+      locale: 'en_US',
+      siteName: settings.organizationName,
+    },
+    twitter: {
+      card: 'summary_large_image',
+    },
+  };
+}
 
 export default async function RootLayout({
   children,
@@ -54,6 +60,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
+  const settings = await getGlobalSettings();
+  
+  // Format social links array for schema
+  const socialUrls = Object.values(settings.socialLinks).filter(Boolean) as string[];
 
   return (
     <html lang="en" className="scroll-smooth">
@@ -81,19 +91,15 @@ export default async function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "NGO",
-              name: "OneDollarOneChild",
+              name: settings.organizationName,
               url: process.env.NEXT_PUBLIC_SITE_URL || "https://onedollaronechild.org",
               logo: `${process.env.NEXT_PUBLIC_SITE_URL || "https://onedollaronechild.org"}/logo.png`,
               contactPoint: {
                 "@type": "ContactPoint",
-                email: "support@onedollaronechild.org",
+                email: settings.contactEmails.info,
                 contactType: "customer service"
               },
-              sameAs: [
-                "https://facebook.com/onedollaronechild",
-                "https://x.com/onedollaronechild",
-                "https://linkedin.com/company/onedollaronechild"
-              ],
+              sameAs: socialUrls,
             }),
           }}
         />

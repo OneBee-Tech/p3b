@@ -1,10 +1,16 @@
 import { Building2, Mail } from "lucide-react";
 import Link from "next/link";
 
-export const metadata = {
-    title: "Partnerships - OneDollarOneChild",
-    description: "Collaborate with our NGO as an institutional partner.",
-};
+import { getGlobalSettings } from "@/lib/services/globalSettingsService";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+    const settings = await getGlobalSettings();
+    return {
+        title: `Partnerships - ${settings.organizationName}`,
+        description: `Collaborate with ${settings.organizationName} as an institutional partner.`,
+    };
+}
 
 export default function PartnershipPage() {
     return (

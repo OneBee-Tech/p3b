@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { getAllHomepageSections } from '@/lib/services/contentService';
 import { EmergencyCampaignBanner } from '@/components/landing/EmergencyCampaignBanner';
 import { HeroAcquisition } from '@/components/landing/HeroAcquisition';
 import { StickyDonateRail } from '@/components/landing/StickyDonateRail';
@@ -10,7 +11,6 @@ import { FounderStoryBlock } from '@/components/landing/FounderStoryBlock';
 import { DashboardTransparencyPreview } from '@/components/landing/DashboardTransparencyPreview';
 import { LandingCTASection } from '@/components/landing/LandingCTASection';
 import { LandingNewsletterCTA } from '@/components/landing/LandingNewsletterCTA';
-import { TrustBadgeStrip } from '@/components/TrustBadgeStrip';
 
 export const metadata: Metadata = {
     title: 'Sponsor a Child for Just $1 a Day | OneDollarOneChild',
@@ -32,7 +32,31 @@ const jsonLd = {
     serviceType: 'Child Education Sponsorship'
 };
 
-export default function MarketingLandingPage() {
+const sectionComponents: Record<string, React.FC<any>> = {
+    'emergency-banner': EmergencyCampaignBanner,
+    'hero': HeroAcquisition,
+    'sticky-donate': StickyDonateRail,
+    'impact-tiers': SponsorshipImpactTiers,
+    'metrics-strip': ImpactMetricsStrip,
+    'how-it-works': HowItWorksFlow,
+    'gallery-preview': ImpactGalleryPreview,
+    'founder-story': FounderStoryBlock,
+    'transparency': DashboardTransparencyPreview,
+    'newsletter': LandingNewsletterCTA,
+    'cta': LandingCTASection,
+};
+
+export default async function MarketingLandingPage() {
+    // Fetch sections dynamically from content service
+    const sectionsData = await getAllHomepageSections();
+    
+    // Convert record to array and sort by order metadata (default to 0 if undefined)
+    const sections = Object.values(sectionsData).sort((a, b) => {
+        const orderA = typeof a.metadata?.order === 'number' ? a.metadata.order : 0;
+        const orderB = typeof b.metadata?.order === 'number' ? b.metadata.order : 0;
+        return orderA - orderB;
+    });
+
     return (
         <>
             {/* JSON-LD Structured Data Schema */}
@@ -41,43 +65,25 @@ export default function MarketingLandingPage() {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
 
-            {/* Layer 1: Emotional Acquisition (Landing) */}
-            <EmergencyCampaignBanner />
+            {/* Dynamically render CMS-driven sections */}
+            {sections.map(section => {
+                const Component = sectionComponents[section.sectionKey];
+                
+                if (!Component) {
+                    return null; // Gracefully ignore unknown section keys
+                }
+                
+                // We pass the section data to each component so they can consume dynamic content.
+                // Note: Components would need to be updated to accept and use this data prop eventually.
+                return <Component key={section.sectionKey} data={section} />;
+            })}
 
-            {/* 🧭 LANDING RENDER ORDER */}
-            {/* 1. Emotion */}
-            <HeroAcquisition />
-
-            {/* Sticky Conversion Capture Layer */}
-            <StickyDonateRail />
-
-            {/* 2. Action (Structured Tiers) */}
-            <SponsorshipImpactTiers />
-
-            {/* 3. Logic (Data Visualization) */}
-            <ImpactMetricsStrip />
-
-            {/* 4. Process (Ecosystem Explaination) */}
-            <HowItWorksFlow />
-
-            {/* 5. Proof (Storytelling Hook) */}
-            <ImpactGalleryPreview />
-
-            {/* 6. Human Connection (Founder Story) */}
-            <FounderStoryBlock />
-
-            {/* Actionable Transparency Proof */}
-            <DashboardTransparencyPreview />
-
-            {/* Newsletter Outreach Integration */}
-            <LandingNewsletterCTA />
-
-            {/* 7. Final Conversion Hook */}
-            <LandingCTASection />
-
-            {/* 8. Trust Visibility Layer */}
-            {/* (Excluding global TrustBadgeStrip because it's rendered globally in layout.tsx but the user instructed "Reuse global TrustBadgeStrip.tsx Placement: Landing -> Above footer; Institutional pages -> Pre-footer.") */}
-            {/* Layout already renders TrustBadgeStrip globally. We'll leave it out here to avoid duplication, as Layout.tsx places it before Footer. */}
+            {/* Fallback rendering if no sections are returned from the database (Empty state testing) */}
+            {sections.length === 0 && (
+                <div className="py-24 text-center">
+                    <p className="text-slate-500 font-medium">Homepage sections are currently being updated.</p>
+                </div>
+            )}
         </>
     );
 }

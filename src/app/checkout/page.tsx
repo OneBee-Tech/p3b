@@ -9,6 +9,16 @@ import { ProgramFundingStatusCard } from "@/components/checkout/ProgramFundingSt
 import { AdminVerificationNotice } from "@/components/checkout/AdminVerificationNotice";
 import { PostDonationVisibilityNote } from "@/components/checkout/PostDonationVisibilityNote";
 import { TrustBadgeStrip } from "@/components/TrustBadgeStrip";
+import { getGlobalSettings } from "@/lib/services/globalSettingsService";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+    const settings = await getGlobalSettings();
+    return {
+        title: `Secure Checkout - ${settings.organizationName}`,
+        description: `Complete your secure sponsorship contribution to ${settings.organizationName}.`,
+    };
+}
 
 export default async function CheckoutPage({
     searchParams
