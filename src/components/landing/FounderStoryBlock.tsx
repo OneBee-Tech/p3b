@@ -32,7 +32,7 @@ export function FounderStoryBlock({ data }: { data?: any }) {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-cinematic-dark via-cinematic-dark/40 to-transparent opacity-90" />
                             <div className="absolute bottom-8 left-8 right-8">
-                                <div className="font-heading font-bold text-2xl text-white mb-1">Sarah Jenkins</div>
+                                <div className="font-heading font-bold text-2xl text-white mb-1">Sarah Haider</div>
                                 <div className="text-impact-gold text-sm font-bold uppercase tracking-wider">Founder & Director</div>
                             </div>
                         </div>
