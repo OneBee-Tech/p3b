@@ -1,117 +1,99 @@
 import Link from "next/link";
-import { PieChart, ShieldCheck, ArrowRight, FileText } from "lucide-react";
-import { prisma } from "@/lib/prisma";
+import { ShieldCheck, ArrowRight, CheckCircle, HeartHandshake, Eye, Lock } from "lucide-react";
 
-async function getTransparencyMetrics() {
-    try {
-        const stats = await prisma.programSnapshot.aggregate({
-            _sum: {
-                fundsRaised: true,
-            }
-        });
+export async function DashboardTransparencyPreview({ data }: { data?: any }) {
+    const meta = data?.metadata || {};
+    const heading = meta.heading || "You Deserve to Know Where Your Support Goes";
+    const description = meta.description || "Trust is not built through promises alone. It is built through clear processes, proper documentation, and honest reporting.";
+    const highlight = meta.highlight || "We want sponsors to see the education they are helping create—not simply receive a thank-you message.";
+    const ctas = meta.ctas || [
+        { label: "View Our Transparency Standards", href: "/transparency", variant: "primary" },
+        { label: "View Reports", href: "/impact", variant: "secondary" }
+    ];
 
-        return {
-            fundsRouted: stats._sum.fundsRaised ? Number(stats._sum.fundsRaised) : 0,
-            isLive: !!stats._sum.fundsRaised
-        };
-    } catch {
-        return { fundsRouted: 0, isLive: false };
-    }
-}
-
-export async function DashboardTransparencyPreview() {
-    const metrics = await getTransparencyMetrics();
+    const trustPillars = [
+        { title: "Transparent Allocation", icon: Eye, text: "See exactly how funds reach the classroom." },
+        { title: "Verified Partners", icon: ShieldCheck, text: "We strictly vet every educational institution." },
+        { title: "Honest Reporting", icon: HeartHandshake, text: "Receive regular updates on academic progress." },
+        { title: "Safeguarding", icon: Lock, text: "Child protection is our highest priority." },
+    ];
 
     return (
-        <section className="bg-warm-bg border-y border-gray-100 py-24 relative overflow-hidden">
-            {/* Background embellishment */}
+        <section className="bg-warm-bg border-y border-gray-100 py-24 md:py-32 relative overflow-hidden">
             <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1/3 h-full bg-trust-blue/5 rounded-r-full blur-3xl pointer-events-none" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
 
-                    {/* Left: Interactive Preview Card */}
-                    <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100 transform -rotate-1 hover:rotate-0 transition-transform duration-500 relative">
-                        <div className="absolute top-4 right-4 bg-emerald-50 text-emerald-600 flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                            <ShieldCheck className="w-4 h-4" /> Live Ledger
+                    {/* Left: Reassurance Pillars Card */}
+                    <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12 border border-gray-100 transform -rotate-1 hover:rotate-0 transition-transform duration-500 relative animate-fade-in-up">
+                        <div className="absolute top-6 right-6 bg-emerald-50 text-emerald-600 flex items-center gap-1 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+                            <CheckCircle className="w-4 h-4" /> 100% Commitment
                         </div>
 
-                        <div className="flex items-center gap-4 mb-8">
-                            <div className="w-14 h-14 bg-trust-blue/10 rounded-xl flex items-center justify-center text-trust-blue">
-                                <PieChart className="w-7 h-7" />
+                        <div className="flex items-center gap-4 mb-10 mt-2">
+                            <div className="w-14 h-14 bg-trust-blue/10 rounded-2xl flex items-center justify-center text-trust-blue">
+                                <ShieldCheck className="w-7 h-7" />
                             </div>
                             <div>
-                                <h3 className="font-heading font-bold text-xl text-cinematic-dark">Your Impact Dashboard</h3>
-                                <p className="text-gray-500 text-sm">Real-time allocation tracking</p>
+                                <h3 className="font-heading font-bold text-2xl text-cinematic-dark">Our Accountability</h3>
+                                <p className="text-gray-500">How we protect your trust</p>
                             </div>
                         </div>
 
-                        <div className="space-y-6">
-                            {/* Mock Data Entry 1 */}
-                            <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-2 h-2 rounded-full bg-trust-blue" />
-                                    <span className="font-medium text-gray-700">Education Support</span>
-                                </div>
-                                <span className="font-bold text-cinematic-dark">65%</span>
-                            </div>
-
-                            {/* Mock Data Entry 2 */}
-                            <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-2 h-2 rounded-full bg-impact-gold" />
-                                    <span className="font-medium text-gray-700">Child Health Fund</span>
-                                </div>
-                                <span className="font-bold text-cinematic-dark">25%</span>
-                            </div>
-
-                            {/* Mock Data Entry 3 */}
-                            <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                                    <span className="font-medium text-gray-700">Learning Materials</span>
-                                </div>
-                                <span className="font-bold text-cinematic-dark">10%</span>
-                            </div>
-
-                            <div className="bg-gray-50 rounded-xl p-4 flex items-center justify-between mt-6">
-                                <div className="flex items-center gap-3 text-trust-blue font-medium text-sm">
-                                    <FileText className="w-5 h-5" />
-                                    Cryptographic Certificate Ready
-                                </div>
-                                <div className="text-xs bg-white border border-gray-200 px-2 py-1 rounded shadow-sm">
-                                    PDF
-                                </div>
-                            </div>
+                        <div className="space-y-8">
+                            {trustPillars.map((pillar, idx) => {
+                                const Icon = pillar.icon;
+                                return (
+                                    <div key={idx} className="flex items-start gap-4">
+                                        <div className="bg-gray-50 p-3 rounded-xl text-trust-blue mt-1">
+                                            <Icon className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-cinematic-dark text-lg mb-1">{pillar.title}</h4>
+                                            <p className="text-gray-600">{pillar.text}</p>
+                                        </div>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
 
                     {/* Right: Narrative */}
-                    <div>
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-impact-gold/20 text-impact-gold mb-6 border border-impact-gold/30">
-                            <span className="text-sm font-bold tracking-wide uppercase text-yellow-800">100% Transparency</span>
+                    <div className="animate-fade-in-up delay-200">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-trust-blue/10 text-trust-blue mb-8 border border-trust-blue/20">
+                            <span className="text-sm font-bold tracking-wide uppercase">Built on Trust</span>
                         </div>
 
-                        <h2 className="text-4xl md:text-5xl font-heading font-bold text-cinematic-dark mb-6 tracking-tight leading-tight max-w-md">
-                            Track every dollar you give.
+                        <h2 className="text-4xl md:text-5xl font-heading font-bold text-cinematic-dark mb-8 tracking-tight leading-tight max-w-md whitespace-pre-line">
+                            {heading}
                         </h2>
 
-                        <div className="space-y-6 text-gray-600 font-body text-lg leading-relaxed mb-10">
-                            <p>
-                                Charity shouldn't be a black box. Our architecture ensures that from the moment you contribute, your funds are cryptographically mapped to the child's support utilization.
-                            </p>
-                            <p className="font-medium text-cinematic-dark">
-                                So far, our donors have tracked <span className="text-trust-blue">${metrics.fundsRouted.toLocaleString()}</span> in transparent impact.
-                            </p>
+                        <div className="space-y-6 text-gray-600 font-body text-lg leading-relaxed mb-10 whitespace-pre-line">
+                            <p>{description}</p>
+                            {highlight && (
+                                <p className="font-medium text-cinematic-dark border-l-4 border-trust-blue pl-6 py-2 bg-gray-50 rounded-r-lg">
+                                    {highlight}
+                                </p>
+                            )}
                         </div>
 
-                        <Link
-                            href="/programs"
-                            className="group inline-flex items-center gap-3 bg-cinematic-dark text-white hover:bg-trust-blue px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 shadow-xl hover:-translate-y-1"
-                        >
-                            View Donor Dashboard
-                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </Link>
+                        <div className="flex flex-col sm:flex-row gap-4">
+                            {ctas.map((cta: any, idx: number) => (
+                                <Link
+                                    key={idx}
+                                    href={cta.href}
+                                    className={`group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 shadow-xl hover:-translate-y-1 ${
+                                        cta.variant === 'primary'
+                                            ? 'bg-cinematic-dark text-white hover:bg-trust-blue'
+                                            : 'bg-white text-cinematic-dark border border-gray-200 hover:bg-gray-50'
+                                    }`}
+                                >
+                                    {cta.label}
+                                    {cta.variant === 'primary' && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
+                                </Link>
+                            ))}
+                        </div>
                     </div>
 
                 </div>

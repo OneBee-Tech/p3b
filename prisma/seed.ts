@@ -41,7 +41,8 @@ async function main() {
                 status: 'Draft / Source: Client',
                 heading: 'One Dollar.\nOne Child.\nOne Future.',
                 subheading: 'Give just $1 a day and help a child receive the education they deserve.',
-                description: 'One dollar may not buy a cup of coffee, a snack or even a small daily treat.\n\nBut in carefully selected communities, your $1 a day can help cover a child’s essential education costs—including school fees, books, stationery, uniforms and shoes.\n\nThrough One Dollar. One Child. One Future., your small daily contribution becomes part of something much greater:\n\nA child in school.\nA family filled with hope.\nA future with possibilities.',
+                description: 'One dollar may feel small. But your daily contribution provides school fees, books, and uniforms—giving a child the foundation for a lifelong future.',
+                heroImage: '/images/placeholders/hero.jpg', // Semantic placeholder
                 ctas: [
                     { label: 'Give $1 a Day', href: '/sponsor', variant: 'primary' },
                     { label: 'See How Sponsorship Works', href: '/how-it-works', variant: 'secondary' }
@@ -49,83 +50,27 @@ async function main() {
             }
         },
         {
-            sectionKey: 'trustBar',
-            title: 'Trust Bar',
-            content: '',
-            metadata: {
-                order: 2,
-                status: 'Draft / Source: Client',
-                statement: 'Verified children • Carefully selected schools • Direct education payments • Receipts shared • Progress reports every six months'
-            }
-        },
-        {
             sectionKey: 'whyOneDollar',
             title: 'Why One Dollar Matters',
             content: '',
             metadata: {
-                order: 3,
+                order: 2,
                 status: 'Draft / Source: Client',
                 heading: 'What Can One Dollar Do?',
-                description: 'For many of us, one dollar feels insignificant. It may be less than the cost of a cup of coffee, a small snack, or an online purchase we quickly forget.\n\nBut in smaller towns and cities where education costs are more affordable, that same dollar can become part of a child’s complete education support.\n\nWhen given every day, your contribution can help provide:',
+                description: 'In many communities, just $1 a day fully covers a child’s educational essentials, clearing the path for them to learn and grow without financial barriers.',
+                variant: 'grid', 
                 items: [
-                    'School tuition',
-                    'Admission and academic fees',
-                    'Textbooks and notebooks',
-                    'Pens, pencils and stationery',
-                    'School uniforms and shoes',
-                    'Essential classroom materials',
-                    'Continued monitoring of the child’s education'
+                    { title: 'School Tuition', icon: 'BookOpen' },
+                    { title: 'Admission Fees', icon: 'Landmark' },
+                    { title: 'Textbooks & Books', icon: 'Library' },
+                    { title: 'Stationery', icon: 'PenTool' },
+                    { title: 'Uniforms & Shoes', icon: 'Shirt' },
+                    { title: 'Classroom Materials', icon: 'Clipboard' },
                 ],
-                highlight: 'One dollar may not change your day. But it can help change a child’s life.',
+                featureImage: '/images/placeholders/classroom-study.jpg',
                 ctas: [
                     { label: 'Turn My $1 Into Opportunity', href: '/sponsor', variant: 'primary' }
                 ]
-            }
-        },
-        {
-            sectionKey: 'whyEducation',
-            title: 'Why Quality Education Matters',
-            content: '',
-            metadata: {
-                order: 4,
-                status: 'Draft / Source: Client',
-                heading: 'One Dollar a Day. One Child’s Education.',
-                description: 'Our name represents a simple and direct promise.\n\nWhen you give $1 a day, your contribution is used to support the education of a carefully identified child in a community where this amount can make a meaningful difference.\n\nThe purpose is not to provide a one-time donation and disappear. The purpose is to help a child enrol in a dependable school, attend classes regularly, receive the required books and stationery, have the proper school uniform, continue learning year after year, and develop the confidence to build a better future.',
-                highlight: 'You are not simply paying a school fee. You are helping a child stay in school, continue learning and believe in a future beyond poverty.'
-            }
-        },
-        {
-            sectionKey: 'sponsorshipProcess',
-            title: 'How Sponsorship Works',
-            content: '',
-            metadata: {
-                order: 5,
-                status: 'Draft / Source: Client',
-                heading: 'A Clear Journey From Your Dollar to the Classroom',
-                steps: [
-                    { title: 'A child is referred', description: 'A child may be referred through a trusted volunteer, social worker, or local partner.' },
-                    { title: 'Circumstances are verified', description: 'We review the child’s situation, including financial circumstances and risk of leaving school.' },
-                    { title: 'A suitable school is identified', description: 'We look for a dependable and affordable school that can provide regular teaching and safe learning.' },
-                    { title: 'The child is enrolled', description: 'The approved child receives the education support required under the program.' },
-                    { title: 'Expenses are paid', description: 'Wherever practical, tuition is paid directly to the school and receipts are collected.' },
-                    { title: 'Documentation is shared', description: 'The sponsor receives school fee receipts and enrolment confirmation.' },
-                    { title: 'Progress is monitored', description: 'We aim to share academic report cards and educational progress approximately every six months.' }
-                ],
-                ctas: [
-                    { label: 'Learn More About Our Process', href: '/how-it-works', variant: 'secondary' }
-                ]
-            }
-        },
-        {
-            sectionKey: 'donationSupport',
-            title: 'What Your Donation Supports',
-            content: '',
-            metadata: {
-                order: 6,
-                status: 'Draft / Source: Client',
-                heading: 'Small Daily Giving. Complete Educational Support.',
-                description: 'Depending on the selected community, school, grade and local costs, your sponsorship may help cover monthly or annual tuition, textbooks, uniforms, shoes, approved academic materials, and program monitoring.',
-                highlight: 'Our programs are designed for communities where approximately $1 a day can provide meaningful basic education support.'
             }
         },
         {
@@ -133,45 +78,54 @@ async function main() {
             title: 'Sponsor Journey',
             content: '',
             metadata: {
-                order: 7,
+                order: 3,
                 status: 'Draft / Source: Client',
-                heading: 'Give in the Way That Works for You',
-                description: 'The idea remains simple: Give $1 a day. When you are ready to sponsor, you may choose the payment arrangement that works best for you.',
+                heading: 'Choose Your Impact',
+                description: 'Whether you give daily, monthly, or annually, every dollar is a step toward a child’s graduation.',
                 options: [
                     {
-                        title: 'Monthly Sponsorship',
+                        title: 'Daily Impact',
+                        amount: '$1',
+                        frequency: 'per day',
+                        description: 'A simple daily commitment that funds a child’s entire education.',
+                        cta: { label: 'Give Daily', href: '/sponsor?type=daily' }
+                    },
+                    {
+                        title: 'Monthly Guardian',
                         amount: '$30',
                         frequency: 'per month',
-                        description: 'A simple monthly payment that represents approximately one dollar a day.',
+                        description: 'Provides consistent, reliable support for a child’s learning cycle.',
                         cta: { label: 'Give Monthly', href: '/sponsor?type=monthly' }
                     },
                     {
-                        title: 'Annual Sponsorship',
+                        title: 'Annual Patron',
                         amount: '$365',
                         frequency: 'per year',
-                        description: 'Give the equivalent of one dollar for every day of the year through one annual payment.',
+                        description: 'Secures a child’s education for a full academic year in one meaningful gift.',
                         cta: { label: 'Give Annually', href: '/sponsor?type=annual' }
-                    },
-                    {
-                        title: 'Complete Education Journey',
-                        amount: 'Calculated',
-                        frequency: 'one-time',
-                        description: 'Fund the remaining school education of one child through one contribution. Based on current grade and local costs.',
-                        cta: { label: 'Fund a Complete Education', href: '/contact?type=SPONSORSHIP' }
                     }
                 ]
             }
         },
         {
-            sectionKey: 'educationImpact',
-            title: 'Why Education Changes Lives',
+            sectionKey: 'sponsorshipProcess',
+            title: 'How Sponsorship Works',
             content: '',
             metadata: {
-                order: 8,
+                order: 4,
                 status: 'Draft / Source: Client',
-                heading: 'Education Can Change More Than One Life',
-                description: 'A child who receives an education may one day become a doctor who serves an underserved community, an engineer who builds safer infrastructure, a teacher who educates hundreds of children, or a skilled professional who supports an entire family.',
-                highlight: 'When you educate one child, the impact may continue through an entire family and across generations. That is why your contribution is more than charity. It is a legacy.'
+                heading: 'From Your Donation to the Classroom',
+                description: 'A transparent journey from your first dollar to a child’s graduation.',
+                classroomImage: '/images/placeholders/classroom.jpg',
+                steps: [
+                    { title: 'Identification', description: 'Local partners refer vulnerable children.' },
+                    { title: 'Verification', description: 'Financial needs and circumstances are assessed.' },
+                    { title: 'Enrollment', description: 'The child is fully supported in school.' },
+                    { title: 'Progress', description: 'You receive regular academic updates.' }
+                ],
+                ctas: [
+                    { label: 'Explore the Process', href: '/how-it-works', variant: 'secondary' }
+                ]
             }
         },
         {
@@ -179,28 +133,30 @@ async function main() {
             title: 'Transparency',
             content: '',
             metadata: {
-                order: 9,
+                order: 5,
                 status: 'Draft / Source: Client',
-                heading: 'You Deserve to Know Where Your Support Goes',
-                description: 'Trust is not built through promises alone. It is built through clear processes, proper documentation and honest reporting. Our transparency model includes documented child-selection criteria, family verification, direct payments wherever practical, school fee receipts, and academic progress reports.',
-                highlight: 'We want sponsors to see the education they are helping create—not simply receive a thank-you message.',
+                heading: 'Verified Accountability',
+                description: 'We ensure 100% of your sponsorship reaches the classroom. Our verified partners and regular reporting mean you always know your impact.',
+                highlight: 'Every dollar tracked. Every child supported.',
                 ctas: [
-                    { label: 'View Our Transparency Standards', href: '/transparency', variant: 'primary' },
-                    { label: 'View Reports', href: '/impact', variant: 'secondary' }
+                    { label: 'View Our Standards', href: '/transparency', variant: 'primary' },
+                    { label: 'Read Reports', href: '/impact', variant: 'secondary' }
                 ]
             }
         },
         {
-            sectionKey: 'corporate',
-            title: 'Corporate Partnership Preview',
+            sectionKey: 'founderStory',
+            title: 'Founder Story',
             content: '',
             metadata: {
-                order: 10,
+                order: 6,
                 status: 'Draft / Source: Client',
-                heading: 'Companies Can Educate Entire Generations',
-                description: 'Corporate partners can support as many children as they choose. A business may sponsor 10 children, 100 children, or an entire school cohort. Corporate support can turn social responsibility into measurable educational opportunity.',
+                heading: 'A Note From Our Founder',
+                description: 'Education is not a luxury; it is a necessity. We empower ecosystems that support children, ensuring no child forfeits their future due to circumstances they cannot control.',
+                quote: '“No child should have to forfeit their future due to circumstances they cannot control.”',
+                founderImage: '/images/placeholders/founder.jpg',
                 ctas: [
-                    { label: 'Explore Corporate Partnerships', href: '/partnership', variant: 'secondary' }
+                    { label: 'Read Our Story', href: '/our-story', variant: 'primary' }
                 ]
             }
         },
@@ -209,13 +165,13 @@ async function main() {
             title: 'Final CTA',
             content: '',
             metadata: {
-                order: 11,
+                order: 7,
                 status: 'Draft / Source: Client',
-                heading: 'You May Forget Where You Spent One Dollar Today. A Child May Remember Its Impact for the Rest of Their Life.',
-                description: 'Give one dollar a day. Help a child enter a classroom, receive the materials they need and continue building their future.',
+                heading: 'Change a Life Today',
+                description: 'Your dollar may seem small, but its impact lasts a lifetime.',
                 ctas: [
-                    { label: 'Start Giving $1 a Day', href: '/sponsor', variant: 'primary' },
-                    { label: 'Invite Someone to Join', href: '/get-involved', variant: 'secondary' }
+                    { label: 'Sponsor a Child Now', href: '/sponsor', variant: 'primary' },
+                    { label: 'Give a One-Time Gift', href: '/checkout', variant: 'secondary' }
                 ]
             }
         }

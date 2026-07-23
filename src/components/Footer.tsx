@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Facebook, Instagram, Linkedin, Mail, ShieldCheck } from "lucide-react";
 import { DEFAULT_GLOBAL_SETTINGS, GlobalSettingsData } from "@/lib/services/globalSettingsService";
+import { LandingNewsletterCTA } from "@/components/landing/LandingNewsletterCTA";
 
 export interface FooterProps {
   settings?: GlobalSettingsData;
@@ -14,9 +15,11 @@ export function Footer({ settings = DEFAULT_GLOBAL_SETTINGS }: FooterProps) {
   if (pathname?.startsWith("/admin") || pathname === "/home2") return null;
 
   return (
-    <footer className="bg-[#0B0F19] text-white pt-20 pb-12 border-t border-slate-800 font-body relative z-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-16">
+    <>
+      <LandingNewsletterCTA />
+      <footer className="bg-[#0B0F19] text-white pt-20 pb-12 border-t border-slate-800 font-body relative z-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-16">
           {/* Brand & Address Column */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="inline-block">
@@ -132,5 +135,6 @@ export function Footer({ settings = DEFAULT_GLOBAL_SETTINGS }: FooterProps) {
         </div>
       </div>
     </footer>
+    </>
   );
 }

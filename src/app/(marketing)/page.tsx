@@ -32,18 +32,20 @@ const jsonLd = {
     serviceType: 'Child Education Sponsorship'
 };
 
+import { ContentBlock } from '@/components/landing/ContentBlock';
+import { TrustBadgeStrip } from '@/components/TrustBadgeStrip';
+
 const sectionComponents: Record<string, React.FC<any>> = {
     'emergency-banner': EmergencyCampaignBanner,
     'hero': HeroAcquisition,
-    'sticky-donate': StickyDonateRail,
-    'impact-tiers': SponsorshipImpactTiers,
-    'metrics-strip': ImpactMetricsStrip,
-    'how-it-works': HowItWorksFlow,
-    'gallery-preview': ImpactGalleryPreview,
-    'founder-story': FounderStoryBlock,
+    'whyOneDollar': ContentBlock, // Grid variant will be used internally
+    'sponsorJourney': SponsorshipImpactTiers,
+    'sponsorshipProcess': HowItWorksFlow,
+    'founderStory': FounderStoryBlock,
     'transparency': DashboardTransparencyPreview,
-    'newsletter': LandingNewsletterCTA,
     'cta': LandingCTASection,
+    'sticky-donate': StickyDonateRail,
+    'trustBar': TrustBadgeStrip, // Keeping in case we use it as a standalone banner
 };
 
 export default async function MarketingLandingPage() {
