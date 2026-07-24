@@ -9,7 +9,7 @@ export function LandingCTASection({ data }: { data?: any }) {
     const { heading, description, ctas } = meta;
 
     return (
-        <section className="relative py-40 md:py-56 bg-cinematic-dark text-white overflow-hidden">
+        <section className="relative py-28 md:py-40 bg-cinematic-dark text-white overflow-hidden">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <Image
@@ -21,21 +21,21 @@ export function LandingCTASection({ data }: { data?: any }) {
                 <div className="absolute inset-0 bg-gradient-to-t from-cinematic-dark via-cinematic-dark/80 to-cinematic-dark/40" />
             </div>
 
-            <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <div className="w-16 h-px bg-impact-gold mx-auto mb-12 animate-fade-in-up" />
+            <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div className="w-16 h-px bg-impact-gold mx-auto mb-10 animate-fade-in-up" />
                 
                 {heading && (
-                    <h2 className="text-5xl md:text-7xl font-heading font-extrabold mb-8 tracking-tight animate-fade-in-up delay-100">
+                    <h2 className="text-5xl md:text-7xl font-heading font-extrabold mb-8 tracking-tight animate-fade-in-up delay-100 scale-95">
                         {heading}
                     </h2>
                 )}
                 
-                <p className="text-2xl md:text-3xl font-body mb-16 text-white/90 leading-relaxed max-w-3xl mx-auto animate-fade-in-up delay-200">
+                <p className="text-xl md:text-2xl font-body mb-12 text-white/90 leading-relaxed max-w-3xl mx-auto animate-fade-in-up delay-200 scale-95">
                     {description}
                 </p>
 
                 {ctas && ctas.length > 0 && (
-                    <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up delay-300">
+                    <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up delay-300 scale-95">
                         {ctas.map((cta: any, idx: number) => (
                             <Link
                                 key={idx}

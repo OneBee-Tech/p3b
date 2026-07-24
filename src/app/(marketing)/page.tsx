@@ -75,8 +75,16 @@ export default async function MarketingLandingPage() {
                     return null; // Gracefully ignore unknown section keys
                 }
                 
-                // We pass the section data to each component so they can consume dynamic content.
-                // Note: Components would need to be updated to accept and use this data prop eventually.
+                // For the CTA section, render the Newsletter section right before it so CTA stays at the very end
+                if (section.sectionKey === 'cta') {
+                    return (
+                        <div key={section.sectionKey}>
+                            <LandingNewsletterCTA />
+                            <Component data={section} />
+                        </div>
+                    );
+                }
+
                 return <Component key={section.sectionKey} data={section} />;
             })}
 

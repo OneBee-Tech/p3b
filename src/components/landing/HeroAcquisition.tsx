@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ShieldCheck, HeartHandshake, FileText, Lock, Heart, PlayCircle } from "lucide-react";
 
 export function HeroAcquisition({ data }: { data?: any }) {
-    const heroImage = "/images/placeholders/hero-new.jpg";
+    const heroImage = "/images/placeholders/hero-smiling-girl.png";
 
     return (
         <section className="relative bg-cinematic-dark text-white flex items-center overflow-hidden">
@@ -50,30 +50,6 @@ export function HeroAcquisition({ data }: { data?: any }) {
                             <PlayCircle className="w-5 h-5" />
                             See How It Works
                         </Link>
-                    </div>
-                </div>
-
-                {/* Trust Indicators Strip */}
-                <div className="flex flex-wrap items-center justify-between gap-8 pt-6 border-t border-white/10 animate-fade-in-up delay-400 text-sm font-medium text-white/80 w-full">
-                    <div className="flex items-center gap-2">
-                        <HeartHandshake className="w-5 h-5 text-emerald-400" />
-                        Pooled Donations
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <ShieldCheck className="w-5 h-5 text-trust-blue" />
-                        Vetted Private Schools
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <Lock className="w-5 h-5 text-slate-300" />
-                        Child Safeguarding
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <FileText className="w-5 h-5 text-impact-gold" />
-                        6-Month Progress Reports
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <FileText className="w-5 h-5 text-gray-300" />
-                        Transparent Reporting
                     </div>
                 </div>
             </div>

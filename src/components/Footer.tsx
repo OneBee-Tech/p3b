@@ -14,7 +14,7 @@ export function Footer({ settings = DEFAULT_GLOBAL_SETTINGS }: FooterProps) {
   const pathname = usePathname();
   if (pathname?.startsWith("/admin") || pathname === "/home2") return null;
 
-  const showNewsletter = pathname !== "/our-story";
+  const showNewsletter = pathname !== "/our-story" && pathname !== "/";
 
   return (
     <>
