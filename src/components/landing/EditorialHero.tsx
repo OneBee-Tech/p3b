@@ -17,10 +17,11 @@ export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig
                         alt={backgroundImage?.alt || "Hero background"}
                         fill
                         priority
-                        className="object-cover object-center md:object-[center_20%] opacity-55 transition-transform duration-[10s] hover:scale-105"
+                        className="object-cover object-[center_30%] md:object-[center_20%] opacity-40 md:opacity-55 transition-transform duration-[10s] hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-cinematic-dark/90 via-cinematic-dark/60 to-transparent" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-cinematic-dark via-transparent to-black/40 opacity-80" />
+                    {/* Mobile: Top-to-bottom dark gradient for 100% text contrast. Desktop: Left-to-right gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-cinematic-dark/95 via-cinematic-dark/85 to-cinematic-dark/95 md:bg-gradient-to-r md:from-cinematic-dark/95 md:via-cinematic-dark/70 md:to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-cinematic-dark via-transparent to-black/50 opacity-90" />
                     <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.6)] pointer-events-none" />
                 </div>
             )}
