@@ -45,10 +45,15 @@ export function ContentBlock({ data }: { data?: any }) {
                         )}
 
                         {items && items.length > 0 && (
-                            <div className={`mb-10 text-left animate-fade-in-up delay-200 ${isGrid ? 'grid sm:grid-cols-2 gap-6' : 'grid sm:grid-cols-2 gap-4'}`}>
+                            <div className={`mb-10 text-left animate-fade-in-up delay-200 ${
+                                isGrid ? 'grid sm:grid-cols-2 gap-6' : 
+                                variant === 'checkmarks' ? 'grid md:grid-cols-2 gap-x-8 gap-y-6' : 
+                                'grid sm:grid-cols-2 gap-4'
+                            }`}>
                                 {items.map((item: any, idx: number) => {
-                                    // Handle both object {title, icon} and string formats
+                                    // Handle both object {title, icon, subtitle} and string formats
                                     const title = typeof item === 'string' ? item : item.title;
+                                    const subtitle = typeof item === 'object' ? item.subtitle : null;
                                     const IconComponent = typeof item === 'object' && item.icon ? resolveIcon(item.icon) : CheckCircle2;
 
                                     if (isGrid) {
@@ -58,6 +63,20 @@ export function ContentBlock({ data }: { data?: any }) {
                                                     <IconComponent className="w-6 h-6" />
                                                 </div>
                                                 <span className="text-gray-800 font-bold mt-3">{title}</span>
+                                            </div>
+                                        );
+                                    }
+                                    
+                                    if (variant === 'checkmarks') {
+                                        return (
+                                            <div key={idx} className="flex items-start gap-4 p-4 rounded-xl hover:bg-black/20 transition-colors">
+                                                <div className="bg-emerald-500/20 rounded-full p-1.5 flex-shrink-0 mt-0.5">
+                                                    <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+                                                </div>
+                                                <div>
+                                                    <h3 className="text-white font-bold text-xl mb-1">{title}</h3>
+                                                    {subtitle && <p className="text-gray-300 text-sm leading-relaxed">{subtitle}</p>}
+                                                </div>
                                             </div>
                                         );
                                     }

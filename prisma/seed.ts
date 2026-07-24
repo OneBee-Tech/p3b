@@ -519,6 +519,257 @@ async function main() {
     }
     console.log('📄 Our Story Sections seeded')
 
+    // 0.5c Seed How It Works Sections
+    const howItWorksSectionsData = [
+        {
+            sectionKey: 'hiwHero',
+            title: 'How It Works Hero',
+            content: '',
+            metadata: {
+                version: 'v4',
+                order: 1,
+                component: 'hero',
+                layout: 'full-bg',
+                featured: true,
+                badge: 'How It Works',
+                breadcrumb: 'Home / How It Works',
+                heading: 'Your $1. A Clear Process. A Child\'s Brighter Future.',
+                description: 'See exactly how your contribution moves from your checkout to creating measurable change in a child\'s life.',
+                backgroundImage: {
+                    src: '/images/placeholders/hero-smiling-girl.png',
+                    alt: 'Joyful school children eager to learn',
+                },
+                trustStrip: [
+                    'Verified Children',
+                    'Direct Education Payments',
+                    'Progress Reports',
+                    'Transparent Documentation'
+                ]
+            }
+        },
+        {
+            sectionKey: 'hiwJourneyOverview',
+            title: 'Journey Overview',
+            content: '',
+            metadata: {
+                version: 'v2',
+                order: 2,
+                component: 'processFlow',
+                variant: 'hero',
+                heading: 'Your Sponsorship Journey',
+                flowDirection: 'horizontal',
+                steps: [
+                    { title: 'Community', subtitle: 'Finding children', icon: 'MapPin' },
+                    { title: 'Assessment', subtitle: 'Verifying need', icon: 'Users' },
+                    { title: 'School', subtitle: 'Choosing the best fit', icon: 'School' },
+                    { title: 'Budget', subtitle: 'Calculating needs', icon: 'Calculator' },
+                    { title: 'Sponsor', subtitle: 'Matching with you', icon: 'Heart' },
+                    { title: 'Payments', subtitle: 'Directing funds', icon: 'CreditCard' },
+                    { title: 'Documentation', subtitle: 'Confirming enrollment', icon: 'FileText' },
+                    { title: 'Progress', subtitle: 'Tracking growth', icon: 'TrendingUp' },
+                    { title: 'Annual Review', subtitle: 'Yearly evaluation', icon: 'CheckCircle' }
+                ]
+            }
+        },
+        {
+            sectionKey: 'hiwChapter1',
+            title: 'Chapter 1: Finding the Right Child',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 3,
+                component: 'editorial',
+                layout: 'image-right',
+                style: 'narrative',
+                heading: 'Finding the Right Child',
+                body: 'We work closely with trusted community partners, local volunteers, and social workers to identify children who are most at risk of leaving school due to financial hardship. Every child\'s circumstances are rigorously verified before enrollment, ensuring that your support goes exactly where it is needed most. Finally, we select a dependable, affordable local school that can provide safe, consistent education.',
+                image: {
+                    src: '/images/placeholders/finding-child-documentary.jpg',
+                    alt: 'Community assessment process',
+                    caption: 'Identifying and verifying need within the community.'
+                },
+                timelineHeading: 'The Initial Steps',
+                timeline: [
+                    { title: 'Community Identification', description: 'Referrals from local partners.' },
+                    { title: 'Verification', description: 'Financial and circumstance assessment.' },
+                    { title: 'School Selection', description: 'Finding a safe, local learning environment.' }
+                ]
+            }
+        },
+        {
+            sectionKey: 'hiwChapter2',
+            title: 'Chapter 2: Building the Education Plan',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 4,
+                component: 'editorial',
+                layout: 'image-left',
+                style: 'narrative',
+                heading: 'Building the Education Plan',
+                body: 'Once a child is verified, we build a comprehensive budget that covers their entire academic year—including tuition, uniforms, books, and basic supplies. You step in as their sponsor, providing the critical funding required. We then manage the payments directly with the school and local vendors, ensuring every dollar is used solely for educational purposes.',
+                image: {
+                    src: '/images/placeholders/classroom-books.jpg',
+                    alt: 'Education planning and budgeting',
+                    caption: 'Building a comprehensive plan for success.'
+                },
+                timelineHeading: 'Securing the Foundation',
+                timeline: [
+                    { title: 'Budget', description: 'Calculating all educational needs.' },
+                    { title: 'Sponsor', description: 'Matching the child with a sponsor.' },
+                    { title: 'Payments', description: 'Direct, accountable funding to schools.' }
+                ]
+            }
+        },
+        {
+            sectionKey: 'hiwVisualBreak',
+            title: 'Cinematic Visual Break',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 4.5,
+                component: 'editorial',
+                layout: 'full-bleed-image',
+                heading: '',
+                quote: {
+                    text: 'Education begins with one opportunity.'
+                },
+                image: {
+                    src: '/images/placeholders/cinematic-break.jpg',
+                    alt: 'Child entering classroom'
+                }
+            }
+        },
+        {
+            sectionKey: 'hiwChapter3',
+            title: 'Chapter 3: Following the Journey',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 5,
+                component: 'editorial',
+                layout: 'image-right',
+                style: 'narrative',
+                heading: 'Following the Journey',
+                body: 'Transparency is at the heart of our mission. As soon as the child is enrolled, we secure and share the official documentation with you. Throughout the year, we collect academic reports, attendance records, and teacher feedback, summarizing them into regular progress updates. At the end of the year, a comprehensive annual review ensures the child is ready for the next grade.',
+                image: {
+                    src: '/images/placeholders/child-studying.jpg',
+                    alt: 'Teacher reviewing a progress report',
+                    caption: 'Documenting every milestone along the way.'
+                },
+                timelineHeading: 'Tracking Impact',
+                timeline: [
+                    { title: 'Documentation', description: 'Receipts and enrollment forms.' },
+                    { title: 'Reports', description: 'Six-month academic progress updates.' },
+                    { title: 'Annual Review', description: 'Evaluating success and preparing for next year.' }
+                ]
+            }
+        },
+        {
+            sectionKey: 'hiwSupports',
+            title: 'What Your Sponsorship Supports',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 6,
+                component: 'whyOneDollar',
+                variant: 'grid',
+                heading: 'What Your Sponsorship Supports',
+                description: 'Your contribution doesn\'t just pay for a seat in a classroom. It provides a complete educational ecosystem.',
+                items: [
+                    { title: 'Tuition Fees', icon: 'BookOpen' },
+                    { title: 'Textbooks & Books', icon: 'Library' },
+                    { title: 'Uniforms & Shoes', icon: 'Shirt' },
+                    { title: 'School Bag', icon: 'Briefcase' },
+                    { title: 'Stationery', icon: 'PenTool' },
+                    { title: 'Examination Fees', icon: 'FileText' },
+                    { title: 'Learning Materials', icon: 'Clipboard' }
+                ],
+                featureImage: '/images/placeholders/classroom-study.jpg'
+            }
+        },
+        {
+            sectionKey: 'hiwReceives',
+            title: 'What You Receive',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 7,
+                component: 'cardSequence',
+                heading: 'What You Receive',
+                description: 'We believe you deserve to see exactly how your generosity is transforming a life. Here is what you can expect as a sponsor.',
+                cards: [
+                    { title: 'School Fee Receipts', description: 'Verifiable proof that your funds reached the school.', icon: 'Receipt' },
+                    { title: 'Enrollment Confirmation', description: 'Official documentation of the child\'s admission.', icon: 'CheckSquare' },
+                    { title: 'Progress Reports', description: 'Academic performance and grades every six months.', icon: 'LineChart' },
+                    { title: 'Teacher Feedback', description: 'Insights into the child\'s behavior and participation.', icon: 'MessageCircle' },
+                    { title: 'Attendance Updates', description: 'Ensuring the child is consistently present and safe.', icon: 'Calendar' },
+                    { title: 'Educational Milestones', description: 'Celebrating key achievements and grade promotions.', icon: 'Award' },
+                    { title: 'Approved Photos', description: 'Visual updates of the child\'s journey, strictly safeguarding their dignity.', icon: 'Image' }
+                ]
+            }
+        },
+        {
+            sectionKey: 'hiwTransparency',
+            title: 'Our Promise of Transparency',
+            content: '',
+            metadata: {
+                version: 'v2',
+                order: 8,
+                component: 'contentBlock',
+                variant: 'checkmarks',
+                heading: 'Our Promise of Transparency',
+                description: 'Trust is not given; it is earned through rigorous accountability and verifiable impact.',
+                items: [
+                    { title: 'Verified Children', subtitle: 'Every child\'s financial and educational need is rigorously confirmed.' },
+                    { title: 'Direct Payments', subtitle: 'Funds go directly to schools and vendors to ensure zero leakage.' },
+                    { title: 'Documentation', subtitle: 'You receive receipts and official enrollment forms.' },
+                    { title: 'Progress Reports', subtitle: 'Academic updates provided every six months.' },
+                    { title: 'Child Safeguarding', subtitle: 'Strict policies protect the dignity and privacy of every student.' },
+                    { title: 'Accountability', subtitle: 'Annual reviews guarantee the continued success of the program.' }
+                ]
+            }
+        },
+        {
+            sectionKey: 'hiwClosing',
+            title: 'Editorial Closing',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 9,
+                component: 'editorial',
+                layout: 'centered-text-only',
+                body: 'Your sponsorship does not end with a payment.\n\nIt begins with a child walking into a classroom.\n\nIt continues through every lesson learned, every report shared, every milestone reached, and every future made possible.\n\nTogether, we turn generosity into opportunity.',
+                textHeadingClass: 'text-2xl md:text-4xl text-cinematic-dark font-medium leading-relaxed font-body italic border-none'
+            }
+        },
+        {
+            sectionKey: 'hiwCTA',
+            title: 'Final CTA',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 10,
+                component: 'ctaSection',
+                heading: 'Change a Life Today',
+                description: 'Every classroom begins with opportunity. Every future begins with someone willing to care.',
+                ctas: [
+                    { label: 'Sponsor a Child Now', href: '/sponsor', variant: 'primary' },
+                    { label: 'Give a One-Time Gift', href: '/checkout', variant: 'secondary' }
+                ]
+            }
+        }
+    ]
+
+    for (const section of howItWorksSectionsData) {
+        await prisma.homepageSection.upsert({
+            where: { sectionKey: section.sectionKey },
+            update: section,
+            create: section,
+        })
+    }
+    console.log('📄 How It Works Sections seeded')
+
     // 0.6 Seed FAQs
     const faqsData = [
         { id: 'faq-1', question: 'How is my $1 a day allocated?', answer: '100% of your $1 goes directly to the educational and wellbeing programs of the child you sponsor.', order: 1 },

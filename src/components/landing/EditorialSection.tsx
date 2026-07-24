@@ -10,6 +10,7 @@ export function EditorialSection({ data, layoutConfig }: { data?: any, layoutCon
     
     const isImageLeft = layout === 'image-left';
     const isCenteredImageOnly = layout === 'centered-image-only';
+    const isFullBleedImage = layout === 'full-bleed-image';
 
     // Theme color mapping
     const bgClasses = {
@@ -22,24 +23,53 @@ export function EditorialSection({ data, layoutConfig }: { data?: any, layoutCon
     const textBodyClass = theme === 'dark' ? 'text-gray-300' : 'text-gray-600';
     const textHeadingClass = theme === 'dark' ? 'text-white' : 'text-cinematic-dark';
 
+    if (isFullBleedImage) {
+        return (
+            <section className="relative w-full h-[40vh] md:h-[80vh] min-h-[300px] md:min-h-[500px] overflow-hidden flex items-center justify-center">
+                {image && (
+                    <div className="absolute inset-0 z-0">
+                        <Image
+                            src={image?.src || image}
+                            alt={image?.alt || heading || "Cinematic visual break"}
+                            fill
+                            className="object-cover object-center"
+                        />
+                        <div className="absolute inset-0 bg-black/40" />
+                    </div>
+                )}
+                <div className="relative z-10 px-4 text-center max-w-5xl mx-auto">
+                    {quote?.text ? (
+                        <blockquote className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-heading font-extrabold text-white leading-tight drop-shadow-2xl">
+                            "{quote.text}"
+                        </blockquote>
+                    ) : heading && (
+                        <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl font-heading font-extrabold text-white leading-tight drop-shadow-2xl">
+                            {heading}
+                        </h2>
+                    )}
+                </div>
+            </section>
+        );
+    }
+
     return (
-        <section className={`py-32 md:py-40 overflow-hidden ${bgClasses}`}>
+        <section className={`py-16 sm:py-24 md:py-40 overflow-hidden ${bgClasses}`}>
             <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
                 
                 {isCenteredImageOnly ? (
                     <div className="flex flex-col items-center text-center">
                         {heading && (
-                            <h2 className={`text-4xl md:text-5xl lg:text-7xl font-heading font-bold mb-8 tracking-tight ${textHeadingClass} animate-fade-in-up max-w-5xl mx-auto leading-tight`}>
+                            <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-heading font-bold mb-6 sm:mb-8 tracking-tight ${textHeadingClass} animate-fade-in-up max-w-5xl mx-auto leading-tight`}>
                                 {heading}
                             </h2>
                         )}
                         {body && (
-                            <p className={`text-xl md:text-3xl font-body leading-relaxed max-w-4xl mx-auto ${textBodyClass} mb-20 animate-fade-in-up delay-100`}>
+                            <p className={`text-lg sm:text-xl md:text-3xl font-body leading-relaxed max-w-4xl mx-auto ${textBodyClass} mb-10 sm:mb-20 animate-fade-in-up delay-100`}>
                                 {body}
                             </p>
                         )}
                         {image && (
-                            <figure className="relative h-[500px] lg:h-[800px] w-full rounded-2xl overflow-hidden shadow-2xl group animate-fade-in-up delay-200">
+                            <figure className="relative h-[280px] sm:h-[450px] lg:h-[800px] w-full rounded-2xl overflow-hidden shadow-2xl group animate-fade-in-up delay-200">
                                 <Image
                                     src={image?.src || image}
                                     alt={image?.alt || heading || "Editorial image"}
@@ -51,12 +81,12 @@ export function EditorialSection({ data, layoutConfig }: { data?: any, layoutCon
                         )}
                     </div>
                 ) : (
-                    <div className={`grid grid-cols-12 gap-12 lg:gap-16 items-center`}>
+                    <div className={`grid grid-cols-12 gap-8 lg:gap-16 items-center`}>
                         
                         {/* Image Column - spans 5-6 columns based on grid layout */}
                         {image && (
                             <div className={`col-span-12 md:col-span-6 relative animate-fade-in-up ${!isImageLeft ? 'md:order-last' : ''}`}>
-                                <figure className="relative h-[500px] lg:h-[600px] w-full rounded-2xl overflow-hidden shadow-2xl group">
+                                <figure className="relative h-[260px] sm:h-[400px] lg:h-[600px] w-full rounded-2xl overflow-hidden shadow-2xl group">
                                     <Image
                                         src={image?.src || image}
                                         alt={image?.alt || heading || "Editorial image"}

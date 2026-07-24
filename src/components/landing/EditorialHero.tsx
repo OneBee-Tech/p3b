@@ -9,7 +9,7 @@ export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig
     const { heading, description, secondaryDescription, backgroundImage, ctas, readingTime, badge, breadcrumb } = meta;
 
     return (
-        <section className="relative bg-cinematic-dark text-white h-[95vh] min-h-[735px] flex items-center overflow-hidden">
+        <section className="relative bg-cinematic-dark text-white min-h-[90vh] md:h-[95vh] md:min-h-[735px] flex items-center overflow-hidden py-24 md:py-0">
             {backgroundImage && (
                 <div className="absolute inset-0 z-0">
                     <Image
@@ -25,24 +25,24 @@ export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig
                 </div>
             )}
 
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-48 pb-24 md:pt-56 md:pb-32">
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-28 pb-16 sm:pt-36 md:pt-56 md:pb-32">
                 <div className="grid grid-cols-12 gap-8">
                     <div className="col-span-12 md:col-span-8 lg:col-span-7">
                         
                         {heading && (
-                            <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-extrabold text-white mb-8 tracking-tight leading-[1.05] animate-fade-in-up delay-100">
+                            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-heading font-extrabold text-white mb-6 sm:mb-8 tracking-tight leading-[1.1] md:leading-[1.05] animate-fade-in-up delay-100">
                                 {heading}
                             </h1>
                         )}
                         
                         {description && (
-                            <p className="text-2xl md:text-3xl text-white/90 leading-snug font-body mb-6 animate-fade-in-up delay-200 drop-shadow-md">
+                            <p className="text-lg sm:text-xl md:text-3xl text-white/90 leading-relaxed sm:leading-snug font-body mb-4 sm:mb-6 animate-fade-in-up delay-200 drop-shadow-md">
                                 {description}
                             </p>
                         )}
                         
                         {secondaryDescription && (
-                            <p className="text-lg text-white/70 leading-relaxed font-body mb-12 animate-fade-in-up delay-300 max-w-prose">
+                            <p className="text-base md:text-lg text-white/70 leading-relaxed font-body mb-8 sm:mb-12 animate-fade-in-up delay-300 max-w-prose">
                                 {secondaryDescription}
                             </p>
                         )}
@@ -62,6 +62,21 @@ export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig
                                         {cta.label}
                                         {cta.variant === 'primary' && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
                                     </Link>
+                                ))}
+                            </div>
+                        )}
+
+                        {meta.trustStrip && meta.trustStrip.length > 0 && (
+                            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mt-12 animate-fade-in-up delay-500 text-sm font-medium text-white/80">
+                                {meta.trustStrip.map((item: string, idx: number) => (
+                                    <div key={idx} className="flex items-center gap-2">
+                                        <div className="w-4 h-4 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                                            <svg className="w-3 h-3 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                        <span>{item}</span>
+                                    </div>
                                 ))}
                             </div>
                         )}
