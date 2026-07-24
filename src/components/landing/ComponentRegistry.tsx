@@ -24,7 +24,7 @@ export const ComponentRegistry: Record<string, React.FC<{ data: any }>> = {
 /**
  * RenderSection is a helper to safely render a component from the registry.
  */
-export function RenderSection({ section }: { section: any }) {
+export function RenderSection({ section, layoutConfig }: { section: any, layoutConfig?: any }) {
     const componentKey = section?.metadata?.component;
     
     if (!componentKey) {
@@ -39,5 +39,5 @@ export function RenderSection({ section }: { section: any }) {
         return null;
     }
 
-    return <Component data={section} />;
+    return <Component data={section} layoutConfig={layoutConfig} />;
 }

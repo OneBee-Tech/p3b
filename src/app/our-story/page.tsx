@@ -17,6 +17,24 @@ export async function generateMetadata(): Promise<Metadata> {
     };
 }
 
+const PAGE_LAYOUT: Record<string, { theme: string; [key: string]: any }> = {
+    storyHero: { theme: 'dark' },
+    storyIdea: { theme: 'light' },
+    storyFounderBio: { theme: 'dark' },
+    storyFounderLetter: { theme: 'light' },
+    storyMissionVisionPurpose: { theme: 'dark' },
+    storyDifference: { theme: 'light' },
+    storyWhyEducation: { theme: 'dark' },
+    storyJourney: { theme: 'light' },
+    storyWhyOneDollar: { theme: 'dark' },
+    storyWhySmall: { theme: 'light' },
+    storyValues: { theme: 'dark' },
+    storyPromise: { theme: 'light' },
+    storyRegistration: { theme: 'dark' },
+    storyPause: { theme: 'light' },
+    storyCTA: { theme: 'dark' }
+};
+
 export default async function OurStoryPage() {
     // Fetch all sections that start with 'story' (or a specific page identifier in a real CMS)
     // For now, we'll fetch all and filter by sectionKey starting with 'story'
@@ -26,7 +44,7 @@ export default async function OurStoryPage() {
 
     // Sort them by the order field in metadata
     const sections = rawSections
-        .filter(s => s?.metadata && typeof (s.metadata as any).order === 'number')
+        .filter(s => s?.metadata && typeof (s.metadata as any).order === 'number' && PAGE_LAYOUT.hasOwnProperty(s.sectionKey))
         .sort((a, b) => {
             const orderA = (a.metadata as any).order || 0;
             const orderB = (b.metadata as any).order || 0;
@@ -39,9 +57,16 @@ export default async function OurStoryPage() {
 
     return (
         <main className="min-h-screen bg-white">
-            {sections.map((section: any) => (
-                <RenderSection key={section.sectionKey} section={section} />
-            ))}
+            {sections.map((section: any) => {
+                const layoutConfig = PAGE_LAYOUT[section.sectionKey] || { theme: 'white' };
+                return (
+                    <RenderSection 
+                        key={section.sectionKey} 
+                        section={section} 
+                        layoutConfig={layoutConfig} 
+                    />
+                );
+            })}
         </main>
     );
 }

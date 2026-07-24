@@ -168,7 +168,7 @@ async function main() {
                 order: 7,
                 status: 'Draft / Source: Client',
                 heading: 'Change a Life Today',
-                description: 'Your dollar may seem small, but its impact lasts a lifetime.',
+                description: 'Every classroom begins with opportunity. Every future begins with someone willing to care.',
                 ctas: [
                     { label: 'Sponsor a Child Now', href: '/sponsor', variant: 'primary' },
                     { label: 'Give a One-Time Gift', href: '/checkout', variant: 'secondary' }
@@ -188,24 +188,25 @@ async function main() {
 
     // 0.5b Seed Our Story Sections
     const ourStorySectionsData = [
+        // CHAPTER 1: Introduction
         {
             sectionKey: 'storyHero',
             title: 'Our Story Hero',
             content: '',
             metadata: {
-                version: 'v1',
+                version: 'v4',
                 order: 1,
                 component: 'hero',
                 layout: 'full-bg',
                 featured: true,
                 badge: 'Our Story',
                 breadcrumb: 'Home / Our Story',
-                readingTime: '4 min read',
                 heading: 'A Small Idea With the Power to Build Big Futures',
                 description: 'What happens if many people each give one dollar a day?',
+                secondaryDescription: 'One dollar is insignificant in developed countries—it cannot even buy a cup of coffee. But when aggregated and sent directly to developing communities, that same dollar becomes transformative. It provides school fees, books, and uniforms. A single dollar can begin a journey of lifelong opportunity.',
                 backgroundImage: {
-                    src: '/images/placeholders/hero-new.jpg',
-                    alt: 'Children in a classroom learning together',
+                    src: '/images/placeholders/story-hero-happy-children.jpg',
+                    alt: 'Joyful school children in uniform raising their hands eager to learn',
                     caption: 'Every dollar creates a new opportunity.'
                 },
                 ctas: [
@@ -219,7 +220,7 @@ async function main() {
             title: 'How the Idea Began',
             content: '',
             metadata: {
-                version: 'v1',
+                version: 'v3',
                 order: 2,
                 component: 'editorial',
                 layout: 'image-left',
@@ -237,26 +238,23 @@ async function main() {
                 }
             }
         },
+        // CHAPTER 2: The Founder
         {
             sectionKey: 'storyFounderBio',
-            title: 'About Our Founder',
+            title: 'The Realization',
             content: '',
             metadata: {
-                version: 'v1',
+                version: 'v3',
                 order: 3,
                 component: 'editorial',
                 layout: 'image-right',
                 style: 'narrative',
-                heading: 'The Journey from Dubai to Canada',
-                body: 'Sarah Haider moved from Dubai to Canada and observed stark contrasts in educational access. This sparked a question: How can we bridge this gap sustainably?',
-                quote: {
-                    text: 'It became impossible to ignore the disparity in opportunity.',
-                    author: 'Sarah Haider'
-                },
+                heading: 'A Disparity Too Great to Ignore',
+                body: 'Moving from Dubai to Canada, our founder Sarah Haider experienced different educational systems and observed a stark contrast. It became painfully clear that brilliant minds were being left behind simply because of where they were born. Opportunity should not be determined by geography. This realization sparked a question: How can we bridge this gap sustainably without relying solely on massive, unpredictable grants?',
                 image: {
                     src: '/images/placeholders/founder.jpg',
                     alt: 'Sarah Haider',
-                    caption: 'Sarah Haider, Youth Founder'
+                    caption: 'The journey to accessible education.'
                 }
             }
         },
@@ -265,72 +263,161 @@ async function main() {
             title: 'Founder Letter',
             content: '',
             metadata: {
-                version: 'v1',
+                version: 'v3',
                 order: 4,
                 component: 'quoteBlock',
                 style: 'narrative letter',
                 featured: true,
                 quote: {
-                    text: "Education is the most powerful weapon which you can use to change the world. Our mission is to ensure every child gets that chance. We started this initiative not just to raise funds, but to build a global community connected by the simple belief that everyone deserves an education.",
+                    text: "We didn't start this to be just another charity. We wanted to build a movement—a community connected by the profound belief that generosity should be accessible to everyone, and that every single child deserves the dignity of an education.",
                     author: "Sarah Haider",
                     role: "Youth Founder"
                 }
             }
         },
+        // CHAPTER 3: Core Philosophy
         {
-            sectionKey: 'storyMission',
-            title: 'Mission',
+            sectionKey: 'storyMissionVisionPurpose',
+            title: 'Mission, Vision & Purpose',
             content: '',
             metadata: {
-                version: 'v1',
+                version: 'v3',
                 order: 5,
                 component: 'cardSequence',
-                style: 'hierarchical',
-                heading: 'Mission',
+                style: 'editorial',
+                heading: 'Our Mission, Vision & Purpose',
+                description: 'Every decision we make is guided by three enduring principles that shape our work and our commitment to every child.',
                 items: [
-                    { title: 'Educate', description: 'Provide sustainable educational access to every child in need.' },
-                    { title: 'Empower', description: 'Equip local communities with the resources to thrive.' },
-                    { title: 'Elevate', description: 'Raise the standard of living through knowledge and skills.' }
-                ]
+                    { title: 'Mission', description: 'To provide sustainable educational access and empower local communities with the resources they need to thrive.' },
+                    { title: 'Vision', description: 'A world where every child can learn safely, without the burden of financial constraints holding back their potential.' },
+                    { title: 'Purpose', description: 'To connect resources from those who have them to those who need them most, building lasting ecosystems of support.' }
+                ],
+                footerText: 'Our Mission defines what we do. Our Vision defines where we want to go. Our Purpose reminds us why every child matters.'
             }
         },
         {
-            sectionKey: 'storyVision',
-            title: 'Vision',
+            sectionKey: 'storyDifference',
+            title: 'What Makes Us Different',
             content: '',
             metadata: {
-                version: 'v1',
+                version: 'v3',
                 order: 6,
+                component: 'contentGrid',
+                heading: 'What Makes Us Different',
+                items: [
+                    { title: 'Accessible Giving', description: 'Generosity isn’t reserved for the wealthy. $1 a day allows anyone to change a life.', icon: 'HeartHandshake' },
+                    { title: 'Education First', description: 'We believe education is the single most effective way to break the cycle of poverty.', icon: 'Star' },
+                    { title: 'Transparent Impact', description: 'Every transaction is documented. You see exactly where your dollar goes.', icon: 'ShieldCheck' },
+                    { title: 'Long-Term Change', description: 'We commit to a child for their entire educational journey, not just a season.', icon: 'Clock' }
+                ]
+            }
+        },
+        // CHAPTER 4: The Impact
+        {
+            sectionKey: 'storyWhyEducation',
+            title: 'Why Education Changes Everything',
+            content: '',
+            metadata: {
+                version: 'v5',
+                order: 7,
                 component: 'editorial',
                 layout: 'image-left',
-                heading: 'Vision',
-                body: 'A world where every child can learn safely, without the burden of financial constraints holding back their potential. We envision communities transformed by a generation of educated, empowered leaders.'
+                heading: 'Why Education Changes Everything',
+                body: 'Education creates more than academic knowledge. It builds confidence, opportunity, and independence. It leads to stronger families and healthier communities. The impact of a single classroom extends far beyond its walls.',
+                quote: {
+                    text: 'When you educate a child, you don’t just change their life—you change the trajectory of an entire family.',
+                    author: 'The Power of the Classroom'
+                },
+                image: {
+                    src: '/images/placeholders/classroom-study.jpg',
+                    alt: 'Children eager to learn in a vibrant classroom',
+                    caption: 'Education changes lives—one classroom at a time.'
+                },
+                transitionSentence: 'Education does not stop at the classroom door. Its impact grows outward, influencing careers, strengthening families, supporting communities, and creating opportunities that extend across generations.',
+                timelineHeading: 'WHAT EDUCATION CAN CHANGE',
+                timelineSubheading: 'One opportunity creates generations of impact.',
+                timeline: [
+                    { label: 'Education', description: 'Access to learning', icon: 'BookOpen' },
+                    { label: 'Employment', description: 'Better opportunities', icon: 'Briefcase' },
+                    { label: 'Financial Stability', description: 'Higher earning potential', icon: 'TrendingUp' },
+                    { label: 'Family', description: 'Healthier households', icon: 'Users' },
+                    { label: 'Community', description: 'Shared prosperity', icon: 'Heart' },
+                    { label: 'Future Generations', description: 'Breaking cycles of poverty', icon: 'Globe' }
+                ],
+                closingSentence: 'A single opportunity in a classroom today can become a stronger family, a healthier community, and a brighter future tomorrow.'
             }
         },
+        // CHAPTER 5: The Model
         {
-            sectionKey: 'storyPurpose',
-            title: 'Purpose',
+            sectionKey: 'storyJourney',
+            title: 'Our Journey',
             content: '',
             metadata: {
-                version: 'v1',
-                order: 7,
-                component: 'cardSequence',
-                style: 'hierarchical',
-                heading: 'Purpose',
+                version: 'v4',
+                order: 9,
+                component: 'processFlow',
+                flowDirection: 'horizontal',
+                heading: 'Our Journey',
+                description: 'How a simple observation transformed into a global movement for change.',
                 items: [
-                    { title: 'Connection', description: 'Connect resources from those who have them to those who need them most.' },
-                    { title: 'Sustainability', description: 'Build lasting ecosystems of support rather than short-term fixes.' },
-                    { title: 'Transparency', description: 'Ensure complete visibility into how every dollar is spent.' }
+                    { label: 'Growing Up', description: 'Witnessing global educational gaps', icon: 'BookOpen' },
+                    { label: 'Recognizing the Problem', description: 'Brilliant minds left behind', icon: 'Users' },
+                    { label: 'The Question', description: 'What if everyone gave $1 a day?', icon: 'Heart' },
+                    { label: 'The Idea', description: 'Collective micro-donations', icon: 'TrendingUp' },
+                    { label: 'The Future', description: 'Education for every child', icon: 'Globe' }
                 ]
             }
         },
+        {
+            sectionKey: 'storyWhyOneDollar',
+            title: 'Why One Dollar?',
+            content: '',
+            metadata: {
+                version: 'v3',
+                order: 10,
+                component: 'editorial',
+                layout: 'image-right',
+                featured: true,
+                heading: 'Why One Dollar?',
+                body: 'We chose one dollar because it democratizes generosity. It proves that you do not need to be a millionaire to make a difference. When thousands of people commit just one dollar a day, the collective impact is staggering.',
+                quote: {
+                    text: 'Generosity should be accessible to everyone—not only those able to make large donations.',
+                    author: 'Our Philosophy'
+                },
+                image: {
+                    src: '/images/placeholders/why-one-dollar.png',
+                    alt: 'Children looking out of a classroom window with bright smiles',
+                    caption: 'Democratizing generosity, one dollar at a time.'
+                }
+            }
+        },
+        {
+            sectionKey: 'storyWhySmall',
+            title: 'Why Smaller Communities?',
+            content: '',
+            metadata: {
+                version: 'v5',
+                order: 11,
+                component: 'editorial',
+                layout: 'image-left',
+                style: 'narrative',
+                heading: 'Why Smaller Communities?',
+                body: 'We focus our efforts on smaller towns and rural communities where resources are scarce but community bonds are strong. This allows for responsible stewardship, measurable impact, and long-term sustainability.',
+                image: {
+                    src: '/images/placeholders/smaller-communities-new.jpg',
+                    alt: 'Joyful group of children smiling in a rural community',
+                    caption: 'Targeted support where it is needed most.'
+                }
+            }
+        },
+        // CHAPTER 6: Trust
         {
             sectionKey: 'storyValues',
             title: 'Our Values',
             content: '',
             metadata: {
-                version: 'v1',
-                order: 8,
+                version: 'v3',
+                order: 12,
                 component: 'contentGrid',
                 style: 'reflective',
                 heading: 'Our Values',
@@ -345,120 +432,12 @@ async function main() {
             }
         },
         {
-            sectionKey: 'storyWhyEducation',
-            title: 'Why Education Changes Everything',
-            content: '',
-            metadata: {
-                version: 'v1',
-                order: 9,
-                component: 'processFlow',
-                flowDirection: 'vertical',
-                heading: 'Why Education Changes Everything',
-                description: 'The impact of schooling extends far beyond the classroom.',
-                items: [
-                    'Education',
-                    'Employment',
-                    'Financial Stability',
-                    'Family',
-                    'Community',
-                    'Future Generations'
-                ]
-            }
-        },
-        {
-            sectionKey: 'storyJourney',
-            title: 'Our Journey',
-            content: '',
-            metadata: {
-                version: 'v1',
-                order: 10,
-                component: 'processFlow',
-                flowDirection: 'horizontal',
-                heading: 'Our Journey',
-                items: [
-                    'Growing Up',
-                    'Recognizing the Problem',
-                    'The Question',
-                    'The Idea',
-                    'The Future'
-                ]
-            }
-        },
-        {
-            sectionKey: 'storyWhyOneDollar',
-            title: 'Why One Dollar?',
-            content: '',
-            metadata: {
-                version: 'v1',
-                order: 11,
-                component: 'editorial',
-                layout: 'image-right',
-                featured: true,
-                heading: 'Why One Dollar?',
-                body: 'We chose one dollar because it democratizes generosity. It proves that you do not need to be a millionaire to make a difference. When thousands of people commit just one dollar a day, the collective impact is staggering.',
-                quote: {
-                    text: 'Generosity should be accessible to everyone—not only those able to make large donations.',
-                    author: 'Our Philosophy'
-                }
-            }
-        },
-        {
-            sectionKey: 'storyWhySmall',
-            title: 'Why Smaller Communities?',
-            content: '',
-            metadata: {
-                version: 'v1',
-                order: 12,
-                component: 'editorial',
-                layout: 'image-left',
-                style: 'narrative',
-                heading: 'Why Smaller Communities?',
-                body: 'We focus our efforts on smaller towns and rural communities where resources are scarce but community bonds are strong. This allows for responsible stewardship, measurable impact, and long-term sustainability.',
-                image: {
-                    src: '/images/placeholders/feature-why.jpg',
-                    alt: 'Rural community learning center',
-                    caption: 'Targeted support where it is needed most.'
-                }
-            }
-        },
-        {
-            sectionKey: 'storyApproach',
-            title: 'What Makes Our Approach Different',
-            content: '',
-            metadata: {
-                version: 'v1',
-                order: 13,
-                component: 'contentGrid',
-                style: 'reflective',
-                heading: 'What Makes Our Approach Different',
-                items: [
-                    { title: 'Education First', description: 'We believe education is the root solution to systemic poverty.', icon: 'Star' },
-                    { title: 'Transparency', description: 'Every transaction is documented and visible.', icon: 'ShieldCheck' },
-                    { title: 'Long-Term Thinking', description: 'We commit to a child for their entire educational journey.', icon: 'Clock' },
-                    { title: 'Responsible Stewardship', description: 'We maximize the value of every single dollar.', icon: 'Heart' }
-                ]
-            }
-        },
-        {
-            sectionKey: 'storyMeasurement',
-            title: 'How We Measure Success',
-            content: '',
-            metadata: {
-                version: 'v1',
-                order: 14,
-                component: 'editorial',
-                layout: 'image-right',
-                heading: 'How We Measure Success',
-                body: 'We don’t measure success by donation volume. We measure it through tangible educational outcomes: school enrollment rates, daily attendance, academic progress, graduation rates, and ultimately, community impact.'
-            }
-        },
-        {
             sectionKey: 'storyPromise',
             title: 'Our Promise',
             content: '',
             metadata: {
-                version: 'v1',
-                order: 15,
+                version: 'v3',
+                order: 13,
                 component: 'contentGrid',
                 style: 'reflective',
                 heading: 'Our Promise',
@@ -477,8 +456,8 @@ async function main() {
             title: 'Registration & Accountability',
             content: '',
             metadata: {
-                version: 'v1',
-                order: 16,
+                version: 'v3',
+                order: 14,
                 component: 'trustCards',
                 style: 'compact summary',
                 heading: 'Registration & Accountability',
@@ -493,19 +472,39 @@ async function main() {
                 ]
             }
         },
+        // CHAPTER 7: The Pause
+        {
+            sectionKey: 'storyPause',
+            title: 'The Visual Pause',
+            content: '',
+            metadata: {
+                version: 'v4',
+                order: 15,
+                component: 'editorial',
+                layout: 'centered-image-only',
+                heading: 'Every Child Deserves the Chance to Learn.',
+                body: 'A classroom can change a life. A single opportunity can change a generation. A single dollar can help make that opportunity possible.',
+                image: {
+                    src: '/images/placeholders/every-child-deserves.jpg',
+                    alt: 'Children sitting together in class holding slates eager to learn',
+                    caption: 'Every child deserves the chance to learn.'
+                }
+            }
+        },
+        // CHAPTER 8: The Invitation
         {
             sectionKey: 'storyCTA',
             title: 'Final CTA',
             content: '',
             metadata: {
-                version: 'v1',
-                order: 17,
+                version: 'v3',
+                order: 16,
                 component: 'ctaSection',
-                heading: 'Join Our Story',
-                description: 'Every Great Story Begins With One Small Step.',
+                heading: 'Be Part of Their Next Chapter',
+                description: 'Every child deserves the opportunity to learn, and every contribution helps write a new chapter in someone\'s future. You have the power to change a life today.',
                 ctas: [
-                    { label: 'Sponsor a Child', href: '/sponsor', variant: 'primary' },
-                    { label: 'See How It Works', href: '/how-it-works', variant: 'secondary' }
+                    { label: 'Start Your Impact', href: '/sponsor', variant: 'primary' },
+                    { label: 'Make a One-Time Gift', href: '/checkout', variant: 'secondary' }
                 ]
             }
         }
