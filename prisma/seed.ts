@@ -690,22 +690,57 @@ async function main() {
         },
         {
             sectionKey: 'hiwReceives',
-            title: 'What You Receive',
+            title: "What You'll Receive",
             content: '',
             metadata: {
-                version: 'v1',
+                version: 'v3',
                 order: 7,
                 component: 'cardSequence',
-                heading: 'What You Receive',
-                description: 'We believe you deserve to see exactly how your generosity is transforming a life. Here is what you can expect as a sponsor.',
+                heading: "What You'll Receive",
+                description: "Your sponsorship creates more than an educational opportunity.\n\nIt creates a transparent connection between your generosity and a child's progress.\n\nSubject to privacy, safeguarding, and consent requirements, we aim to keep you informed throughout the child's educational journey.",
                 cards: [
-                    { title: 'School Fee Receipts', description: 'Verifiable proof that your funds reached the school.', icon: 'Receipt' },
-                    { title: 'Enrollment Confirmation', description: 'Official documentation of the child\'s admission.', icon: 'CheckSquare' },
-                    { title: 'Progress Reports', description: 'Academic performance and grades every six months.', icon: 'LineChart' },
-                    { title: 'Teacher Feedback', description: 'Insights into the child\'s behavior and participation.', icon: 'MessageCircle' },
-                    { title: 'Attendance Updates', description: 'Ensuring the child is consistently present and safe.', icon: 'Calendar' },
-                    { title: 'Educational Milestones', description: 'Celebrating key achievements and grade promotions.', icon: 'Award' },
-                    { title: 'Approved Photos', description: 'Visual updates of the child\'s journey, strictly safeguarding their dignity.', icon: 'Image' }
+                    { 
+                        title: 'School Fee Receipts', 
+                        description: 'Receive documentation showing approved education payments made on behalf of the child.', 
+                        icon: 'Receipt',
+                        image: '/images/placeholders/receipt-doc.jpg'
+                    },
+                    { 
+                        title: 'Enrollment Confirmation', 
+                        description: 'Know when the child begins their educational journey.', 
+                        icon: 'FileCheck',
+                        image: '/images/placeholders/enrollment-doc.jpg'
+                    },
+                    { 
+                        title: 'Progress Reports', 
+                        description: 'Receive academic updates approximately every six months, depending on the school\'s reporting schedule.', 
+                        icon: 'TrendingUp',
+                        image: '/images/placeholders/report-card.jpg'
+                    },
+                    { 
+                        title: 'Teacher Feedback', 
+                        description: 'Where available, receive insights into the child\'s learning and classroom progress.', 
+                        icon: 'MessageSquare',
+                        image: '/images/placeholders/teacher-notes.jpg'
+                    },
+                    { 
+                        title: 'Attendance Updates', 
+                        description: 'Follow the child\'s participation and educational consistency where reporting is available.', 
+                        icon: 'CalendarCheck',
+                        image: '/images/placeholders/attendance-log.jpg'
+                    },
+                    { 
+                        title: 'Approved Photographs', 
+                        description: 'Celebrate important milestones through approved photographs shared with appropriate consent.', 
+                        icon: 'Camera',
+                        image: '/images/placeholders/approved-photo.jpg'
+                    },
+                    { 
+                        title: 'Educational Milestones', 
+                        description: 'Follow the child\'s journey from enrollment through continued academic progress.', 
+                        icon: 'Award',
+                        image: '/images/placeholders/milestones.jpg'
+                    }
                 ]
             }
         },
