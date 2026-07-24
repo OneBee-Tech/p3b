@@ -10,7 +10,7 @@ import { TrustCards } from "./TrustCards";
 import { LandingCTASection } from "./LandingCTASection";
 
 // The Component Registry maps generic CMS component keys to their React implementations.
-export const ComponentRegistry: Record<string, React.FC<{ data: any }>> = {
+export const ComponentRegistry: Record<string, React.FC<{ data: any, layoutConfig?: any }>> = {
     hero: EditorialHero,
     editorial: EditorialSection,
     quoteBlock: QuoteBlock,
