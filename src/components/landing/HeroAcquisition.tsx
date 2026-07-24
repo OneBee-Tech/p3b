@@ -31,7 +31,7 @@ export function HeroAcquisition({ data }: { data?: any }) {
                     </h1>
 
                     <div className="text-lg md:text-xl text-white/90 leading-relaxed font-body mb-10 animate-fade-in-up delay-200 max-w-3xl drop-shadow-md space-y-6">
-                        <p>In countries like Canada, quality public education is a blessing many families can rely on. In many underserved communities, children are not given that same safe start.</p>
+                        <p>In many countries across Asia, Africa, Latin America, and other parts of the world, quality public education is a blessing many families can rely on. In many underserved communities, children are not given that same safe start.</p>
                         <p>Some children study in damaged, overcrowded government schools with limited materials, irregular teaching, and unsafe conditions. Your $1 a day, shared with others, helps move carefully selected children from low-income families into affordable, quality private schools where they can learn safely, consistently, and with dignity.</p>
                     </div>
 
