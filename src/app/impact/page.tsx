@@ -1,147 +1,101 @@
-import { ImpactReport } from "@/components/ImpactReport";
-import { ImpactGallery } from "@/components/ProgramImpactGallery";
-import { ShieldCheck, Download, FileText } from "lucide-react";
-
-import { ContextRibbon } from "@/components/ContextRibbon";
-
-import { getGlobalSettings } from "@/lib/services/globalSettingsService";
 import { Metadata } from "next";
+import prisma from "@/lib/prisma";
+import { getGlobalSettings } from "@/lib/services/globalSettingsService";
+import { RenderSection } from "@/components/landing/ComponentRegistry";
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
     const settings = await getGlobalSettings();
     return {
         title: `Our Impact - ${settings.organizationName}`,
-        description: "Data-forward transparency and financial accountability metrics.",
+        description: "Documenting real educational progress, transparent reporting, and the lives being transformed through sponsorship.",
         openGraph: {
             title: `Our Impact - ${settings.organizationName}`,
-            description: "Data-forward transparency and financial accountability metrics.",
+            description: "Documenting real educational progress, transparent reporting, and the lives being transformed through sponsorship.",
             type: "website",
         },
     };
 }
 
-import prisma from "@/lib/prisma";
-
-export const revalidate = 60; // 1 minute cache for transparency reports
-
 export default async function ImpactPage() {
-    const settings = await getGlobalSettings();
-    const documents = await prisma.verificationDocument.findMany({
+    // Fetch CMS sections for Impact Page
+    const sections = await prisma.homepageSection.findMany({
         where: {
-            entityType: "DOCUMENT",
-            status: "VERIFIED"
-        },
-        orderBy: { createdAt: 'desc' },
-        take: 8
+            sectionKey: {
+                in: [
+                    'impactHero',
+                    'impactPhilosophy',
+                    'impactTransformation',
+                    'impactMetrics',
+                    'impactTimeline',
+                    'impactStories',
+                    'impactHowWeMeasure',
+                    'impactTransparency',
+                    'impactLookingAhead',
+                    'impactCTA'
+                ]
+            },
+            isActive: true
+        }
     });
 
+    const sectionsMap = sections.reduce((acc: any, sec) => {
+        acc[sec.sectionKey] = sec;
+        return acc;
+    }, {});
+
     return (
-        <main className="min-h-screen bg-gray-50 pb-20">
-            <section className="bg-cinematic-dark text-white pt-36 pb-24 mb-12">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
-                    <h1 className="text-4xl md:text-5xl font-heading font-bold tracking-tight">Radical Transparency</h1>
-                    <p className="text-xl text-white/80 leading-relaxed max-w-3xl mx-auto">
-                        Follow every dollar. See how we allocate funds to optimize child education and wellbeing.
-                    </p>
-                </div>
-            </section>
-            <ContextRibbon />
+        <main className="min-h-screen bg-white">
+            {/* Section 1: Hero */}
+            {sectionsMap.impactHero && (
+                <RenderSection section={sectionsMap.impactHero} layoutConfig={{ theme: 'dark' }} />
+            )}
 
-            <div className="space-y-24">
-                {/* SECTION 1: Impact Metrics */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
-                    <div className="text-center mb-12">
-                        <span className="block text-trust-blue font-bold tracking-wider text-sm uppercase mb-2">Metrics Snapshot</span>
-                        <h2 className="text-3xl font-heading font-bold text-cinematic-dark">Sponsorship Impact</h2>
-                        <p className="mt-4 text-gray-500 max-w-2xl mx-auto">A live snapshot of our global scale, coverage, and funding utilization efficiency.</p>
-                    </div>
-                    <ImpactReport />
-                </section>
+            {/* Section 2: Impact Philosophy */}
+            {sectionsMap.impactPhilosophy && (
+                <RenderSection section={sectionsMap.impactPhilosophy} layoutConfig={{ theme: 'white' }} />
+            )}
 
-                {/* SECTION 2: Impact Stories */}
-                <section className="bg-white border-y border-gray-100 py-24">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center mb-12">
-                            <span className="block text-impact-gold font-bold tracking-wider text-sm uppercase mb-2">Impact Stories</span>
-                            <h2 className="text-3xl font-heading font-bold text-cinematic-dark">Transformations</h2>
-                            <p className="mt-4 text-gray-500 max-w-2xl mx-auto">Real success stories made possible by community-directed investments.</p>
-                        </div>
-                        <ImpactGallery />
-                    </div>
-                </section>
+            {/* Section 3: Representative Transformation */}
+            {sectionsMap.impactTransformation && (
+                <RenderSection section={sectionsMap.impactTransformation} layoutConfig={{ theme: 'gray-50' }} />
+            )}
 
-                {/* SECTION 3: Transparency & Governance */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-                    <div className="text-center mb-12">
-                        <span className="block text-trust-blue font-bold tracking-wider text-sm uppercase mb-2">Governance</span>
-                        <h2 className="text-3xl font-heading font-bold text-cinematic-dark">Radical Transparency</h2>
-                        <p className="mt-4 text-gray-500 max-w-2xl mx-auto">Our absolute commitment to accountability, safeguarding, and immutable ledger operations.</p>
-                    </div>
+            {/* Section 4: Measurable Impact Metrics (MetricsGrid) */}
+            {sectionsMap.impactMetrics && (
+                <RenderSection section={sectionsMap.impactMetrics} layoutConfig={{ theme: 'white' }} />
+            )}
 
-                    <div className="space-y-12">
-                        {/* Transparency Explanation */}
-                        <div className="bg-white p-8 md:p-12 border border-gray-100 shadow-sm rounded-3xl">
-                            <div className="flex items-center gap-4 mb-6">
-                                <div className="bg-blue-50 text-trust-blue p-4 rounded-full">
-                                    <ShieldCheck className="w-8 h-8" />
-                                </div>
-                                <h3 className="text-3xl font-bold font-heading text-cinematic-dark">Financial Responsibility</h3>
-                            </div>
-                            <p className="text-gray-600 leading-relaxed max-w-3xl text-lg">
-                                {settings.transparencyWording}
-                            </p>
-                        </div>
+            {/* Section 5: Educational Journey Timeline (JourneyTimeline) */}
+            {sectionsMap.impactTimeline && (
+                <RenderSection section={sectionsMap.impactTimeline} layoutConfig={{ theme: 'warm-bg' }} />
+            )}
 
-                        {/* Institutional Governance Documents */}
-                        <div className="bg-white p-8 md:p-12 border border-gray-100 shadow-sm rounded-3xl">
-                            <div className="mb-10">
-                                <h3 className="text-2xl font-bold font-heading text-cinematic-dark">Governance & Reporting</h3>
-                                <p className="text-gray-500 mt-2">Access our latest audited financials and partnership certifications.</p>
-                            </div>
+            {/* Section 6: Our Growing Library of Impact (StoryGrid) */}
+            {sectionsMap.impactStories && (
+                <RenderSection section={sectionsMap.impactStories} layoutConfig={{ theme: 'white' }} />
+            )}
 
-                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                {documents.map((doc, idx) => {
-                                    let title = "Compliance Document";
-                                    let version = "";
-                                    let cleanUrl = doc.documentUrl;
+            {/* Section 7: How We Measure Change */}
+            {sectionsMap.impactHowWeMeasure && (
+                <RenderSection section={sectionsMap.impactHowWeMeasure} layoutConfig={{ theme: 'gray-50' }} />
+            )}
 
-                                    try {
-                                        const urlObj = new URL(doc.documentUrl);
-                                        title = urlObj.searchParams.get("title") || "Compliance Document";
-                                        version = urlObj.searchParams.get("v") || "";
-                                        const displayUrlObj = new URL(doc.documentUrl);
-                                        displayUrlObj.search = "";
-                                        cleanUrl = displayUrlObj.toString();
-                                    } catch (e) {
-                                        // Fallback
-                                    }
+            {/* Section 8: Behind Every Number Is A Child's Story (Transparency) */}
+            {sectionsMap.impactTransparency && (
+                <RenderSection section={sectionsMap.impactTransparency} layoutConfig={{ theme: 'white' }} />
+            )}
 
-                                    return (
-                                        <a key={doc.id} href={cleanUrl} target="_blank" rel="noopener noreferrer" className="flex items-start gap-4 p-4 rounded-xl border border-gray-100 hover:border-trust-blue/30 hover:bg-trust-blue/5 transition-all group">
-                                            <div className="bg-gray-100 p-2 rounded-lg group-hover:bg-white group-hover:text-trust-blue transition-colors">
-                                                <ShieldCheck className="w-5 h-5 text-gray-500 group-hover:text-trust-blue" />
-                                            </div>
-                                            <div className="flex-1">
-                                                <p className="font-bold text-sm text-cinematic-dark group-hover:text-trust-blue transition-colors truncate" title={title}>{title}</p>
-                                                <span className="text-xs text-gray-400 font-medium">Verified PDF {version ? `(v${version})` : ''}</span>
-                                            </div>
-                                            <Download className="w-4 h-4 text-gray-300 flex-shrink-0 group-hover:text-trust-blue transition-colors" />
-                                        </a>
-                                    );
-                                })}
+            {/* Section 9: The Impact Still to Come (Future Roadmap) */}
+            {sectionsMap.impactLookingAhead && (
+                <RenderSection section={sectionsMap.impactLookingAhead} layoutConfig={{ theme: 'gray-50' }} />
+            )}
 
-                                {documents.length === 0 && (
-                                    <div className="col-span-full p-8 text-center bg-gray-50 rounded-2xl border border-gray-100">
-                                        <FileText className="w-8 h-8 text-gray-300 mx-auto mb-3" />
-                                        <p className="text-gray-500 font-medium">Live governance synchronization pending.</p>
-                                        <p className="text-sm text-gray-400">Institutional documents are currently under review by our compliance node.</p>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
+            {/* Section 10: Final CTA */}
+            {sectionsMap.impactCTA && (
+                <RenderSection section={sectionsMap.impactCTA} layoutConfig={{ theme: 'dark' }} />
+            )}
         </main>
     );
 }

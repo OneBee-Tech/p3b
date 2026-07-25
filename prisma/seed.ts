@@ -931,6 +931,189 @@ async function main() {
     }
     console.log('📄 Sponsor Page Sections seeded')
 
+    // 0.5e Seed Our Impact Page Sections
+    const impactSectionsData = [
+        {
+            sectionKey: 'impactHero',
+            title: 'Our Impact Hero',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 1,
+                component: 'hero',
+                layout: 'full-bg',
+                heading: 'The Impact We Are Building',
+                description: 'Every contribution creates the possibility of educational opportunity. As our programs grow, we will transparently document our progress, share verified results, and celebrate the children, families, and communities whose futures are being transformed.\n\nEvery statistic on this page represents real educational progress. Where programs are still developing, we clearly distinguish goals, work in progress, and verified results.',
+                backgroundImage: {
+                    src: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1920&auto=format&fit=crop',
+                    alt: 'Documentary photo of children studying together',
+                },
+                ctas: [
+                    { label: 'Sponsor a Child', href: '/sponsor-a-child', variant: 'primary' },
+                    { label: 'How We Measure Change', href: '#measure-change', variant: 'secondary' }
+                ]
+            }
+        },
+        {
+            sectionKey: 'impactPhilosophy',
+            title: 'Impact Philosophy',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 2,
+                component: 'editorial',
+                layout: 'centered-text-only',
+                eyebrow: 'Impact Philosophy',
+                heading: 'Small Daily Giving. Lasting Educational Change.',
+                body: 'Meaningful impact is not measured by donations alone.\n\nIt is measured through children remaining in school, educational progress, graduation, confidence, opportunity, and stronger communities.',
+                textHeadingClass: 'text-3xl sm:text-4xl md:text-6xl text-cinematic-dark font-bold leading-tight font-heading max-w-4xl mx-auto'
+            }
+        },
+        {
+            sectionKey: 'impactTransformation',
+            title: 'Representative Transformation',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 3,
+                component: 'editorial',
+                layout: 'centered-text-only',
+                eyebrow: 'Representative Transformation',
+                heading: 'Real Change Looks Like This',
+                body: 'Before Sponsorship:\n• Unable to afford required textbooks & uniform\n• Irregular classroom attendance\n• High financial risk of early school drop-out\n\nToday:\n• Full access to required learning supplies & uniform\n• Consistent daily attendance and active participation\n• Steady academic progress toward graduation',
+                textHeadingClass: 'text-3xl sm:text-4xl md:text-5xl text-cinematic-dark font-bold leading-tight font-heading max-w-4xl mx-auto'
+            }
+        },
+        {
+            sectionKey: 'impactMetrics',
+            title: 'Measurable Impact Metrics',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 4,
+                component: 'metricsGrid',
+                variant: 'impact',
+                mode: 'launch',
+                heading: 'Measurable Educational Impact',
+                description: 'Every metric represents real educational progress. Where programs are developing, we clearly distinguish goals, active work, and verified results.',
+                metrics: [
+                    { id: 'm1', label: 'Founding Sponsors Committed', value: '250+', sublabel: 'Initial guardians launching program support', status: 'Verified' },
+                    { id: 'm2', label: 'Children Under Assessment', value: '48', sublabel: 'Rigorously evaluated for financial eligibility', status: 'In Progress' },
+                    { id: 'm3', label: 'Partner Schools Evaluated', value: '12', sublabel: 'Accredited community primary and secondary schools', status: 'Verified' },
+                    { id: 'm4', label: 'Target Children Enrolled', value: '500', sublabel: 'First phase educational support goal', status: 'Goal' }
+                ]
+            }
+        },
+        {
+            sectionKey: 'impactTimeline',
+            title: 'Educational Journey Timeline',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 5,
+                component: 'journeyTimeline',
+                variant: 'education',
+                heading: 'The Journey of Educational Impact',
+                description: 'Impact is not an event—it is a long-term commitment that transforms a child\'s entire life path.'
+            }
+        },
+        {
+            sectionKey: 'impactStories',
+            title: 'Our Growing Library of Impact',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 6,
+                component: 'storyGrid',
+                variant: 'stories',
+                heading: 'Our Growing Library of Impact',
+                description: 'Real educational outcomes celebrated through verified stories of progress, graduation, and community transformation.',
+                stories: [
+                    { id: 's1', slug: 'amara-k', firstName: 'Amara', dream: 'Primary Teacher', summary: 'From irregular attendance to leading her Grade 3 reading circle with confidence.', photoUrl: 'https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=800&auto=format&fit=crop', badgeText: 'In Education' },
+                    { id: 's2', slug: 'farhan-m', firstName: 'Farhan', dream: 'Software Engineer', summary: 'Enrolled in computer literacy workshops and top scoring in regional science competitions.', photoUrl: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop', badgeText: 'Matched' },
+                    { id: 's3', slug: 'tariq-a', firstName: 'Tariq', dream: 'Environmental Scientist', summary: 'Graduated high school with honors and is now studying B.Sc at National University.', photoUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop', badgeText: 'Graduated Alumni' }
+                ]
+            }
+        },
+        {
+            sectionKey: 'impactHowWeMeasure',
+            title: 'How We Measure Change',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 7,
+                component: 'contentGrid',
+                heading: 'How We Measure Change',
+                description: 'We track holistic indicators ensuring long-term educational continuity and student wellbeing.',
+                items: [
+                    { title: 'School Attendance', subtitle: 'Consistent daily attendance guarantees classroom continuity and safety.' },
+                    { title: 'Academic Progress', subtitle: 'Bi-annual report cards track reading, math, and science comprehension.' },
+                    { title: 'Grade Promotion', subtitle: 'Students moving successfully from grade to grade every academic year.' },
+                    { title: 'Educational Continuity', subtitle: 'Multi-year sponsorship prevents drop-outs during critical secondary school years.' },
+                    { title: 'Family Stability', subtitle: 'Freeing families from tuition burdens allows resources for health and shelter.' },
+                    { title: 'Community Growth', subtitle: 'Educated youths become leaders and mentors in their local villages.' }
+                ]
+            }
+        },
+        {
+            sectionKey: 'impactTransparency',
+            title: 'Verification & Trust',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 8,
+                component: 'editorial',
+                layout: 'centered-text-only',
+                eyebrow: 'Verification & Trust',
+                heading: 'Behind Every Number Is A Child\'s Story.',
+                body: 'We publish verified figures instead of estimated achievements. School receipts, enrollment forms, and academic progress reports guarantee complete accountability.',
+                ctas: [
+                    { label: 'Explore Transparency', href: '/transparency', variant: 'primary' }
+                ]
+            }
+        },
+        {
+            sectionKey: 'impactLookingAhead',
+            title: 'Future Roadmap',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 9,
+                component: 'editorial',
+                layout: 'centered-text-only',
+                eyebrow: 'Future Roadmap',
+                heading: 'The Impact Still to Come.',
+                body: 'Current Phase:\nLaunching initial sponsorships across partner community schools.\n\nNext Milestone:\nExpanding student enrollment to 500 verified children.\n\nExpansion:\nEstablishing digital learning labs and teacher support workshops.\n\nLong-Term Vision:\nReaching multi-region coverage to break generational poverty through education.',
+                textHeadingClass: 'text-3xl sm:text-4xl md:text-5xl text-cinematic-dark font-bold leading-tight font-heading max-w-4xl mx-auto'
+            }
+        },
+        {
+            sectionKey: 'impactCTA',
+            title: 'Final Impact CTA',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 10,
+                component: 'ctaSection',
+                heading: 'Today\'s Sponsorship. Tomorrow\'s Impact. One Child. One Future.',
+                description: 'Every child educated creates another story worth telling. Join us in building measurable educational impact.',
+                ctas: [
+                    { label: 'Sponsor a Child', href: '/sponsor-a-child', variant: 'primary' },
+                    { label: 'Give $1 a Day', href: '/checkout?type=sponsorship', variant: 'secondary' }
+                ]
+            }
+        }
+    ]
+
+    for (const section of impactSectionsData) {
+        await prisma.homepageSection.upsert({
+            where: { sectionKey: section.sectionKey },
+            update: section,
+            create: section,
+        })
+    }
+    console.log('📄 Our Impact Page Sections seeded')
+
     // 0.6 Seed FAQs
     const faqsData = [
         { id: 'faq-1', question: 'How is my $1 a day allocated?', answer: '100% of your $1 goes directly to the educational and wellbeing programs of the child you sponsor.', order: 1 },

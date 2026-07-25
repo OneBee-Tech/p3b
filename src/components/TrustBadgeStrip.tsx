@@ -5,7 +5,7 @@ import { ShieldCheck } from "lucide-react";
 
 export function TrustBadgeStrip({ data, className = "" }: { data?: any; className?: string }) {
     const pathname = usePathname();
-    if (pathname?.startsWith("/admin") || pathname === "/home2" || pathname === "/") return null;
+    if (pathname?.startsWith("/admin") || pathname === "/home2" || pathname === "/" || pathname === "/signin") return null;
 
     const meta = data?.metadata || {};
     const statement = meta.statement || "Verified children • Carefully selected schools • Direct education payments • Receipts shared • Progress reports every six months";

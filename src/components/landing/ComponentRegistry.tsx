@@ -9,6 +9,10 @@ import { ProcessFlow } from "./ProcessFlow";
 import { TrustCards } from "./TrustCards";
 import { LandingCTASection } from "./LandingCTASection";
 
+import { MetricsGrid } from "../ui/MetricsGrid";
+import { JourneyTimeline } from "../ui/JourneyTimeline";
+import { StoryGrid } from "../ui/StoryGrid";
+
 // The Component Registry maps generic CMS component keys to their React implementations.
 export const ComponentRegistry: Record<string, React.FC<{ data: any, layoutConfig?: any }>> = {
     hero: EditorialHero,
@@ -19,6 +23,31 @@ export const ComponentRegistry: Record<string, React.FC<{ data: any, layoutConfi
     processFlow: ProcessFlow,
     trustCards: TrustCards,
     ctaSection: LandingCTASection,
+    metricsGrid: ({ data }) => (
+        <MetricsGrid 
+            metrics={data.metadata?.metrics || []}
+            variant={data.metadata?.variant || "impact"}
+            mode={data.metadata?.mode || "launch"}
+            heading={data.metadata?.heading}
+            description={data.metadata?.description}
+        />
+    ),
+    journeyTimeline: ({ data }) => (
+        <JourneyTimeline 
+            steps={data.metadata?.steps}
+            variant={data.metadata?.variant || "education"}
+            heading={data.metadata?.heading}
+            description={data.metadata?.description}
+        />
+    ),
+    storyGrid: ({ data }) => (
+        <StoryGrid 
+            stories={data.metadata?.stories || []}
+            variant={data.metadata?.variant || "stories"}
+            heading={data.metadata?.heading}
+            description={data.metadata?.description}
+        />
+    ),
 };
 
 /**

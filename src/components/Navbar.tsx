@@ -67,7 +67,7 @@ export function Navbar({ session }: { session?: any }) {
     { href: "/impact", label: "Our Impact" },
   ];
 
-  if (pathname?.startsWith("/admin") || pathname === "/home2") return null;
+  if (pathname?.startsWith("/admin") || pathname === "/home2" || pathname === "/signin") return null;
 
   return (
     <nav

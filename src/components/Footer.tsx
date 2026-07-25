@@ -12,7 +12,7 @@ export interface FooterProps {
 
 export function Footer({ settings = DEFAULT_GLOBAL_SETTINGS }: FooterProps) {
   const pathname = usePathname();
-  if (pathname?.startsWith("/admin") || pathname === "/home2") return null;
+  if (pathname?.startsWith("/admin") || pathname === "/home2" || pathname === "/signin") return null;
 
   return (
     <footer className="bg-[#0B0F19] text-white pt-16 pb-12 border-t border-slate-800 font-body relative z-20">

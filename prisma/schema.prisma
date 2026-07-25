@@ -350,45 +350,45 @@ model Referral {
 }
 
 model RegistryChild {
-  id                       String                           @id @default(cuid())
-  slug                     String?                          @unique
-  displayName              String
-  age                      Int
-  region                   String
-  educationLevel           String
-  currentGrade             String?
-  schoolType               String?
-  progressStage            String?
-  sponsorshipNeededMonthly Decimal
-  status                   ChildStatus                      @default(WAITING)
-  privacyMode              VisibilityScope                  @default(PUBLIC)
-  safeguardingConsent      Boolean                          @default(false)
-  avatarIllustrationUrl    String?
-  caseNotes                String?
-  maxSponsors              Int                              @default(1)
-  referralId               String?                          @unique
-  createdByAdminId         String
-  lastReviewedAt           DateTime?
-  safeguardingReviewStatus SafeguardingReviewStatus         @default(PENDING)
-  deletedAt                DateTime?
-  isArchived               Boolean                          @default(false)
-  createdAt                DateTime                         @default(now())
-  updatedAt                DateTime                         @updatedAt
-  dream                    String?
-  shortIntro               String?
-  story                    String?
-  needs                    Json?
-  aspirations              Json?
-  sections                 Json?
+  id                        String                           @id @default(cuid())
+  displayName               String
+  age                       Int
+  region                    String
+  educationLevel            String
+  sponsorshipNeededMonthly  Decimal
+  status                    ChildStatus                      @default(WAITING)
+  privacyMode               VisibilityScope                  @default(PUBLIC)
+  safeguardingConsent       Boolean                          @default(false)
+  avatarIllustrationUrl     String?
+  caseNotes                 String?
+  maxSponsors               Int                              @default(1)
+  referralId                String?                          @unique
+  createdByAdminId          String
+  lastReviewedAt            DateTime?
+  safeguardingReviewStatus  SafeguardingReviewStatus         @default(PENDING)
+  deletedAt                 DateTime?
+  isArchived                Boolean                          @default(false)
+  createdAt                 DateTime                         @default(now())
+  updatedAt                 DateTime                         @updatedAt
+  story                     String?
+  aspirations               Json?
+  currentGrade              String?
+  dream                     String?
+  gallery                   Json?
+  impactStorySlug           String?
+  needs                     Json?
+  progressStage             String?
+  schoolType                String?
+  sections                  Json?
+  seoDescription            String?
+  seoTitle                  String?
+  shortIntro                String?
+  slug                      String?                          @unique
   transformationBeforeAfter Json?
-  impactStorySlug          String?
-  gallery                  Json?
-  seoTitle                 String?
-  seoDescription           String?
-  corporateAllocations     CorporateSponsorshipAllocation[]
-  milestones               ImpactMilestone[]
-  progressReports          ProgressReport[]
-  assignments              SponsorshipAssignment[]
+  corporateAllocations      CorporateSponsorshipAllocation[]
+  milestones                ImpactMilestone[]
+  progressReports           ProgressReport[]
+  assignments               SponsorshipAssignment[]
 }
 
 model SponsorshipAssignment {
@@ -555,6 +555,36 @@ model NewsletterSubscriber {
   updatedAt DateTime @updatedAt
 }
 
+model GlobalSettings {
+  id                  String   @id @default(cuid())
+  organizationName    String
+  registeredOffice    String
+  contactEmails       Json
+  socialLinks         Json
+  craStatus           String?
+  missionStatement    String
+  visionStatement     String
+  transparencyWording String
+  updatedAt           DateTime @updatedAt
+}
+
+model Faq {
+  id       String  @id @default(cuid())
+  question String
+  answer   String
+  order    Int     @default(0)
+  isActive Boolean @default(true)
+}
+
+model HomepageSection {
+  id         String  @id @default(cuid())
+  sectionKey String  @unique
+  title      String?
+  content    String
+  metadata   Json?
+  isActive   Boolean @default(true)
+}
+
 enum Role {
   USER
   ADMIN
@@ -564,10 +594,10 @@ enum Role {
 
 enum ChildStatus {
   WAITING
-  MATCHED
-  ACTIVE
   SPONSORED
   GRADUATED
+  MATCHED
+  ACTIVE
   ALUMNI
 }
 
@@ -778,34 +808,4 @@ enum SupportedCurrency {
   CAD
   INR
   EUR
-}
-
-model GlobalSettings {
-  id                  String   @id @default(cuid())
-  organizationName    String
-  registeredOffice    String
-  contactEmails       Json
-  socialLinks         Json
-  craStatus           String?
-  missionStatement    String
-  visionStatement     String
-  transparencyWording String
-  updatedAt           DateTime @updatedAt
-}
-
-model Faq {
-  id       String  @id @default(cuid())
-  question String
-  answer   String
-  order    Int     @default(0)
-  isActive Boolean @default(true)
-}
-
-model HomepageSection {
-  id         String  @id @default(cuid())
-  sectionKey String  @unique
-  title      String?
-  content    String
-  metadata   Json?
-  isActive   Boolean @default(true)
 }
