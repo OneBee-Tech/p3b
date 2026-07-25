@@ -351,10 +351,14 @@ model Referral {
 
 model RegistryChild {
   id                       String                           @id @default(cuid())
+  slug                     String?                          @unique
   displayName              String
   age                      Int
   region                   String
   educationLevel           String
+  currentGrade             String?
+  schoolType               String?
+  progressStage            String?
   sponsorshipNeededMonthly Decimal
   status                   ChildStatus                      @default(WAITING)
   privacyMode              VisibilityScope                  @default(PUBLIC)
@@ -370,7 +374,17 @@ model RegistryChild {
   isArchived               Boolean                          @default(false)
   createdAt                DateTime                         @default(now())
   updatedAt                DateTime                         @updatedAt
+  dream                    String?
+  shortIntro               String?
   story                    String?
+  needs                    Json?
+  aspirations              Json?
+  sections                 Json?
+  transformationBeforeAfter Json?
+  impactStorySlug          String?
+  gallery                  Json?
+  seoTitle                 String?
+  seoDescription           String?
   corporateAllocations     CorporateSponsorshipAllocation[]
   milestones               ImpactMilestone[]
   progressReports          ProgressReport[]
@@ -550,8 +564,11 @@ enum Role {
 
 enum ChildStatus {
   WAITING
+  MATCHED
+  ACTIVE
   SPONSORED
   GRADUATED
+  ALUMNI
 }
 
 enum ModerationStatus {

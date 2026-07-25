@@ -1,4 +1,4 @@
-import { PrismaClient, ChildStatus, SponsorshipTier, ProgramStatus, EntityType, VerificationStatus } from '@prisma/client'
+import { PrismaClient, ChildStatus, SponsorshipTier, ProgramStatus, EntityType, VerificationStatus, SafeguardingReviewStatus } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -805,6 +805,132 @@ async function main() {
     }
     console.log('📄 How It Works Sections seeded')
 
+    // 0.5d Seed Sponsor Page Sections
+    const sponsorSectionsData = [
+        {
+            sectionKey: 'sponsorHero',
+            title: 'Sponsor a Child Hero',
+            content: '',
+            metadata: {
+                version: 'v2',
+                order: 1,
+                component: 'hero',
+                layout: 'full-bg',
+                heading: 'Every Child Has a Dream.',
+                description: 'Every child profile represents a unique educational journey. Learn their story, discover their aspirations, and see how sponsorship helps create lasting opportunities through education.',
+                secondaryDescription: 'Together, We Can Help Protect It.',
+                backgroundImage: {
+                    src: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1920&auto=format&fit=crop',
+                    alt: 'Children engaged in classroom learning and studying together',
+                },
+                ctas: [
+                    { label: 'Meet the Children', href: '#meet-children', variant: 'primary' },
+                    { label: 'How Sponsorship Works', href: '/how-it-works', variant: 'secondary' }
+                ]
+            }
+        },
+        {
+            sectionKey: 'sponsorPoeticMission',
+            title: 'Why Sponsorship Matters',
+            content: '',
+            metadata: {
+                version: 'v2',
+                order: 2,
+                component: 'editorial',
+                layout: 'centered-text-only',
+                eyebrow: 'Why Sponsorship Matters',
+                heading: 'One Child. One Opportunity. One Future.',
+                body: 'Education provides more than access to a classroom.\n\nIt builds confidence. Protects childhood. Creates opportunity. Strengthens families. Transforms communities.',
+                textHeadingClass: 'text-3xl sm:text-4xl md:text-6xl text-cinematic-dark font-bold leading-tight font-heading max-w-4xl mx-auto'
+            }
+        },
+        {
+            sectionKey: 'sponsorProvides',
+            title: 'What Your Sponsorship Provides',
+            content: '',
+            metadata: {
+                version: 'v2',
+                order: 4,
+                component: 'cardSequence',
+                heading: 'What Your Sponsorship Provides',
+                description: 'Your support creates a complete, sustainable educational ecosystem for the child.',
+                cards: [
+                    { title: 'Tuition Fees', description: 'Directly paid to partner schools to guarantee uninterrupted classroom access.', icon: 'Receipt' },
+                    { title: 'Textbooks & Books', description: 'Essential curriculum textbooks and learning materials for every academic term.', icon: 'FileCheck' },
+                    { title: 'School Uniforms', description: 'Tailored uniforms restoring pride, belonging, and confidence.', icon: 'ShieldCheck' },
+                    { title: 'School Shoes', description: 'Sturdy, protective footwear for safe daily walks to school.', icon: 'Check' },
+                    { title: 'School Bags', description: 'High-quality backpacks to carry learning materials safely.', icon: 'FileText' },
+                    { title: 'Stationery Supplies', description: 'Complete writing kits, notebooks, and essential classroom supplies.', icon: 'FileText' },
+                    { title: 'Learning Materials', description: 'Core study aids, drawing tools, and foundational educational resources.', icon: 'Award' },
+                    { title: 'Academic Monitoring', description: 'Bi-annual progress reports, grade verification, and teacher feedback.', icon: 'TrendingUp' }
+                ]
+            }
+        },
+        {
+            sectionKey: 'sponsorJourney',
+            title: 'The Sponsorship Journey',
+            content: '',
+            metadata: {
+                version: 'v2',
+                order: 5,
+                component: 'processFlow',
+                heading: 'How Your Support Works',
+                description: 'A concise four-step transparent journey.',
+                flowDirection: 'horizontal',
+                variant: 'compact',
+                steps: [
+                    { title: 'Sponsor', subtitle: 'Select a child profile', icon: 'Heart' },
+                    { title: 'Verified Matching', subtitle: 'Official verification', icon: 'CheckCircle' },
+                    { title: 'Education Begins', subtitle: 'Direct school enrollment', icon: 'School' },
+                    { title: 'Receive Progress Updates', subtitle: 'Bi-annual report cards', icon: 'TrendingUp' }
+                ]
+            }
+        },
+        {
+            sectionKey: 'sponsorTrust',
+            title: 'Built on Uncompromising Trust',
+            content: '',
+            metadata: {
+                version: 'v1',
+                order: 6,
+                component: 'contentBlock',
+                variant: 'checkmarks',
+                heading: 'Built on Uncompromising Trust',
+                description: 'We ensure complete transparency, security, and dignity at every stage of the educational journey.',
+                items: [
+                    { title: 'Verified Children', subtitle: 'Every child\'s financial and educational need is rigorously confirmed before enrollment.' },
+                    { title: 'Carefully Selected Schools', subtitle: 'We partner exclusively with accredited community schools maintaining high standards.' },
+                    { title: 'Direct Education Payments', subtitle: '100% of sponsorship funds go directly to schools and suppliers with zero cash leakage.' },
+                    { title: 'Progress Reports', subtitle: 'You receive academic progress reports and official school updates twice a year.' },
+                    { title: 'Safeguarding Policies', subtitle: 'Strict child protection and privacy policies protect every student\'s dignity.' }
+                ]
+            }
+        },
+        {
+            sectionKey: 'sponsorClosing',
+            title: 'Mission Closing',
+            content: '',
+            metadata: {
+                version: 'v2',
+                order: 7,
+                component: 'editorial',
+                layout: 'centered-text-only',
+                heading: 'Every Child Has Potential.',
+                body: 'One sponsorship can help unlock a lifetime of opportunity.\n\nEducation changes futures. Communities grow stronger. Hope becomes reality.',
+                textHeadingClass: 'text-3xl md:text-5xl text-cinematic-dark font-extrabold leading-tight font-heading max-w-4xl mx-auto'
+            }
+        }
+    ]
+
+    for (const section of sponsorSectionsData) {
+        await prisma.homepageSection.upsert({
+            where: { sectionKey: section.sectionKey },
+            update: section,
+            create: section,
+        })
+    }
+    console.log('📄 Sponsor Page Sections seeded')
+
     // 0.6 Seed FAQs
     const faqsData = [
         { id: 'faq-1', question: 'How is my $1 a day allocated?', answer: '100% of your $1 goes directly to the educational and wellbeing programs of the child you sponsor.', order: 1 },
@@ -974,30 +1100,368 @@ async function main() {
     for (const [index, c] of childrenData.entries()) {
         const dob = new Date()
         dob.setFullYear(dob.getFullYear() - c.age)
+        const childId = `child-${index + 1}`
+        const childSlug = c.name.toLowerCase()
 
         await prisma.child.upsert({
-            where: { id: `child-${index + 1}` },
+            where: { id: childId },
             update: {},
             create: {
-                id: `child-${index + 1}`,
+                id: childId,
                 name: c.name,
                 dob: dob,
                 gender: c.gender,
                 bio: `${c.name} is a bright student from ${c.location}.`,
                 story: c.story,
-                photoUrl: `/images/impact/child${(index % 6) + 1}.jpg`, // Cycling through 1-6 placeholder images
+                photoUrl: `/images/impact/child${(index % 6) + 1}.jpg`,
                 status: c.status,
-                annualCost: 360, // $30/mo
+                annualCost: 360,
                 region: c.location,
                 educationLevel: 'Primary',
-                schoolId: 'school-1', // Defaulting for simplicity in seed
+                schoolId: 'school-1',
                 programId: c.programId,
                 visibilityScope: 'PUBLIC',
                 moderationStatus: 'APPROVED',
             },
         })
+
+        // Also seed into RegistryChild so every child card opens a full narrative profile page with story!
+        await prisma.registryChild.upsert({
+            where: { slug: childSlug },
+            update: {
+                displayName: c.name,
+                age: c.age,
+                region: c.location,
+                dream: c.dream,
+                shortIntro: `${c.name} is a bright ${c.age}-year-old student from ${c.location} who dreams of becoming a ${c.dream}.`,
+                story: `${c.story}\n\n${c.name} walks to school every day with determination. With your support, ${c.name} receives complete tuition, textbooks, uniform, daily meals, and ongoing academic guidance.`,
+                status: c.status,
+            },
+            create: {
+                id: `legacy-reg-${childId}`,
+                slug: childSlug,
+                displayName: c.name,
+                age: c.age,
+                region: c.location,
+                educationLevel: 'Primary',
+                currentGrade: `Grade ${Math.max(1, c.age - 5)}`,
+                schoolType: 'Community Primary School',
+                progressStage: c.status === ChildStatus.SPONSORED ? 'In Education' : c.status === ChildStatus.GRADUATED ? 'Graduated' : 'Needs Sponsor',
+                sponsorshipNeededMonthly: 30,
+                status: c.status,
+                safeguardingConsent: true,
+                safeguardingReviewStatus: SafeguardingReviewStatus.VERIFIED,
+                createdByAdminId: 'admin-1',
+                avatarIllustrationUrl: `https://images.unsplash.com/photo-${1544717305 + (index * 1000)}?q=80&w=800&auto=format&fit=crop`,
+                dream: `Future ${c.dream}`,
+                shortIntro: `${c.name} is a bright ${c.age}-year-old student from ${c.location} who dreams of becoming a ${c.dream}.`,
+                story: `${c.story}\n\n${c.name} walks to school every day with determination. With your support, ${c.name} receives complete tuition, textbooks, uniform, daily meals, and ongoing academic guidance.`,
+                needs: ['Tuition', 'Textbooks', 'Uniform', 'School Bag', 'Shoes', 'Stationery', 'Learning Materials'],
+                aspirations: {
+                    favouriteSubject: 'Mathematics & Science',
+                    favouriteActivity: 'Reading & Group Learning',
+                    dreamCareer: c.dream,
+                    goals: `Graduate primary school and pursue higher education as a ${c.dream}`
+                },
+                sections: [
+                    {
+                        type: 'story',
+                        title: 'Life & Educational Journey',
+                        content: `${c.name} shows extraordinary promise in school. Despite financial challenges at home, ${c.name} maintains excellent attendance and helps classmates.`
+                    },
+                    {
+                        type: 'quote',
+                        title: 'Teacher\'s Perspective',
+                        content: `${c.name} brings joy and curiosity to our classroom every day.`,
+                        author: 'Head Teacher, Community Primary'
+                    }
+                ],
+                transformationBeforeAfter: {
+                    before: [
+                        'Irregular attendance due to fee constraints',
+                        'Lack of basic learning supplies'
+                    ],
+                    today: [
+                        'Full classroom attendance & active participation',
+                        'Fully equipped with learning materials and uniform'
+                    ]
+                }
+            }
+        })
     }
-    console.log('👶 Children seeded')
+    console.log('👶 Legacy & Registry Children seeded with full narrative profiles')
+
+    // 6. Seed RegistryChild records for Mission-Driven Sponsorship & Profile Pages
+    const registryChildren = [
+        {
+            id: 'reg-child-1',
+            slug: 'amara-k',
+            displayName: 'Amara K.',
+            age: 8,
+            region: 'Eastern Province',
+            educationLevel: 'Primary',
+            currentGrade: 'Grade 3',
+            schoolType: 'Hope Community Primary',
+            progressStage: 'Needs Sponsor',
+            sponsorshipNeededMonthly: 30,
+            status: ChildStatus.WAITING,
+            safeguardingConsent: true,
+            safeguardingReviewStatus: SafeguardingReviewStatus.VERIFIED,
+            createdByAdminId: 'admin-1',
+            avatarIllustrationUrl: 'https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=800&auto=format&fit=crop',
+            dream: 'I want to become a teacher.',
+            shortIntro: 'Amara is a bright 8-year-old student who loves reading and dreams of building a community school.',
+            story: 'Amara lives with her grandmother in a small village. Despite daily challenges, she is the first to arrive at school every morning with enthusiasm.',
+            needs: ['Tuition', 'Textbooks', 'Uniform', 'School Bag', 'Shoes', 'Stationery', 'Learning Materials'],
+            aspirations: {
+                favouriteSubject: 'Mathematics & English',
+                favouriteActivity: 'Reading & Group Games',
+                dreamCareer: 'Primary School Teacher',
+                goals: 'Build a community library for local children'
+            },
+            sections: [
+                {
+                    type: 'story',
+                    title: 'Early Life & Hopes',
+                    content: 'Amara\'s family faces severe economic hardship, but her determination to learn has never wavered. She assists her younger siblings with homework every evening.'
+                },
+                {
+                    type: 'quote',
+                    title: 'Teacher\'s Note',
+                    content: 'Amara brings joy to our classroom every day. She helps her classmates read and excels at problem-solving.',
+                    author: 'Mrs. Nangolo, Head Teacher'
+                }
+            ],
+            transformationBeforeAfter: {
+                before: [
+                    'Irregular attendance due to uniform & fee constraints',
+                    'Lack of basic textbooks and stationery',
+                    'Risk of early school drop-out'
+                ],
+                today: [
+                    'Full attendance & active classroom participation',
+                    'Fully equipped with learning materials and uniform',
+                    'Excelling at grade-level reading tests'
+                ]
+            }
+        },
+        {
+            id: 'reg-child-2',
+            slug: 'farhan-m',
+            displayName: 'Farhan M.',
+            age: 10,
+            region: 'Northern Valley',
+            educationLevel: 'Primary',
+            currentGrade: 'Grade 5',
+            schoolType: 'Valley Horizon Academy',
+            progressStage: 'Matched with Sponsor',
+            sponsorshipNeededMonthly: 30,
+            status: ChildStatus.SPONSORED,
+            safeguardingConsent: true,
+            safeguardingReviewStatus: SafeguardingReviewStatus.VERIFIED,
+            createdByAdminId: 'admin-1',
+            avatarIllustrationUrl: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop',
+            dream: 'Future Computer Engineer',
+            shortIntro: 'Farhan loves building models from recycled materials and dreams of designing technology for his community.',
+            story: 'Farhan is a creative 10-year-old who excels in science. Sponsorship ensures he receives steady access to computer literacy classes.',
+            needs: ['Tuition', 'Textbooks', 'Uniform', 'Digital Learning Tools', 'Stationery'],
+            aspirations: {
+                favouriteSubject: 'Science & Computer Studies',
+                favouriteActivity: 'Model Building & Coding',
+                dreamCareer: 'Software Engineer',
+                goals: 'Create educational tools for rural schools'
+            },
+            sections: [
+                {
+                    type: 'story',
+                    title: 'A Passion for Technology',
+                    content: 'Farhan spends his free time constructing wind-mill models using scrap wood. His teachers describe him as an inventive problem solver.'
+                }
+            ],
+            transformationBeforeAfter: {
+                before: [
+                    'No access to digital tools or science labs',
+                    'Struggled to secure annual school supplies'
+                ],
+                today: [
+                    'Enrolled in computer literacy workshops',
+                    'Top scoring student in regional science project'
+                ]
+            }
+        },
+        {
+            id: 'reg-child-3',
+            slug: 'zainab-s',
+            displayName: 'Zainab S.',
+            age: 9,
+            region: 'Central Highlands',
+            educationLevel: 'Primary',
+            currentGrade: 'Grade 4',
+            schoolType: 'Highland Community School',
+            progressStage: 'Year 2 of Education',
+            sponsorshipNeededMonthly: 30,
+            status: ChildStatus.SPONSORED,
+            safeguardingConsent: true,
+            safeguardingReviewStatus: SafeguardingReviewStatus.VERIFIED,
+            createdByAdminId: 'admin-1',
+            avatarIllustrationUrl: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800&auto=format&fit=crop',
+            dream: 'I want to fly airplanes as a commercial pilot.',
+            shortIntro: 'Zainab is a bold, inquisitive student fascinated by aviation and geography.',
+            story: 'Sponsored in 2024, Zainab has maintained a top academic record and is thriving in her second year of primary school.',
+            needs: ['Tuition', 'Textbooks', 'Uniform', 'School Bag', 'Stationery'],
+            aspirations: {
+                favouriteSubject: 'Geography & Science',
+                favouriteActivity: 'Drawing Maps & Flying Kites',
+                dreamCareer: 'Commercial Airline Pilot',
+                goals: 'Travel the world and support girls\' education'
+            },
+            sections: [
+                {
+                    type: 'story',
+                    title: 'Reaching for the Skies',
+                    content: 'Zainab keeps a diary of sky maps. Her confidence has grown immensely since starting her sponsored education.'
+                }
+            ],
+            transformationBeforeAfter: {
+                before: [
+                    'Uncertain enrollment semester to semester',
+                    'Limited access to books'
+                ],
+                today: [
+                    'Stable multi-year educational sponsorship',
+                    'Classroom leader in geography and reading'
+                ]
+            }
+        },
+        {
+            id: 'reg-child-4',
+            slug: 'tariq-a',
+            displayName: 'Tariq A.',
+            age: 19,
+            region: 'Southern District',
+            educationLevel: 'High School Graduate',
+            currentGrade: 'Graduated',
+            schoolType: 'St. Jude High School',
+            progressStage: 'Enrolled in University',
+            sponsorshipNeededMonthly: 30,
+            status: ChildStatus.GRADUATED,
+            safeguardingConsent: true,
+            safeguardingReviewStatus: SafeguardingReviewStatus.VERIFIED,
+            createdByAdminId: 'admin-1',
+            avatarIllustrationUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop',
+            dream: 'Environmental Scientist',
+            shortIntro: 'Tariq successfully completed 6 years of sponsored education and is now studying Environmental Science at University.',
+            story: 'Tariq\'s journey from a struggling primary student to university honors is a testament to what belief and opportunity can achieve.',
+            impactStorySlug: 'tariq-a-graduation',
+            needs: ['University Supplies', 'Laptop', 'Research Grants'],
+            aspirations: {
+                favouriteSubject: 'Chemistry & Biology',
+                favouriteActivity: 'Plant Conservation & Youth Mentoring',
+                dreamCareer: 'Environmental Researcher',
+                goals: 'Develop water purification systems for rural villages'
+            },
+            sections: [
+                {
+                    type: 'story',
+                    title: 'A Life Transformed',
+                    content: 'Tariq entered the sponsorship program in 2018. Over six years, he maintained an A-average and passed his university entry exams with distinction.'
+                }
+            ],
+            transformationBeforeAfter: {
+                before: [
+                    'Severe financial risk of dropping out at Grade 7',
+                    'No family resources for high school fees'
+                ],
+                today: [
+                    'High school graduate with honors',
+                    'University student in B.Sc. Environmental Science'
+                ]
+            }
+        },
+        {
+            id: 'reg-child-5',
+            slug: 'fatima-r',
+            displayName: 'Fatima R.',
+            age: 7,
+            region: 'Eastern Province',
+            educationLevel: 'Primary',
+            currentGrade: 'Grade 2',
+            schoolType: 'Hope Primary',
+            progressStage: 'Needs Sponsor',
+            sponsorshipNeededMonthly: 30,
+            status: ChildStatus.WAITING,
+            safeguardingConsent: true,
+            safeguardingReviewStatus: SafeguardingReviewStatus.VERIFIED,
+            createdByAdminId: 'admin-1',
+            avatarIllustrationUrl: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800&auto=format&fit=crop',
+            dream: 'I want to be a Pediatric Nurse.',
+            shortIntro: 'Fatima is a gentle 7-year-old who loves caring for animals and helping her classmates.',
+            story: 'Fatima is eager to attend school consistently. With sponsorship, she can secure tuition, textbooks, and daily nutritious meals.',
+            needs: ['Tuition', 'Textbooks', 'Uniform', 'School Bag', 'Stationery'],
+            aspirations: {
+                favouriteSubject: 'Health Science & Art',
+                favouriteActivity: 'Drawing & Storytelling',
+                dreamCareer: 'Pediatric Nurse',
+                goals: 'Provide healthcare for children in remote areas'
+            },
+            transformationBeforeAfter: {
+                before: [
+                    'Missing school due to fee shortages',
+                    'No access to proper school uniform'
+                ],
+                today: [
+                    'Enrolled and awaiting matching sponsor',
+                    'Receiving community support'
+                ]
+            }
+        },
+        {
+            id: 'reg-child-6',
+            slug: 'omar-k',
+            displayName: 'Omar K.',
+            age: 11,
+            region: 'Western Coast',
+            educationLevel: 'Primary',
+            currentGrade: 'Grade 6',
+            schoolType: 'Coastal Academy',
+            progressStage: 'Needs Sponsor',
+            sponsorshipNeededMonthly: 30,
+            status: ChildStatus.WAITING,
+            safeguardingConsent: true,
+            safeguardingReviewStatus: SafeguardingReviewStatus.VERIFIED,
+            createdByAdminId: 'admin-1',
+            avatarIllustrationUrl: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=800&auto=format&fit=crop',
+            dream: 'Future Civil Engineer',
+            shortIntro: 'Omar is passionate about math and dreams of building sturdy bridges for his coastal village.',
+            story: 'Omar demonstrates natural mathematical aptitude. Sponsorship will help him finish primary school and transition to secondary education.',
+            needs: ['Tuition', 'Textbooks', 'Uniform', 'School Bag', 'Stationery', 'Shoes'],
+            aspirations: {
+                favouriteSubject: 'Mathematics & Physics',
+                favouriteActivity: 'Building Blocks & Swimming',
+                dreamCareer: 'Civil Engineer',
+                goals: 'Design infrastructure resilient to coastal weather'
+            },
+            transformationBeforeAfter: {
+                before: [
+                    'Risk of early entry into informal labor',
+                    'Lack of advanced math learning books'
+                ],
+                today: [
+                    'Active in STEM club, awaiting sponsor',
+                    'Grade 6 top math student'
+                ]
+            }
+        }
+    ]
+
+    for (const rc of registryChildren) {
+        await prisma.registryChild.upsert({
+            where: { slug: rc.slug },
+            update: rc,
+            create: rc,
+        })
+    }
+    console.log('👶 Registry Children seeded with rich profile data')
 
     console.log('✅ Seed completed successfully')
 }

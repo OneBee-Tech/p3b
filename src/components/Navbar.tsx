@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Globe, Menu, X, LogIn } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
@@ -25,7 +25,7 @@ export function Navbar({ session }: { session?: any }) {
   const [currentLang, setCurrentLang] = useState(languages[0]);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollY = useRef(0);
   const [activeDropdown, setActiveDropdown] = useState<"get-involved" | "support" | null>(null);
   const pathname = usePathname();
 
@@ -45,19 +45,19 @@ export function Navbar({ session }: { session?: any }) {
 
         setIsScrolled(currentScrollY > 40);
 
-        if (currentScrollY > lastScrollY && currentScrollY > 80) {
-          setIsVisible(false); // Hide on scroll down
+        if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+          setIsVisible(false);
         } else {
-          setIsVisible(true); // Show on scroll up
+          setIsVisible(true);
         }
 
-        setLastScrollY(currentScrollY);
+        lastScrollY.current = currentScrollY;
       }
     };
 
-    window.addEventListener("scroll", controlNavbar);
+    window.addEventListener("scroll", controlNavbar, { passive: true });
     return () => window.removeEventListener("scroll", controlNavbar);
-  }, [lastScrollY]);
+  }, []);
 
   const primaryNavLinks = [
     { href: "/", label: "Home" },

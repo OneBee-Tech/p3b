@@ -9,6 +9,7 @@ interface RegistryChildCardData {
     age: number;
     region: string;
     educationLevel: string;
+    dream?: string | null;
     sponsorshipNeededMonthly: number | string | { toNumber: () => number };
     story?: string | null;
     avatarIllustrationUrl: string | null;
@@ -67,6 +68,11 @@ export function SponsorshipCard({ child }: SponsorshipCardProps) {
                 {/* Quick Stats Overlay */}
                 <div className="absolute bottom-4 left-4 right-4 text-white">
                     <h3 className="text-xl font-heading font-bold mb-1">{child.displayName}, {child.age}</h3>
+                    {child.dream && (
+                        <p className="text-xs font-bold text-impact-gold mb-1">
+                            Dream Career: &ldquo;{child.dream}&rdquo;
+                        </p>
+                    )}
                     <div className="flex items-center gap-4 text-xs font-medium text-white/90">
                         <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {child.region}</span>
                     </div>
