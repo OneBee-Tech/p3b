@@ -7,6 +7,7 @@ import { triggerPaymentFailedAlert, triggerSponsorshipEndedAlert } from '@/lib/l
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 export async function POST(req: Request) {
+    console.log("🚀 Stripe webhook reached");
     const payload = await req.text();
     const signature = req.headers.get('stripe-signature');
 
@@ -18,6 +19,7 @@ export async function POST(req: Request) {
 
     try {
         event = stripe.webhooks.constructEvent(payload, signature, endpointSecret);
+        console.log("Event:", event.type);
     } catch (err: any) {
         console.error(`Webhook signature verification failed:`, err.message);
         return NextResponse.json({ error: err.message }, { status: 400 });
