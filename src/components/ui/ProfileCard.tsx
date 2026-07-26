@@ -31,11 +31,11 @@ export interface ProfileCardProps {
 export function ProfileCard({ profile, variant = "child" }: ProfileCardProps) {
     const slug = profile.slug || profile.id;
     const firstName = profile.displayName.split(" ")[0];
-    const targetHref = variant === "alumni" && profile.impactStorySlug 
-        ? `/stories/${profile.impactStorySlug}` 
+    const isGraduated = profile.status === "GRADUATED" || profile.status === "ALUMNI" || variant === "alumni";
+    const targetHref = isGraduated 
+        ? (profile.impactStorySlug ? `/stories/${profile.impactStorySlug}` : "/impact") 
         : `/sponsor-a-child/${slug}`;
 
-    const isGraduated = profile.status === "GRADUATED" || profile.status === "ALUMNI" || variant === "alumni";
     const isMatched = profile.status === "MATCHED" || profile.progressStage?.toLowerCase().includes("matched");
     const isActive = profile.status === "ACTIVE" || profile.status === "SPONSORED";
     const isWaiting = profile.status === "WAITING" || !profile.status;

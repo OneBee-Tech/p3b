@@ -46,7 +46,7 @@ export function Hero({ initialData }: HeroProps) {
               size="lg"
               className="text-base font-bold px-8 py-6 rounded-full bg-impactGold text-cinematicDark hover:bg-impactGold/90 shadow-xl shadow-impactGold/20"
             >
-              <Link href="/checkout">Give $1 a Day</Link>
+              <Link href="/sponsor-a-child#meet-children">Give $1 a Day</Link>
             </Button>
             <Button
               asChild

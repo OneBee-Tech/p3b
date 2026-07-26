@@ -32,10 +32,6 @@ export function MetricsGrid({
                 
                 {/* Header */}
                 <div className="text-center mb-16 max-w-3xl mx-auto space-y-4">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-trust-blue/10 border border-trust-blue/20 text-trust-blue text-xs font-bold uppercase tracking-wider">
-                        <Sparkles className="w-3.5 h-3.5" />
-                        <span>{mode === "launch" ? "Program Launch Metrics" : "Verified Operational Impact"}</span>
-                    </div>
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-cinematic-dark tracking-tight">
                         {heading}
                     </h2>
@@ -69,16 +65,8 @@ export function MetricsGrid({
                                 className="bg-gray-50/70 border border-gray-100 p-8 rounded-3xl flex flex-col justify-between hover:bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
                             >
                                 <div className="space-y-4">
-                                    {/* Status Badge */}
-                                    {item.status && (
-                                        <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${statusColor}`}>
-                                            <StatusIcon className="w-3.5 h-3.5" />
-                                            <span>{item.status}</span>
-                                        </div>
-                                    )}
-
                                     {/* Large Apple-Style Stat Number */}
-                                    <div className="text-5xl sm:text-6xl font-extrabold font-heading text-cinematic-dark group-hover:text-trust-blue transition-colors tracking-tight">
+                                    <div className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-heading text-cinematic-dark group-hover:text-trust-blue transition-colors tracking-tight break-words">
                                         {item.value}
                                     </div>
                                 </div>

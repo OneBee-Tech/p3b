@@ -236,7 +236,7 @@ export function Navbar({ session }: { session?: any }) {
               size="sm"
               className="bg-[#fdc700] text-white hover:bg-[#fdc700]/90 font-extrabold rounded-full px-5 py-2 text-xs shadow-md transition-all shrink-0 whitespace-nowrap"
             >
-              <Link href="/checkout">Give $1 a Day</Link>
+              <Link href="/sponsor-a-child#meet-children">Give $1 a Day</Link>
             </Button>
           </div>
 
@@ -247,7 +247,7 @@ export function Navbar({ session }: { session?: any }) {
               size="sm"
               className="bg-[#fdc700] text-white font-extrabold text-xs rounded-full px-3 py-1 h-8 whitespace-nowrap"
             >
-              <Link href="/checkout">Give $1 a Day</Link>
+              <Link href="/sponsor-a-child#meet-children">Give $1 a Day</Link>
             </Button>
             <Button
               variant="ghost"

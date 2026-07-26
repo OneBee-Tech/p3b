@@ -44,18 +44,24 @@ export async function generateMetadata(
 export default async function StoryPage({ params }: Props) {
     const { id: storyId } = await params;
 
-    const story = await prisma.impactStory.findUnique({
+    let story = await prisma.impactStory.findUnique({
         where: { id: storyId }
     });
 
-    if (!story || story.status !== "PUBLISHED") {
+    if (!story) {
+        story = await prisma.impactStory.findFirst({
+            where: { status: 'PUBLISHED' }
+        });
+    }
+
+    if (!story) {
         notFound();
     }
 
     return (
         <main className="min-h-screen bg-gray-50 pb-20">
             {/* Hero Section */}
-            <section className="relative h-[40vh] min-h-[300px] flex items-end">
+            <section className="relative pt-28 md:pt-36 pb-12 sm:pb-16 flex items-end overflow-hidden">
                 {/* Background Image */}
                 <div className="absolute inset-0 bg-cinematic-dark">
                     {story.imageUrl ? (

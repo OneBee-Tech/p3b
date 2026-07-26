@@ -115,7 +115,7 @@ export function Footer({ settings = DEFAULT_GLOBAL_SETTINGS }: FooterProps) {
               Get Involved
             </h4>
             <ul className="space-y-3 text-sm">
-              <li><Link href="/checkout" className="text-[#fdc700] hover:text-white font-extrabold transition-colors">Give $1 a Day</Link></li>
+              <li><Link href="/sponsor-a-child#meet-children" className="text-[#fdc700] hover:text-white font-extrabold transition-colors">Give $1 a Day</Link></li>
               <li><Link href="/partnership" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">Corporate Partnerships</Link></li>
               <li><Link href="/assist" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">Volunteer</Link></li>
               <li><Link href="/contact" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">Start a Fundraiser</Link></li>

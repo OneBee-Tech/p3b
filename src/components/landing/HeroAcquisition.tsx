@@ -37,7 +37,7 @@ export function HeroAcquisition({ data }: { data?: any }) {
 
                     <div className="flex flex-col sm:flex-row gap-4 mb-4 animate-fade-in-up delay-300">
                         <Link
-                            href="/sponsor"
+                            href="/sponsor-a-child#meet-children"
                             className="group bg-impact-gold hover:bg-yellow-400 text-cinematic-dark px-8 py-5 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_0_40px_rgba(253,199,0,0.3)] hover:-translate-y-1"
                         >
                             <Heart className="w-5 h-5 fill-current" />

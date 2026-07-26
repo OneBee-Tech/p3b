@@ -86,13 +86,15 @@ export default async function SponsorPage() {
             )}
 
             {/* Section 3: Meet the Children Directory Grid */}
-            <ProfileGrid
-                profiles={profiles}
-                variant="children"
-                heading="Meet the Children"
-                description="Every child has a unique story, a dream, and the potential to build a brighter future through education."
-                showSafeguardingNotice={true}
-            />
+            <div id="meet-children">
+                <ProfileGrid
+                    profiles={profiles}
+                    variant="children"
+                    heading="Meet the Children"
+                    description="Every child has a unique story, a dream, and the potential to build a brighter future through education."
+                    showSafeguardingNotice={true}
+                />
+            </div>
 
             {/* Section 4: What Your Sponsorship Provides */}
             {sectionsMap.sponsorProvides && (

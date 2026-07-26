@@ -257,7 +257,7 @@ export default async function ChildProfilePage({ params }: Props) {
                             )}
 
                             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-white tracking-tight leading-tight">
-                                Meet {firstName}
+                                {isGraduated ? `Graduated Alumnus: ${firstName}` : `Meet ${firstName}`}
                             </h1>
 
                             <div className="flex flex-wrap items-center gap-4 text-sm font-medium text-white/80">
@@ -290,7 +290,7 @@ export default async function ChildProfilePage({ params }: Props) {
                             <div className="pt-4 flex flex-wrap gap-4 items-center">
                                 {isGraduated ? (
                                     <Link
-                                        href={child.impactStorySlug ? `/stories/${child.impactStorySlug}` : "/how-it-works"}
+                                        href={child.impactStorySlug ? `/stories/${child.impactStorySlug}` : "/impact"}
                                         className="bg-amber-500 hover:bg-amber-600 text-white font-bold px-8 py-4 rounded-xl text-lg flex items-center gap-3 transition-all shadow-xl hover:-translate-y-1"
                                     >
                                         <GraduationCap className="w-5 h-5" />
@@ -452,10 +452,12 @@ export default async function ChildProfilePage({ params }: Props) {
                     <div className="text-center mb-16">
                         <span className="text-xs font-bold tracking-widest uppercase text-trust-blue mb-2 block">Comprehensive Ecosystem</span>
                         <h2 className="text-3xl sm:text-4xl font-bold font-heading text-cinematic-dark mb-4">
-                            What {firstName}&apos;s Sponsorship Covers
+                            {isGraduated ? `What ${firstName}'s Sponsorship Covered` : `What ${firstName}'s Sponsorship Covers`}
                         </h2>
                         <p className="text-lg text-gray-600 max-w-2xl mx-auto font-body">
-                            100% of your monthly $30 contribution goes towards direct educational supplies and school fees.
+                            {isGraduated 
+                                ? `Throughout their educational journey, 100% of sponsorship funds directly provided essential academic supplies, tuition, and mentoring.`
+                                : `100% of your monthly $30 contribution goes towards direct educational supplies and school fees.`}
                         </p>
                     </div>
 
@@ -540,18 +542,24 @@ export default async function ChildProfilePage({ params }: Props) {
             <section className="py-20 bg-cinematic-dark text-white text-center">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
                     <h2 className="text-3xl sm:text-5xl font-extrabold font-heading text-white leading-tight">
-                        Write a New Chapter in {firstName}&apos;s Life
+                        {isGraduated ? `Explore ${firstName}'s Educational Journey` : `Write a New Chapter in ${firstName}'s Life`}
                     </h2>
                     <p className="text-xl text-white/80 font-body max-w-2xl mx-auto">
-                        For just $1 a day, you provide tuition, supplies, and hope for a brighter future.
+                        {isGraduated 
+                            ? `${firstName} has successfully graduated! Explore their verified story of growth and educational transformation.` 
+                            : "For just $1 a day, you provide tuition, supplies, and hope for a brighter future."}
                     </p>
                     <div className="pt-4">
                         <Link
-                            href={checkoutHref}
-                            className="inline-flex items-center gap-3 bg-impact-gold hover:bg-yellow-400 text-cinematic-dark font-extrabold px-10 py-5 rounded-2xl text-xl shadow-[0_0_40px_rgba(253,199,0,0.4)] transition-all hover:-translate-y-1"
+                            href={isGraduated ? (child.impactStorySlug ? `/stories/${child.impactStorySlug}` : "/impact") : checkoutHref}
+                            className={`inline-flex items-center gap-3 font-extrabold px-10 py-5 rounded-2xl text-xl transition-all hover:-translate-y-1 ${
+                                isGraduated 
+                                    ? 'bg-amber-500 hover:bg-amber-600 text-white shadow-amber-500/20' 
+                                    : 'bg-impact-gold hover:bg-yellow-400 text-cinematic-dark shadow-[0_0_40px_rgba(253,199,0,0.4)]'
+                            }`}
                         >
-                            <span>Become {firstName}&apos;s Sponsor</span>
-                            <ArrowRight className="w-6 h-6" />
+                            <span>{isGraduated ? 'Read Impact Story' : `Become ${firstName}'s Sponsor`}</span>
+                            {isGraduated ? <GraduationCap className="w-6 h-6" /> : <ArrowRight className="w-6 h-6" />}
                         </Link>
                     </div>
                 </div>

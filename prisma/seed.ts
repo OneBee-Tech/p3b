@@ -1,4 +1,4 @@
-import { PrismaClient, ChildStatus, SponsorshipTier, ProgramStatus, EntityType, VerificationStatus, SafeguardingReviewStatus } from '@prisma/client'
+import { PrismaClient, ChildStatus, SponsorshipTier, ProgramStatus, EntityType, VerificationStatus, SafeguardingReviewStatus, StoryStatus } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -938,69 +938,36 @@ async function main() {
             title: 'Our Impact Hero',
             content: '',
             metadata: {
-                version: 'v1',
+                version: 'v3-trust-experience',
                 order: 1,
                 component: 'hero',
-                layout: 'full-bg',
-                heading: 'The Impact We Are Building',
-                description: 'Every contribution creates the possibility of educational opportunity. As our programs grow, we will transparently document our progress, share verified results, and celebrate the children, families, and communities whose futures are being transformed.\n\nEvery statistic on this page represents real educational progress. Where programs are still developing, we clearly distinguish goals, work in progress, and verified results.',
+                heading: 'Every Sponsorship Becomes a Documented Story of Progress.',
+                description: 'We are building an open, verifiable sponsorship system where tuition, uniforms, and learning outcomes are tracked with complete transparency.',
+                secondaryDescription: 'Most charities ask for trust. We believe trust should be documented.',
                 backgroundImage: {
                     src: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1920&auto=format&fit=crop',
                     alt: 'Documentary photo of children studying together',
                 },
                 ctas: [
-                    { label: 'Sponsor a Child', href: '/sponsor-a-child', variant: 'primary' },
-                    { label: 'How We Measure Change', href: '#measure-change', variant: 'secondary' }
+                    { label: 'Sponsor a Child ($1/Day)', href: '/sponsor-a-child#meet-children', variant: 'primary' },
+                    { label: 'Explore Transparency Protocol', href: '/transparency', variant: 'secondary' }
                 ]
             }
         },
         {
             sectionKey: 'impactPhilosophy',
-            title: 'Impact Philosophy',
+            title: 'Why We Exist & Three Promises',
             content: '',
             metadata: {
-                version: 'v1',
+                version: 'v3-trust-experience',
                 order: 2,
-                component: 'editorial',
-                layout: 'centered-text-only',
-                eyebrow: 'Impact Philosophy',
-                heading: 'Small Daily Giving. Lasting Educational Change.',
-                body: 'Meaningful impact is not measured by donations alone.\n\nIt is measured through children remaining in school, educational progress, graduation, confidence, opportunity, and stronger communities.',
-                textHeadingClass: 'text-3xl sm:text-4xl md:text-6xl text-cinematic-dark font-bold leading-tight font-heading max-w-4xl mx-auto'
-            }
-        },
-        {
-            sectionKey: 'impactTransformation',
-            title: 'Representative Transformation',
-            content: '',
-            metadata: {
-                version: 'v1',
-                order: 3,
-                component: 'editorial',
-                layout: 'centered-text-only',
-                eyebrow: 'Representative Transformation',
-                heading: 'Real Change Looks Like This',
-                body: 'Before Sponsorship:\n• Unable to afford required textbooks & uniform\n• Irregular classroom attendance\n• High financial risk of early school drop-out\n\nToday:\n• Full access to required learning supplies & uniform\n• Consistent daily attendance and active participation\n• Steady academic progress toward graduation',
-                textHeadingClass: 'text-3xl sm:text-4xl md:text-5xl text-cinematic-dark font-bold leading-tight font-heading max-w-4xl mx-auto'
-            }
-        },
-        {
-            sectionKey: 'impactMetrics',
-            title: 'Measurable Impact Metrics',
-            content: '',
-            metadata: {
-                version: 'v1',
-                order: 4,
-                component: 'metricsGrid',
-                variant: 'impact',
-                mode: 'launch',
-                heading: 'Measurable Educational Impact',
-                description: 'Every metric represents real educational progress. Where programs are developing, we clearly distinguish goals, active work, and verified results.',
-                metrics: [
-                    { id: 'm1', label: 'Founding Sponsors Committed', value: '250+', sublabel: 'Initial guardians launching program support', status: 'Verified' },
-                    { id: 'm2', label: 'Children Under Assessment', value: '48', sublabel: 'Rigorously evaluated for financial eligibility', status: 'In Progress' },
-                    { id: 'm3', label: 'Partner Schools Evaluated', value: '12', sublabel: 'Accredited community primary and secondary schools', status: 'Verified' },
-                    { id: 'm4', label: 'Target Children Enrolled', value: '500', sublabel: 'First phase educational support goal', status: 'Goal' }
+                component: 'whyOneDollar',
+                heading: 'Most charities ask for trust. We believe trust should be documented.',
+                description: 'Three core commitments built directly into our platform technology.',
+                items: [
+                    { title: 'Verified', subtitle: '100% direct tuition settlement to accredited school accounts—never unverified cash.', icon: 'ShieldCheck' },
+                    { title: 'Transparent', subtitle: 'Every fee receipt, enrollment form, and audit statement published openly.', icon: 'FileText' },
+                    { title: 'Human', subtitle: 'Bi-annual progress updates, report cards, and letters connecting you directly to your sponsored child.', icon: 'HeartHandshake' }
                 ]
             }
         },
@@ -1009,82 +976,74 @@ async function main() {
             title: 'Educational Journey Timeline',
             content: '',
             metadata: {
-                version: 'v1',
-                order: 5,
+                version: 'v3-trust-experience',
+                order: 3,
                 component: 'journeyTimeline',
                 variant: 'education',
-                heading: 'The Journey of Educational Impact',
-                description: 'Impact is not an event—it is a long-term commitment that transforms a child\'s entire life path.'
+                heading: 'The Educational Journey Flow',
+                description: 'From enrollment to graduation, here is how a child\'s growth is documented step-by-step.',
+                steps: [
+                    { stage: '01', title: 'Enrollment', description: 'Field officers complete household eligibility & school placement assessment.', icon: 'School' },
+                    { stage: '02', title: 'Assessment', description: 'Tuition, uniform, and textbook needs calculated directly with the headmaster.', icon: 'Calculator' },
+                    { stage: '03', title: 'Learning', description: 'Student receives tailored uniforms, footwear, and full classroom kits.', icon: 'BookOpen' },
+                    { stage: '04', title: 'Monthly Reports', description: 'Headmaster registers monthly classroom presence and attendance records.', icon: 'CheckCircle' },
+                    { stage: '05', title: 'Progress', description: 'Bi-annual academic transcripts and health check updates uploaded to your portal.', icon: 'TrendingUp' },
+                    { stage: '06', title: 'Future', description: 'Secondary school advancement and vocational guidance celebrated.', icon: 'GraduationCap' }
+                ]
+            }
+        },
+        {
+            sectionKey: 'impactEmotionalBreak',
+            title: 'Emotional Visual Interlude',
+            content: '',
+            metadata: {
+                version: 'v3-trust-experience',
+                order: 4,
+                component: 'editorial',
+                layout: 'full-bleed-image',
+                heading: 'One child. One classroom. One opportunity.\n\nThat is where every measurable impact begins.',
+                image: {
+                    src: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=1920&auto=format&fit=crop',
+                    alt: 'Children in classroom smiling together'
+                }
             }
         },
         {
             sectionKey: 'impactStories',
-            title: 'Our Growing Library of Impact',
+            title: 'Stories Yet To Be Written',
             content: '',
             metadata: {
-                version: 'v1',
-                order: 6,
+                version: 'v3-trust-experience',
+                order: 5,
                 component: 'storyGrid',
                 variant: 'stories',
-                heading: 'Our Growing Library of Impact',
-                description: 'Real educational outcomes celebrated through verified stories of progress, graduation, and community transformation.',
+                heading: 'Stories Yet To Be Written',
+                description: 'These children will become the first documented educational journeys on our platform.',
                 stories: [
-                    { id: 's1', slug: 'amara-k', firstName: 'Amara', dream: 'Primary Teacher', summary: 'From irregular attendance to leading her Grade 3 reading circle with confidence.', photoUrl: 'https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=800&auto=format&fit=crop', badgeText: 'In Education' },
-                    { id: 's2', slug: 'farhan-m', firstName: 'Farhan', dream: 'Software Engineer', summary: 'Enrolled in computer literacy workshops and top scoring in regional science competitions.', photoUrl: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop', badgeText: 'Matched' },
-                    { id: 's3', slug: 'tariq-a', firstName: 'Tariq', dream: 'Environmental Scientist', summary: 'Graduated high school with honors and is now studying B.Sc at National University.', photoUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop', badgeText: 'Graduated Alumni' }
+                    { id: 's1', slug: 'amara-k', firstName: 'Amara (Format Preview)', dream: 'Primary Teacher Aspirant', summary: 'Sample Report: Tracking attendance recovery, reading comprehension scores, and term-by-term grade progression.', photoUrl: 'https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=800&auto=format&fit=crop', badgeText: 'First Cohort: Active' },
+                    { id: 's2', slug: 'farhan-m', firstName: 'Farhan (Format Preview)', dream: 'STEM & Computer Literacy', summary: 'Sample Report: Monitoring STEM workshop participation, math examination performance, and extracurricular achievements.', photoUrl: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop', badgeText: 'First Cohort: Matched' },
+                    { id: 's3', slug: 'tariq-a', firstName: 'Tariq (Format Preview)', dream: 'Secondary School Scholar', summary: 'Sample Report: High school entrance evaluation, national exam preparation, and post-secondary vocational planning.', photoUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop', badgeText: 'First Cohort: Alumni' }
                 ]
             }
         },
         {
-            sectionKey: 'impactHowWeMeasure',
-            title: 'How We Measure Change',
+            sectionKey: 'impactMetrics',
+            title: 'Transparency by Design',
             content: '',
             metadata: {
-                version: 'v1',
-                order: 7,
-                component: 'contentGrid',
-                heading: 'How We Measure Change',
-                description: 'We track holistic indicators ensuring long-term educational continuity and student wellbeing.',
-                items: [
-                    { title: 'School Attendance', subtitle: 'Consistent daily attendance guarantees classroom continuity and safety.' },
-                    { title: 'Academic Progress', subtitle: 'Bi-annual report cards track reading, math, and science comprehension.' },
-                    { title: 'Grade Promotion', subtitle: 'Students moving successfully from grade to grade every academic year.' },
-                    { title: 'Educational Continuity', subtitle: 'Multi-year sponsorship prevents drop-outs during critical secondary school years.' },
-                    { title: 'Family Stability', subtitle: 'Freeing families from tuition burdens allows resources for health and shelter.' },
-                    { title: 'Community Growth', subtitle: 'Educated youths become leaders and mentors in their local villages.' }
+                version: 'v3-trust-experience',
+                order: 6,
+                component: 'metricsGrid',
+                variant: 'editorial',
+                mode: 'status',
+                heading: 'Transparency by Design',
+                description: 'Four core commitments built into our technology stack.',
+                metrics: [
+                    { id: 'm1', label: 'Direct Fee Settlement', value: '100%', sublabel: 'Tuition wire-transferred directly to school accounts' },
+                    { id: 'm2', label: 'Audited Partner Schools', value: '12 Schools', sublabel: 'Inspected for safety, accreditation & quality' },
+                    { id: 'm3', label: 'Phase 1 Target', value: '500', sublabel: 'Initial launch cohort capacity' },
+                    { id: 'm4', label: 'Public Audit Ledger', value: '0$', sublabel: 'Administrative overhead charged from core tuition' }
                 ]
-            }
-        },
-        {
-            sectionKey: 'impactTransparency',
-            title: 'Verification & Trust',
-            content: '',
-            metadata: {
-                version: 'v1',
-                order: 8,
-                component: 'editorial',
-                layout: 'centered-text-only',
-                eyebrow: 'Verification & Trust',
-                heading: 'Behind Every Number Is A Child\'s Story.',
-                body: 'We publish verified figures instead of estimated achievements. School receipts, enrollment forms, and academic progress reports guarantee complete accountability.',
-                ctas: [
-                    { label: 'Explore Transparency', href: '/transparency', variant: 'primary' }
-                ]
-            }
-        },
-        {
-            sectionKey: 'impactLookingAhead',
-            title: 'Future Roadmap',
-            content: '',
-            metadata: {
-                version: 'v1',
-                order: 9,
-                component: 'editorial',
-                layout: 'centered-text-only',
-                eyebrow: 'Future Roadmap',
-                heading: 'The Impact Still to Come.',
-                body: 'Current Phase:\nLaunching initial sponsorships across partner community schools.\n\nNext Milestone:\nExpanding student enrollment to 500 verified children.\n\nExpansion:\nEstablishing digital learning labs and teacher support workshops.\n\nLong-Term Vision:\nReaching multi-region coverage to break generational poverty through education.',
-                textHeadingClass: 'text-3xl sm:text-4xl md:text-5xl text-cinematic-dark font-bold leading-tight font-heading max-w-4xl mx-auto'
             }
         },
         {
@@ -1092,14 +1051,14 @@ async function main() {
             title: 'Final Impact CTA',
             content: '',
             metadata: {
-                version: 'v1',
-                order: 10,
+                version: 'v3-trust-experience',
+                order: 7,
                 component: 'ctaSection',
-                heading: 'Today\'s Sponsorship. Tomorrow\'s Impact. One Child. One Future.',
-                description: 'Every child educated creates another story worth telling. Join us in building measurable educational impact.',
+                heading: 'Imagine the first story published here.',
+                description: 'It begins with someone choosing to believe in a child’s future.',
                 ctas: [
-                    { label: 'Sponsor a Child', href: '/sponsor-a-child', variant: 'primary' },
-                    { label: 'Give $1 a Day', href: '/checkout?type=sponsorship', variant: 'secondary' }
+                    { label: 'Sponsor a Child ($1/Day)', href: '/sponsor-a-child#meet-children', variant: 'primary' },
+                    { label: 'See How Sponsorship Works', href: '/how-it-works', variant: 'secondary' }
                 ]
             }
         }
@@ -1319,6 +1278,7 @@ async function main() {
                 shortIntro: `${c.name} is a bright ${c.age}-year-old student from ${c.location} who dreams of becoming a ${c.dream}.`,
                 story: `${c.story}\n\n${c.name} walks to school every day with determination. With your support, ${c.name} receives complete tuition, textbooks, uniform, daily meals, and ongoing academic guidance.`,
                 status: c.status,
+                impactStorySlug: c.name === 'Yusuf' ? 'yusuf-b-business' : undefined,
             },
             create: {
                 id: `legacy-reg-${childId}`,
@@ -1332,6 +1292,7 @@ async function main() {
                 progressStage: c.status === ChildStatus.SPONSORED ? 'In Education' : c.status === ChildStatus.GRADUATED ? 'Graduated' : 'Needs Sponsor',
                 sponsorshipNeededMonthly: 30,
                 status: c.status,
+                impactStorySlug: c.name === 'Yusuf' ? 'yusuf-b-business' : undefined,
                 safeguardingConsent: true,
                 safeguardingReviewStatus: SafeguardingReviewStatus.VERIFIED,
                 createdByAdminId: 'admin-1',
@@ -1645,6 +1606,51 @@ async function main() {
         })
     }
     console.log('👶 Registry Children seeded with rich profile data')
+
+    // 7. Seed Impact Stories for Graduated Alumni
+    const impactStories = [
+        {
+            id: 'tariq-a-graduation',
+            title: 'Tariq’s Journey: From Rural Primary Student to Environmental Scientist',
+            content: `When Tariq joined our sponsorship program in 2018 at age 12, his family in the Southern District was facing severe financial hardship. High school fees were far beyond their reach, and Tariq was at high risk of leaving school at Grade 7.
+
+Through the monthly $30 sponsorship program, Tariq received direct tuition settlement, textbooks, laboratory equipment, and dedicated mentoring from his school headmaster.
+
+Over the next six years, Tariq consistently ranked at the top of his class in Chemistry and Biology. In 2024, he passed his national university entrance exams with distinction and was accepted into a Bachelor of Science program in Environmental Science.
+
+Today, Tariq mentors younger students in his village and is working on a youth-led initiative to build low-cost water filtration systems for rural communities.
+
+"Without sponsorship, my educational journey would have ended six years ago. Today, I am studying to solve environmental challenges for my entire region." — Tariq A.`,
+            imageUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop',
+            status: StoryStatus.PUBLISHED,
+            publishAt: new Date('2025-01-15'),
+            guardianConsent: true,
+        },
+        {
+            id: 'yusuf-b-business',
+            title: 'Yusuf’s Journey: Vocational Excellence & Local Entrepreneurship',
+            content: `Yusuf grew up in Dadu, where access to secondary school and vocational training was severely limited. Enrolled into the sponsorship registry at age 12, Yusuf received complete tuition support, uniforms, and specialized mathematics tutoring.
+
+After graduating secondary school with honors, Yusuf completed a 2-year vocational diploma in Business Administration and Commerce.
+
+Today, Yusuf runs a thriving local solar equipment supply store in Dadu, employing three young apprentices from his community.
+
+"Education gave me both the skills and confidence to build a real business. Now I am able to give back to the next generation." — Yusuf B.`,
+            imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop',
+            status: StoryStatus.PUBLISHED,
+            publishAt: new Date('2025-02-01'),
+            guardianConsent: true,
+        }
+    ]
+
+    for (const story of impactStories) {
+        await prisma.impactStory.upsert({
+            where: { id: story.id },
+            update: story,
+            create: story,
+        })
+    }
+    console.log('📖 Impact Stories seeded for Graduated Alumni')
 
     console.log('✅ Seed completed successfully')
 }

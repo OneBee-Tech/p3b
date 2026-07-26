@@ -9,7 +9,7 @@ export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig
     const { heading, description, secondaryDescription, backgroundImage, ctas, readingTime, badge, breadcrumb } = meta;
 
     return (
-        <section className="relative bg-cinematic-dark text-white min-h-[90vh] md:h-[95vh] md:min-h-[735px] flex items-center overflow-hidden py-24 md:py-0">
+        <section className="relative bg-cinematic-dark text-white min-h-[90vh] md:min-h-screen flex flex-col justify-center overflow-hidden py-12 md:py-16">
             {backgroundImage && (
                 <div className="absolute inset-0 z-0">
                     <Image
@@ -17,55 +17,59 @@ export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig
                         alt={backgroundImage?.alt || "Hero background"}
                         fill
                         priority
-                        className="object-cover object-[center_30%] md:object-[center_20%] opacity-40 md:opacity-55 transition-transform duration-[10s] hover:scale-105"
+                        className="object-cover opacity-60"
                     />
-                    {/* Mobile: Top-to-bottom dark gradient for 100% text contrast. Desktop: Left-to-right gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-cinematic-dark/95 via-cinematic-dark/85 to-cinematic-dark/95 md:bg-gradient-to-r md:from-cinematic-dark/95 md:via-cinematic-dark/70 md:to-transparent" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-cinematic-dark via-transparent to-black/50 opacity-90" />
-                    <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.6)] pointer-events-none" />
+                    {/* Enhanced Gradient Overlay matching site-wide HeroAcquisition */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-cinematic-dark via-cinematic-dark/80 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-cinematic-dark via-transparent to-cinematic-dark/30" />
                 </div>
             )}
 
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-28 pb-16 sm:pt-36 md:pt-56 md:pb-32">
-                <div className="grid grid-cols-12 gap-8">
-                    <div className="col-span-12 md:col-span-8 lg:col-span-7">
-                        
-                        {heading && (
-                            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-heading font-extrabold text-white mb-6 sm:mb-8 tracking-tight leading-[1.1] md:leading-[1.05] animate-fade-in-up delay-100">
-                                {heading}
-                            </h1>
-                        )}
-                        
-                        {description && (
-                            <p className="text-lg sm:text-xl md:text-3xl text-white/90 leading-relaxed sm:leading-snug font-body mb-4 sm:mb-6 animate-fade-in-up delay-200 drop-shadow-md">
-                                {description}
-                            </p>
-                        )}
-                        
-                        {secondaryDescription && (
-                            <p className="text-base md:text-lg text-white/70 leading-relaxed font-body mb-8 sm:mb-12 animate-fade-in-up delay-300 max-w-prose">
-                                {secondaryDescription}
-                            </p>
-                        )}
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-20 pb-12 sm:pt-28 md:pt-32 md:pb-16">
+                <div className="max-w-4xl text-left">
+                    
+                    {badge && (
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold tracking-wider text-impact-gold uppercase mb-5 animate-fade-in-up">
+                            {badge}
+                        </div>
+                    )}
 
-                        {ctas && ctas.length > 0 && (
-                            <div className="flex flex-col sm:flex-row gap-5 animate-fade-in-up delay-400 mt-12">
-                                {ctas.map((cta: any, idx: number) => (
-                                    <Link
-                                        key={idx}
-                                        href={cta.href}
-                                        className={`group px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 ${
-                                            cta.variant === 'primary' 
-                                            ? 'bg-impact-gold hover:bg-yellow-400 text-cinematic-dark shadow-[0_0_40px_rgba(253,199,0,0.3)] hover:-translate-y-1'
-                                            : 'bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm hover:-translate-y-1'
-                                        }`}
-                                    >
-                                        {cta.label}
-                                        {cta.variant === 'primary' && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
-                                    </Link>
-                                ))}
-                            </div>
-                        )}
+                    {heading && (
+                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-extrabold text-white mb-5 tracking-tight leading-[1.1] animate-fade-in-up delay-100 drop-shadow-lg">
+                            {heading}
+                        </h1>
+                    )}
+                    
+                    {description && (
+                        <p className="text-lg md:text-xl text-white/90 leading-relaxed font-body mb-5 animate-fade-in-up delay-200 max-w-3xl drop-shadow-md">
+                            {description}
+                        </p>
+                    )}
+                    
+                    {secondaryDescription && (
+                        <p className="text-base md:text-lg text-white/70 leading-relaxed font-body mb-7 animate-fade-in-up delay-300 max-w-2xl">
+                            {secondaryDescription}
+                        </p>
+                    )}
+
+                    {ctas && ctas.length > 0 && (
+                        <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-400">
+                            {ctas.map((cta: any, idx: number) => (
+                                <Link
+                                    key={idx}
+                                    href={cta.href}
+                                    className={`group px-7 py-4.5 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 ${
+                                        cta.variant === 'primary' 
+                                        ? 'bg-impact-gold hover:bg-yellow-400 text-cinematic-dark shadow-[0_0_40px_rgba(253,199,0,0.3)] hover:-translate-y-1'
+                                        : 'bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm hover:-translate-y-1'
+                                    }`}
+                                >
+                                    {cta.label}
+                                    {cta.variant === 'primary' && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
+                                </Link>
+                            ))}
+                        </div>
+                    )}
 
                         {meta.trustStrip && meta.trustStrip.length > 0 && (
                             <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mt-12 animate-fade-in-up delay-500 text-sm font-medium text-white/80">
@@ -81,7 +85,6 @@ export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig
                                 ))}
                             </div>
                         )}
-                    </div>
                 </div>
             </div>
             

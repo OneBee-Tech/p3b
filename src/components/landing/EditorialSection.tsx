@@ -25,25 +25,25 @@ export function EditorialSection({ data, layoutConfig }: { data?: any, layoutCon
 
     if (isFullBleedImage) {
         return (
-            <section className="relative w-full h-[40vh] md:h-[80vh] min-h-[300px] md:min-h-[500px] overflow-hidden flex items-center justify-center">
+            <section className="relative w-full min-h-[420px] md:min-h-[520px] py-20 md:py-32 flex items-center justify-center overflow-hidden">
                 {image && (
                     <div className="absolute inset-0 z-0">
                         <Image
                             src={image?.src || image}
                             alt={image?.alt || heading || "Cinematic visual break"}
                             fill
-                            className="object-cover object-center"
+                            className="object-cover object-center scale-105 transition-transform duration-[10s] hover:scale-100"
                         />
-                        <div className="absolute inset-0 bg-black/40" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-cinematic-dark/85 via-cinematic-dark/70 to-cinematic-dark/90" />
                     </div>
                 )}
-                <div className="relative z-10 px-4 text-center max-w-5xl mx-auto">
+                <div className="relative z-10 px-6 text-center max-w-4xl mx-auto py-8">
                     {quote?.text ? (
-                        <blockquote className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-heading font-extrabold text-white leading-tight drop-shadow-2xl">
-                            "{quote.text}"
+                        <blockquote className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-extrabold text-white leading-tight sm:leading-snug drop-shadow-2xl whitespace-pre-line tracking-tight">
+                            {quote.text}
                         </blockquote>
                     ) : heading && (
-                        <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl font-heading font-extrabold text-white leading-tight drop-shadow-2xl">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-extrabold text-white leading-tight sm:leading-snug drop-shadow-2xl whitespace-pre-line tracking-tight">
                             {heading}
                         </h2>
                     )}

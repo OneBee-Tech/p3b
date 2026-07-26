@@ -32,10 +32,6 @@ export function StoryGrid({
                 
                 {/* Header */}
                 <div className="text-center mb-16 max-w-3xl mx-auto space-y-4">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold uppercase tracking-wider">
-                        <BookOpen className="w-3.5 h-3.5 text-emerald-600" />
-                        <span>Verified Outcomes</span>
-                    </div>
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-cinematic-dark tracking-tight">
                         {heading}
                     </h2>
@@ -61,12 +57,6 @@ export function StoryGrid({
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-
-                                {story.badgeText && (
-                                    <div className="absolute top-4 left-4 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
-                                        {story.badgeText}
-                                    </div>
-                                )}
 
                                 <div className="absolute bottom-4 left-4 right-4 text-white">
                                     <h3 className="text-2xl font-bold font-heading group-hover:text-impact-gold transition-colors">

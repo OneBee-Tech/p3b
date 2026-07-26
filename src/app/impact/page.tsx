@@ -26,13 +26,10 @@ export default async function ImpactPage() {
                 in: [
                     'impactHero',
                     'impactPhilosophy',
-                    'impactTransformation',
-                    'impactMetrics',
                     'impactTimeline',
+                    'impactEmotionalBreak',
                     'impactStories',
-                    'impactHowWeMeasure',
-                    'impactTransparency',
-                    'impactLookingAhead',
+                    'impactMetrics',
                     'impactCTA'
                 ]
             },
@@ -47,52 +44,36 @@ export default async function ImpactPage() {
 
     return (
         <main className="min-h-screen bg-white">
-            {/* Section 1: Hero */}
+            {/* Experience 1: Cinematic Hero (Dark) */}
             {sectionsMap.impactHero && (
                 <RenderSection section={sectionsMap.impactHero} layoutConfig={{ theme: 'dark' }} />
             )}
 
-            {/* Section 2: Impact Philosophy */}
+            {/* Experience 2: Why We Exist & 3 Promises (White Canvas) */}
             {sectionsMap.impactPhilosophy && (
                 <RenderSection section={sectionsMap.impactPhilosophy} layoutConfig={{ theme: 'white' }} />
             )}
 
-            {/* Section 3: Representative Transformation */}
-            {sectionsMap.impactTransformation && (
-                <RenderSection section={sectionsMap.impactTransformation} layoutConfig={{ theme: 'gray-50' }} />
-            )}
-
-            {/* Section 4: Measurable Impact Metrics (MetricsGrid) */}
-            {sectionsMap.impactMetrics && (
-                <RenderSection section={sectionsMap.impactMetrics} layoutConfig={{ theme: 'white' }} />
-            )}
-
-            {/* Section 5: Educational Journey Timeline (JourneyTimeline) */}
+            {/* Experience 3: Educational Journey Flow (Warm Canvas) */}
             {sectionsMap.impactTimeline && (
                 <RenderSection section={sectionsMap.impactTimeline} layoutConfig={{ theme: 'warm-bg' }} />
             )}
 
-            {/* Section 6: Our Growing Library of Impact (StoryGrid) */}
+            {/* Experience 4: Emotional Full-Bleed Interlude (Pure Pause - Dark Image) */}
+            {sectionsMap.impactEmotionalBreak && (
+                <RenderSection section={sectionsMap.impactEmotionalBreak} layoutConfig={{ theme: 'dark' }} />
+            )}
+
+            {/* Experience 5: Stories Yet To Be Written (White Canvas) */}
             {sectionsMap.impactStories && (
                 <RenderSection section={sectionsMap.impactStories} layoutConfig={{ theme: 'white' }} />
             )}
 
-            {/* Section 7: How We Measure Change */}
-            {sectionsMap.impactHowWeMeasure && (
-                <RenderSection section={sectionsMap.impactHowWeMeasure} layoutConfig={{ theme: 'gray-50' }} />
+            {/* Experience 6: Transparency Commitments & Final Cinematic CTA (Dark Canvas) */}
+            {sectionsMap.impactMetrics && (
+                <RenderSection section={sectionsMap.impactMetrics} layoutConfig={{ theme: 'dark' }} />
             )}
 
-            {/* Section 8: Behind Every Number Is A Child's Story (Transparency) */}
-            {sectionsMap.impactTransparency && (
-                <RenderSection section={sectionsMap.impactTransparency} layoutConfig={{ theme: 'white' }} />
-            )}
-
-            {/* Section 9: The Impact Still to Come (Future Roadmap) */}
-            {sectionsMap.impactLookingAhead && (
-                <RenderSection section={sectionsMap.impactLookingAhead} layoutConfig={{ theme: 'gray-50' }} />
-            )}
-
-            {/* Section 10: Final CTA */}
             {sectionsMap.impactCTA && (
                 <RenderSection section={sectionsMap.impactCTA} layoutConfig={{ theme: 'dark' }} />
             )}

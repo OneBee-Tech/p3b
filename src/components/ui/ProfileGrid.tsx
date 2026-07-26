@@ -61,10 +61,6 @@ export function ProfileGrid({
                 
                 {/* Header */}
                 <div className="text-center mb-12 sm:mb-16 animate-fade-in-up">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-impact-gold/15 border border-impact-gold/30 text-cinematic-dark text-sm font-bold mb-4">
-                        <Sparkles className="w-4 h-4 text-amber-600" />
-                        <span>Sponsorship Directory</span>
-                    </div>
                     <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-cinematic-dark tracking-tight mb-4">
                         {heading}
                     </h2>

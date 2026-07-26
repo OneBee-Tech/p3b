@@ -73,10 +73,6 @@ export function JourneyTimeline({
                 
                 {/* Section Header */}
                 <div className="text-center mb-16 max-w-3xl mx-auto space-y-4">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-impact-gold/15 border border-impact-gold/30 text-cinematic-dark text-xs font-bold uppercase tracking-wider">
-                        <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                        <span>Educational Progression</span>
-                    </div>
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-cinematic-dark tracking-tight">
                         {heading}
                     </h2>
@@ -87,31 +83,31 @@ export function JourneyTimeline({
                     )}
                 </div>
 
-                {/* Timeline Grid Layout */}
-                <div className="relative">
-                    {/* Desktop Horizontal Line */}
-                    <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-impact-gold via-trust-blue to-emerald-500 -translate-y-1/2 z-0 opacity-30" />
+                {/* Timeline Vertical Flow Layout */}
+                <div className="relative max-w-3xl mx-auto">
+                    {/* Vertical Connecting Line */}
+                    <div className="absolute top-4 bottom-4 left-6 sm:left-8 w-0.5 bg-gradient-to-b from-impact-gold via-trust-blue to-emerald-500 opacity-40 z-0" />
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-6 relative z-10">
+                    <div className="space-y-8 relative z-10">
                         {steps.map((step, idx) => (
                             <div 
                                 key={idx}
-                                className="bg-white border border-gray-100 p-6 rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-full group"
+                                className="flex items-start gap-6 group"
                             >
-                                <div className="space-y-4">
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-xs font-extrabold font-heading text-impact-gold bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
-                                            {step.stage}
-                                        </span>
-                                        <div className="w-2.5 h-2.5 rounded-full bg-trust-blue/40 group-hover:bg-trust-blue group-hover:scale-125 transition-all" />
-                                    </div>
-                                    <h3 className="text-lg font-bold font-heading text-cinematic-dark group-hover:text-trust-blue transition-colors">
+                                {/* Step Circle Indicator */}
+                                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-white border-2 border-impact-gold/40 text-impact-gold font-heading font-extrabold text-sm sm:text-base flex items-center justify-center shrink-0 shadow-md group-hover:border-trust-blue group-hover:text-trust-blue group-hover:scale-110 transition-all duration-300">
+                                    {step.stage || `0${idx + 1}`}
+                                </div>
+
+                                {/* Step Content Card */}
+                                <div className="bg-white border border-gray-100 p-6 sm:p-8 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex-1">
+                                    <h3 className="text-xl font-bold font-heading text-cinematic-dark group-hover:text-trust-blue transition-colors mb-2">
                                         {step.title}
                                     </h3>
+                                    <p className="text-sm sm:text-base text-gray-600 font-body leading-relaxed">
+                                        {step.description}
+                                    </p>
                                 </div>
-                                <p className="text-xs text-gray-600 font-body leading-relaxed mt-4">
-                                    {step.description}
-                                </p>
                             </div>
                         ))}
                     </div>
