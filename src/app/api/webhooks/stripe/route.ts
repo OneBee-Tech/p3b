@@ -40,6 +40,11 @@ export async function POST(req: Request) {
                 }
                 break;
             }
+            case 'invoice.payment_failed': {
+                const invoice = event.data.object as Stripe.Invoice;
+                await handleFailedSubscriptionPayment(invoice);
+                break;
+            }
             case 'customer.subscription.updated': {
                 const subscription = event.data.object as Stripe.Subscription;
                 // Read-only extension: Check for past_due or canceled for lifecycle alerts
@@ -333,3 +338,28 @@ async function handleSuccessfulSubscriptionPayment(invoice: Stripe.Invoice) {
         }
     });
 }
+
+async function handleFailedSubscriptionPayment(invoice: Stripe.Invoice) {
+    const sub = (invoice as any).subscription;
+    const subscriptionId = typeof sub === 'string' ? sub : sub?.id;
+
+    if (!subscriptionId) return;
+
+    const sponsorship = await prisma.sponsorship.findFirst({
+        where: { stripeSubscriptionId: subscriptionId }
+    });
+
+    if (!sponsorship) return;
+
+    const assignment = await prisma.sponsorshipAssignment.findFirst({
+        where: { donorId: sponsorship.userId, registryChildId: sponsorship.childId || "" }
+    });
+
+    if (assignment) {
+        await triggerPaymentFailedAlert(
+            assignment.id,
+            `Recurring payment failed for invoice ${invoice.id}`
+        );
+    }
+}
+
