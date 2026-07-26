@@ -2,10 +2,10 @@ import { CheckCircle2, ShieldCheck } from "lucide-react";
 
 export function AdminVerificationNotice() {
     const verifiedPoints = [
-        "Quarterly Review",
-        "Independent Approval",
-        "Documented Allocation",
-        "Financial Controls",
+        "Quarterly Financial Review",
+        "Payment Documentation",
+        "School Verification",
+        "Financial Record Keeping",
     ];
 
     return (
@@ -25,7 +25,7 @@ export function AdminVerificationNotice() {
             </div>
 
             <p className="text-[11px] text-white/60 leading-relaxed font-body">
-                All donations are institutionally audited and verified before allocation deployment.
+                All sponsorship disbursements follow documented financial controls and verified school agreements.
             </p>
         </div>
     );

@@ -3,9 +3,9 @@ import { CheckCircle2 } from "lucide-react";
 export function CheckoutTimelineCard() {
     const steps = [
         { label: "Today", desc: "Select sponsorship tier" },
-        { label: "Payment confirmed", desc: "Instant encrypted receipt" },
-        { label: "Child matched", desc: "Verified child allocation" },
-        { label: "School funded", desc: "Tuition & books deployed" },
+        { label: "Secure payment confirmed", desc: "Instant encrypted receipt" },
+        { label: "Sponsorship confirmed", desc: "Verified child allocation" },
+        { label: "Education support allocated", desc: "Tuition & books deployed" },
         { label: "Receipts shared", desc: "Itemized proof in dashboard" },
         { label: "Progress report", desc: "Academic update in 6 months" },
     ];

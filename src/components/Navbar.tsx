@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Globe, Menu, X, LogIn } from "lucide-react";
+import { Globe, Menu, X, LogIn, User } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
@@ -22,6 +22,7 @@ export function Navbar({ session }: { session?: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const [currentLang, setCurrentLang] = useState(languages[0]);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -189,10 +190,20 @@ export function Navbar({ session }: { session?: any }) {
                 <button
                   onClick={() => setProfileOpen(!profileOpen)}
                   className="flex items-center gap-2 focus:outline-none"
+                  aria-label="User Profile Menu"
                 >
-                  <div className="w-8 h-8 rounded-full bg-trustBlue flex items-center justify-center text-xs font-bold text-white uppercase shadow ring-2 ring-white/20">
-                    {session.user?.name ? session.user.name.charAt(0) : "U"}
-                  </div>
+                  {session.user?.image && !imgError ? (
+                    <img
+                      src={session.user.image}
+                      alt={session.user.name || "User Avatar"}
+                      onError={() => setImgError(true)}
+                      className="w-9 h-9 rounded-full object-cover ring-2 ring-[#fdc700] shadow-sm"
+                    />
+                  ) : (
+                    <div className="w-9 h-9 rounded-full bg-slate-900 border-2 border-[#fdc700] flex items-center justify-center text-sm font-extrabold text-[#fdc700] shadow-md uppercase">
+                      {session.user?.name ? session.user.name.charAt(0) : <User className="w-4.5 h-4.5 text-[#fdc700]" />}
+                    </div>
+                  )}
                 </button>
                 {profileOpen && (
                   <div className="absolute top-10 right-0 w-44 bg-white rounded-xl shadow-xl overflow-hidden py-2 border border-slate-100 z-50">

@@ -6,7 +6,7 @@ export function AllocationPreviewCard() {
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-100">
                 <h3 className="font-heading font-bold text-base text-cinematic-dark">How Your Contribution Travels</h3>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-trust-blue bg-blue-50 px-2.5 py-1 rounded-full">
-                    Direct Allocation
+                    Published Funding Policy
                 </span>
             </div>
 

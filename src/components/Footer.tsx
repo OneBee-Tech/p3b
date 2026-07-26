@@ -128,12 +128,15 @@ export function Footer({ settings = DEFAULT_GLOBAL_SETTINGS }: FooterProps) {
             <h4 className="font-heading font-extrabold text-white mb-4 text-sm uppercase tracking-wider border-b border-slate-800 pb-2">
               Policies & Support
             </h4>
-            <ul className="space-y-3 text-sm">
+            <ul className="space-y-2.5 text-xs sm:text-sm">
               <li><Link href="/faq" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">FAQs</Link></li>
               <li><Link href="/contact" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">Contact Us</Link></li>
-              <li><Link href="/transparency" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">Privacy Policy</Link></li>
-              <li><Link href="/transparency" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">Safeguarding Policy</Link></li>
-              <li><Link href="/transparency" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">Donation Policy</Link></li>
+              <li><Link href="/privacy" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">Privacy Policy</Link></li>
+              <li><Link href="/safeguarding" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">Safeguarding Policy</Link></li>
+              <li><Link href="/refunds" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">Donation & Refund Policy</Link></li>
+              <li><Link href="/complaints" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">Complaints Procedure</Link></li>
+              <li><Link href="/terms" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">Terms of Use</Link></li>
+              <li><Link href="/accessibility" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">Accessibility Statement</Link></li>
             </ul>
           </div>
         </div>

@@ -7,15 +7,15 @@ export function PostDonationVisibilityNote() {
             <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-3 border border-gray-100">
                 <LayoutDashboard className="w-6 h-6 text-gray-400" />
             </div>
-            <h4 className="font-bold text-cinematic-dark mb-2">Track Your Impact</h4>
+            <h4 className="font-bold text-cinematic-dark mb-2">See Your Donor Dashboard</h4>
             <p className="text-sm text-gray-600 mb-4">
-                After donating, you&apos;ll be able to track fund allocation, impacted communities, and certificates directly inside your donor dashboard.
+                After completing your sponsorship, you will receive full access to your donor dashboard to track school fee payments, academic progress reports, and verified enrollment milestones.
             </p>
             <Link
                 href="/dashboard"
                 className="inline-flex items-center gap-2 text-sm font-bold text-trust-blue hover:text-blue-800 transition-colors"
             >
-                Preview Dashboard Experience <ArrowRight className="w-4 h-4" />
+                Learn About Your Donor Dashboard <ArrowRight className="w-4 h-4" />
             </Link>
         </div>
     );

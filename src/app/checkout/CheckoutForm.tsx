@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { loadStripe } from "@stripe/stripe-js";
 import { Check, Lock, ShieldCheck } from "lucide-react";
 
@@ -131,67 +132,69 @@ export function CheckoutForm({ programId, childId }: { programId: string, childI
                 </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-                {/* Monthly Card */}
-                <button
-                    onClick={() => { setAmount(30); setFrequency('monthly'); setTier('monthly'); setIsCompleteSelected(false); }}
-                    className={`p-4 border-2 rounded-xl text-center transition-all relative ${
-                        !isCompleteSelected && tier === 'monthly'
-                            ? 'border-impact-gold bg-amber-50/30 ring-2 ring-impact-gold/30 shadow-md transform -translate-y-0.5'
-                            : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                >
-                    {!isCompleteSelected && tier === 'monthly' && (
-                        <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-impact-gold text-cinematic-dark flex items-center justify-center animate-scale-in">
-                            <Check className="w-3 h-3 stroke-[3]" />
-                        </div>
-                    )}
-                    <span className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Monthly</span>
-                    <span className="block text-2xl font-extrabold text-cinematic-dark">$30</span>
-                    <span className="text-xs font-bold text-trust-blue">per month</span>
-                </button>
+            {frequency !== 'one-time' && (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                    {/* Monthly Card */}
+                    <button
+                        onClick={() => { setAmount(30); setFrequency('monthly'); setTier('monthly'); setIsCompleteSelected(false); }}
+                        className={`p-4 border-2 rounded-xl text-center transition-all relative ${
+                            !isCompleteSelected && tier === 'monthly'
+                                ? 'border-impact-gold bg-amber-50/30 ring-2 ring-impact-gold/30 shadow-md transform -translate-y-0.5'
+                                : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                    >
+                        {!isCompleteSelected && tier === 'monthly' && (
+                            <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-impact-gold text-cinematic-dark flex items-center justify-center animate-scale-in">
+                                <Check className="w-3 h-3 stroke-[3]" />
+                            </div>
+                        )}
+                        <span className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Monthly</span>
+                        <span className="block text-2xl font-extrabold text-cinematic-dark">$30</span>
+                        <span className="text-xs font-bold text-trust-blue">per month</span>
+                    </button>
 
-                {/* Annual Card */}
-                <button
-                    onClick={() => { setAmount(365); setFrequency('yearly'); setTier('yearly'); setIsCompleteSelected(false); }}
-                    className={`p-4 border-2 rounded-xl text-center transition-all relative ${
-                        !isCompleteSelected && tier === 'yearly'
-                            ? 'border-impact-gold bg-slate-900 text-white shadow-xl ring-2 ring-impact-gold/50 transform -translate-y-0.5'
-                            : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                >
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-impact-gold text-[10px] font-extrabold px-2 py-0.5 rounded text-cinematic-dark whitespace-nowrap shadow-xs">
-                        MOST SELECTED
-                    </div>
-                    {!isCompleteSelected && tier === 'yearly' && (
-                        <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-impact-gold text-cinematic-dark flex items-center justify-center animate-scale-in">
-                            <Check className="w-3 h-3 stroke-[3]" />
+                    {/* Annual Card */}
+                    <button
+                        onClick={() => { setAmount(365); setFrequency('yearly'); setTier('yearly'); setIsCompleteSelected(false); }}
+                        className={`p-4 border-2 rounded-xl text-center transition-all relative ${
+                            !isCompleteSelected && tier === 'yearly'
+                                ? 'border-impact-gold bg-slate-900 text-white shadow-xl ring-2 ring-impact-gold/50 transform -translate-y-0.5'
+                                : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                    >
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-impact-gold text-[10px] font-extrabold px-2 py-0.5 rounded text-cinematic-dark whitespace-nowrap shadow-xs">
+                            MOST SELECTED
                         </div>
-                    )}
-                    <span className="block text-xs font-bold text-impact-gold uppercase tracking-wider mb-1">Annual</span>
-                    <span className={`block text-2xl font-extrabold ${!isCompleteSelected && tier === 'yearly' ? 'text-white' : 'text-cinematic-dark'}`}>$365</span>
-                    <span className={`text-xs font-bold ${!isCompleteSelected && tier === 'yearly' ? 'text-gray-300' : 'text-gray-500'}`}>per year</span>
-                </button>
+                        {!isCompleteSelected && tier === 'yearly' && (
+                            <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-impact-gold text-cinematic-dark flex items-center justify-center animate-scale-in">
+                                <Check className="w-3 h-3 stroke-[3]" />
+                            </div>
+                        )}
+                        <span className="block text-xs font-bold text-impact-gold uppercase tracking-wider mb-1">Annual</span>
+                        <span className={`block text-2xl font-extrabold ${!isCompleteSelected && tier === 'yearly' ? 'text-white' : 'text-cinematic-dark'}`}>$365</span>
+                        <span className={`text-xs font-bold ${!isCompleteSelected && tier === 'yearly' ? 'text-gray-300' : 'text-gray-500'}`}>per year</span>
+                    </button>
 
-                {/* Complete Card */}
-                <button
-                    onClick={() => { setIsCompleteSelected(true); }}
-                    className={`p-4 border-2 rounded-xl text-center transition-all relative ${
-                        isCompleteSelected
-                            ? 'border-emerald-500 bg-emerald-50/40 ring-2 ring-emerald-500/30 shadow-md transform -translate-y-0.5'
-                            : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                >
-                    {isCompleteSelected && (
-                        <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center animate-scale-in">
-                            <Check className="w-3 h-3 stroke-[3]" />
-                        </div>
-                    )}
-                    <span className="block text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">Complete</span>
-                    <span className="block text-xl font-extrabold text-emerald-700">Calculated</span>
-                    <span className="text-xs font-bold text-emerald-600">one-time</span>
-                </button>
-            </div>
+                    {/* Complete Card */}
+                    <button
+                        onClick={() => { setIsCompleteSelected(true); }}
+                        className={`p-4 border-2 rounded-xl text-center transition-all relative ${
+                            isCompleteSelected
+                                ? 'border-emerald-600 bg-emerald-50 text-emerald-950 shadow-md ring-2 ring-emerald-500/30 transform -translate-y-0.5'
+                                : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                    >
+                        {isCompleteSelected && (
+                            <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center animate-scale-in">
+                                <Check className="w-3 h-3 stroke-[3]" />
+                            </div>
+                        )}
+                        <span className="block text-xs font-bold text-emerald-800 uppercase tracking-wider mb-1">Complete</span>
+                        <span className="block text-lg font-extrabold text-emerald-700 leading-tight">Custom Plan</span>
+                        <span className="text-xs font-bold text-emerald-600">Request Assessment</span>
+                    </button>
+                </div>
+            )}
 
             {isCompleteSelected ? (
                 <div className="bg-emerald-50/60 border border-emerald-200 p-6 rounded-2xl mb-6">
@@ -277,22 +280,37 @@ export function CheckoutForm({ programId, childId }: { programId: string, childI
                         {isProcessing ? 'Processing Securely...' : 'Continue to Secure Payment →'}
                     </Button>
 
-                    {/* Payment Confidence Indicators */}
-                    <div className="mt-4 pt-3 flex flex-wrap items-center justify-center gap-4 text-[11px] font-semibold text-gray-400">
-                        <span className="flex items-center gap-1">
-                            <Lock className="w-3 h-3 text-emerald-600" /> Secure encrypted checkout
-                        </span>
-                        <span className="text-gray-300">•</span>
-                        <span>Powered by Stripe</span>
-                        <span className="text-gray-300">•</span>
-                        <span className="flex items-center gap-1">
-                            <ShieldCheck className="w-3 h-3 text-trust-blue" /> PCI Compliant
-                        </span>
-                    </div>
+                    {/* Payment Confidence & Concise Policy Links */}
+                    <div className="mt-5 pt-4 border-t border-gray-100 flex flex-col items-center gap-2 text-[11px] font-medium text-gray-500">
+                        <div className="flex flex-wrap items-center justify-center gap-3">
+                            <span className="flex items-center gap-1 font-semibold text-gray-700">
+                                <Lock className="w-3.5 h-3.5 text-emerald-600" /> 256-bit Encrypted Checkout
+                            </span>
+                            <span className="text-gray-300">•</span>
+                            <span>Powered by Stripe</span>
+                            <span className="text-gray-300">•</span>
+                            <span className="flex items-center gap-1 font-semibold text-gray-700">
+                                <ShieldCheck className="w-3.5 h-3.5 text-trust-blue" /> PCI-DSS Compliant
+                            </span>
+                        </div>
 
-                    <p className="text-[11px] text-center text-gray-400 mt-3">
-                        Donation invoices are issued within 24 hours of successful payment.
-                    </p>
+                        <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-600 text-center">
+                            <span className="text-emerald-600 font-bold">✓</span>
+                            <span>Cancel your recurring sponsorship anytime from your Donor Dashboard before your next renewal. See our <Link href="/refunds" target="_blank" className="text-trust-blue underline hover:text-blue-800 transition-colors font-semibold">Donation &amp; Refund Policy</Link>.</span>
+                        </div>
+
+                        <div className="flex flex-wrap items-center justify-center gap-2 text-[11px] text-gray-400 font-body">
+                            <Link href="/privacy" target="_blank" className="hover:text-trust-blue underline transition-colors">Privacy Policy</Link>
+                            <span>•</span>
+                            <Link href="/safeguarding" target="_blank" className="hover:text-trust-blue underline transition-colors">Safeguarding Policy</Link>
+                            <span>•</span>
+                            <Link href="/refunds" target="_blank" className="hover:text-trust-blue underline transition-colors">Donation &amp; Refund Terms</Link>
+                        </div>
+
+                        <p className="text-[11px] text-center text-gray-400 mt-1 max-w-sm">
+                            Official charitable tax receipts available following formal confirmation of CRA charitable registration. Itemized invoices are issued instantly.
+                        </p>
+                    </div>
                 </>
             )}
         </div>

@@ -41,7 +41,7 @@ export const DEFAULT_GLOBAL_SETTINGS: GlobalSettingsData = {
   craStatus: "Official charitable tax receipts are available after CRA charitable registration and receipting eligibility have been formally confirmed.",
   missionStatement: "To provide children from financially vulnerable families with access to dependable education by connecting them with caring sponsors, verified schools and transparent education-support systems.",
   visionStatement: "A world where no deserving child is prevented from learning because their family cannot afford basic education costs.",
-  transparencyWording: "Every contribution supports our educational mission. We keep program and operating costs responsible, document their use and report them transparently.",
+  transparencyWording: "Every sponsorship is allocated according to our published funding policy. We document how sponsor contributions support tuition, books, uniforms, and essential educational needs through donor reporting.",
 };
 
 /**

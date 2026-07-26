@@ -8,6 +8,7 @@ import { AllocationPreviewCard } from "@/components/checkout/AllocationPreviewCa
 import { AdminVerificationNotice } from "@/components/checkout/AdminVerificationNotice";
 import { PostDonationVisibilityNote } from "@/components/checkout/PostDonationVisibilityNote";
 import { CheckoutTimelineCard } from "@/components/checkout/CheckoutTimelineCard";
+import { ChildReassignmentAccordion } from "@/components/checkout/ChildReassignmentAccordion";
 import { getGlobalSettings } from "@/lib/services/globalSettingsService";
 import { Metadata } from "next";
 
@@ -84,7 +85,7 @@ export default async function CheckoutPage({
                         {childDisplayName ? `Supporting ${childDisplayName}'s Educational Journey` : `Supporting ${program.name}`}
                     </h1>
                     <p className="mt-2 text-base text-gray-600 font-body">
-                        Direct 100% allocation toward tuition, learning tools, and verified academic progress.
+                        Your sponsorship supports tuition, learning materials, and verified educational progress.
                     </p>
                 </div>
 
@@ -126,6 +127,7 @@ export default async function CheckoutPage({
                             <CheckoutTimelineCard />
                             <AllocationPreviewCard />
                             <AdminVerificationNotice />
+                            <ChildReassignmentAccordion childName={childDisplayName} />
                             <PostDonationVisibilityNote />
                         </div>
                     </div>

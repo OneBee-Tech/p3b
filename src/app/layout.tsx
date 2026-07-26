@@ -75,8 +75,14 @@ export default async function RootLayout({
           "antialiased font-body bg-warm-bg text-cinematic-dark min-h-screen flex flex-col"
         )}
       >
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-[#0B0F19] focus:text-white focus:font-bold focus:shadow-xl focus:outline-none"
+        >
+          Skip to main content
+        </a>
         <Navbar session={session} />
-        <main className="flex-grow">
+        <main id="main-content" className="flex-grow" tabIndex={-1}>
           {children}
         </main>
         <TrustBadgeStrip />

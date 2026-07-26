@@ -1010,19 +1010,19 @@ async function main() {
         },
         {
             sectionKey: 'impactStories',
-            title: 'Stories Yet To Be Written',
+            title: 'Sample Progress Reporting Layout',
             content: '',
             metadata: {
                 version: 'v3-trust-experience',
                 order: 5,
                 component: 'storyGrid',
                 variant: 'stories',
-                heading: 'Stories Yet To Be Written',
-                description: 'These children will become the first documented educational journeys on our platform.',
+                heading: 'Sample Progress Reporting Layout',
+                description: 'Below is an example of the bi-annual progress dashboard report format that active sponsors receive for their matched child once school terms commence.',
                 stories: [
-                    { id: 's1', slug: 'amara-k', firstName: 'Amara (Format Preview)', dream: 'Primary Teacher Aspirant', summary: 'Sample Report: Tracking attendance recovery, reading comprehension scores, and term-by-term grade progression.', photoUrl: 'https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=800&auto=format&fit=crop', badgeText: 'First Cohort: Active' },
-                    { id: 's2', slug: 'farhan-m', firstName: 'Farhan (Format Preview)', dream: 'STEM & Computer Literacy', summary: 'Sample Report: Monitoring STEM workshop participation, math examination performance, and extracurricular achievements.', photoUrl: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop', badgeText: 'First Cohort: Matched' },
-                    { id: 's3', slug: 'tariq-a', firstName: 'Tariq (Format Preview)', dream: 'Secondary School Scholar', summary: 'Sample Report: High school entrance evaluation, national exam preparation, and post-secondary vocational planning.', photoUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop', badgeText: 'First Cohort: Alumni' }
+                    { id: 's1', slug: 'amara-k', firstName: 'Amara (Sample Reporting Layout)', dream: 'Primary Teacher Aspirant', summary: 'Illuminative Report Preview: Tracking attendance recovery, reading comprehension scores, and term-by-term grade progression.', photoUrl: 'https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=800&auto=format&fit=crop', badgeText: 'Sample Format: Active' },
+                    { id: 's2', slug: 'farhan-m', firstName: 'Farhan (Sample Reporting Layout)', dream: 'STEM & Computer Literacy', summary: 'Illuminative Report Preview: Monitoring STEM workshop participation, math examination performance, and extracurricular achievements.', photoUrl: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop', badgeText: 'Sample Format: Matched' },
+                    { id: 's3', slug: 'tariq-a', firstName: 'Tariq (Sample Reporting Layout)', dream: 'Secondary School Scholar', summary: 'Illuminative Report Preview: High school entrance evaluation, national exam preparation, and post-secondary vocational planning.', photoUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop', badgeText: 'Sample Format: Alumni' }
                 ]
             }
         },

@@ -88,9 +88,11 @@ export default async function TransparencyPage() {
 
                             {documents.length === 0 && (
                                 <div className="col-span-full p-8 text-center bg-gray-50 rounded-2xl border border-gray-100">
-                                    <FileText className="w-8 h-8 text-gray-300 mx-auto mb-3" />
-                                    <p className="text-gray-500 font-medium">Live governance synchronization pending.</p>
-                                    <p className="text-sm text-gray-400">Institutional documents are currently under review by our compliance node.</p>
+                                    <FileText className="w-8 h-8 text-gray-400 mx-auto mb-3" />
+                                    <p className="text-gray-700 font-bold mb-1">Documentation Currently Being Finalized</p>
+                                    <p className="text-sm text-gray-500 max-w-md mx-auto leading-relaxed">
+                                        Our inaugural annual financial statements and formal governance filings are currently being compiled following incorporation. Complete verified financial reports and institutional documents will be published here prior to active public fundraising cycles.
+                                    </p>
                                 </div>
                             )}
                         </div>
