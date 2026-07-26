@@ -1073,11 +1073,43 @@ async function main() {
     }
     console.log('📄 Our Impact Page Sections seeded')
 
-    // 0.6 Seed FAQs
+      // 0.6 Seed FAQs (Categorized & Comprehensive)
     const faqsData = [
-        { id: 'faq-1', question: 'How is my $1 a day allocated?', answer: '100% of your $1 goes directly to the educational and wellbeing programs of the child you sponsor.', order: 1 },
-        { id: 'faq-2', question: 'Can I write to my sponsored child?', answer: 'Yes! Our platform provides a secure messaging channel once your sponsorship is confirmed.', order: 2 },
-        { id: 'faq-3', question: 'Are my donations tax-deductible?', answer: 'Yes, we are a registered 501(c)(3) non-profit organization. All donations are tax-deductible.', order: 3 },
+        // 1. Getting Started
+        { id: 'faq-1', category: 'Getting Started', question: 'Why One Dollar. One Child. One Future.?', answer: 'Our name reflects our core belief: sustainable social impact begins when basic education costs are broken down into an accessible, daily commitment. $1 a day from caring sponsors combines to fund complete, uninterrupted education for children in need.', order: 1 },
+        { id: 'faq-2', category: 'Getting Started', question: 'Is $1 charged every day?', answer: 'No. For convenience and to reduce processing fees, contributions are billed either monthly ($30/month) or annually ($365/year), which averages to approximately $1 per day.', order: 2 },
+        { id: 'faq-3', category: 'Getting Started', question: 'Why is the monthly option $30 while the annual option is $365?', answer: 'Monthly sponsorship ($30/month) simplifies recurring bank payments into 12 equal monthly installments ($360 total). The annual sponsorship option ($365/year) covers $1 for every single day of a 365-day calendar year in one single gift.', order: 3 },
+
+        // 2. Sponsorship
+        { id: 'faq-4', category: 'Sponsorship', question: 'Does $1 a day cover a child’s education?', answer: 'Yes! 100% of your sponsorship is directed toward direct tuition, approved textbooks, uniforms, learning materials, and basic educational support services for the child.', order: 4 },
+        { id: 'faq-5', category: 'Sponsorship', question: 'What does sponsorship cover?', answer: 'Sponsorship covers direct school tuition fees, required textbooks, stationery supplies, official school uniforms, exam entry fees, and regular academic progress tracking.', order: 5 },
+        { id: 'faq-6', category: 'Sponsorship', question: 'Can I sponsor a child’s complete education?', answer: 'Yes! You can choose to fund a child’s remaining academic journey in full. Because remaining grade costs vary by child, selecting "Complete Education" submits an inquiry to our admin team, who will calculate exact pricing and contact you within 72 hours.', order: 6 },
+        { id: 'faq-7', category: 'Sponsorship', question: 'Can I sponsor more than one child?', answer: 'Absolutely. Donors and corporate partners can sponsor multiple children. Each child will have a distinct profile, progress updates, and allocation tracking in your donor dashboard.', order: 7 },
+
+        // 3. Reports & Transparency
+        { id: 'faq-8', category: 'Reports & Transparency', question: 'Will I receive receipts for my sponsorship?', answer: 'Yes. Itemized electronic receipts for school fee settlements and sponsorship contributions are issued automatically and stored permanently inside your donor dashboard.', order: 8 },
+        { id: 'faq-9', category: 'Reports & Transparency', question: 'Will I receive the child’s report card?', answer: 'Yes. Academic progress reports and attendance updates are shared approximately every six months (subject to local school reporting schedules, student privacy, and safeguarding consent).', order: 9 },
+        { id: 'faq-10', category: 'Reports & Transparency', question: 'What can I see inside my donor dashboard?', answer: 'Your donor dashboard displays real-time contribution history, itemized payment receipts, allocated child profiles, milestone updates, and bi-annual academic progress reports.', order: 10 },
+        { id: 'faq-11', category: 'Reports & Transparency', question: 'How do you verify children and schools?', answer: 'We conduct independent multi-step verifications. Partner schools undergo accreditation and financial checks, while child needs are verified through local community coordinators.', order: 11 },
+
+        // 4. Child Safety & Privacy
+        { id: 'faq-12', category: 'Child Safety', question: 'Can I communicate directly with the child?', answer: 'To protect student safety and dignity, direct unmonitored communication is not permitted. All messaging, updates, and letters are facilitated securely through our monitored platform.', order: 12 },
+        { id: 'faq-13', category: 'Child Safety', question: 'Why don’t you show children’s full names or unblurred location data?', answer: 'Strict child safeguarding policies require that we protect children’s privacy. We publish first names and general regional locations only to ensure complete safety.', order: 13 },
+
+        // 5. Schools & Programs
+        { id: 'faq-14', category: 'Schools & Programs', question: 'How are children selected for the program?', answer: 'Children are identified by local community educators based on financial vulnerability, school dropout risk, and lack of family support. Needs are verified prior to registry listing.', order: 14 },
+        { id: 'faq-15', category: 'Schools & Programs', question: 'Do you work only with private schools?', answer: 'No. We partner with accredited public, community, and low-cost private institutions that meet our academic quality, safety, and financial audit standards.', order: 15 },
+        { id: 'faq-16', category: 'Schools & Programs', question: 'What happens if a child changes schools or leaves the program?', answer: 'If a child relocates or exits, your sponsorship seamlessly transitions to another verified child in need, and you receive an immediate update in your dashboard.', order: 16 },
+
+        // 6. Corporate Sponsorship
+        { id: 'faq-17', category: 'Corporate Sponsorship', question: 'Can companies sponsor children or cohort programs?', answer: 'Yes! Corporations can sponsor classroom cohorts or entire schools. We provide co-branded impact reports, tax documentation, and CSR verification packages.', order: 17 },
+        { id: 'faq-18', category: 'Corporate Sponsorship', question: 'How do corporate partnership allocations work?', answer: 'Corporate sponsors receive dedicated dashboard access to track student retention rates, academic performance metrics, and verified tuition wire receipts.', order: 18 },
+
+        // 7. Legal & Tax
+        { id: 'faq-19', category: 'Legal & Tax', question: 'Is the organization registered in Canada?', answer: 'Yes. One Dollar. One Child. One Future. is registered as a non-profit organization in Canada and operates under strict institutional compliance standards.', order: 19 },
+        { id: 'faq-20', category: 'Legal & Tax', question: 'Will I receive a Canadian tax receipt?', answer: 'Official charitable tax receipts will be available after CRA charitable registration and receipting eligibility have been formally confirmed. Invoices are issued immediately.', order: 20 },
+        { id: 'faq-21', category: 'Legal & Tax', question: 'Can I cancel or modify my monthly sponsorship at any time?', answer: 'Yes. You can pause, modify, or cancel your recurring sponsorship at any time directly through your donor dashboard with no lock-in commitments.', order: 21 },
+        { id: 'faq-22', category: 'Legal & Tax', question: 'What payment methods do you accept?', answer: 'We process payments securely via Stripe, accepting all major credit cards (Visa, MasterCard, American Express), Apple Pay, and Google Pay.', order: 22 },
     ]
 
     for (const faq of faqsData) {

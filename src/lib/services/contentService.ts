@@ -5,6 +5,7 @@ export interface FaqItem {
   id: string;
   question: string;
   answer: string;
+  category?: string | null;
   order: number;
 }
 
@@ -20,10 +21,12 @@ export interface HomepageSectionData {
  */
 export const getFaqs = cache(async (): Promise<FaqItem[]> => {
   try {
-    const faqs = await prisma.faq.findMany({
-      where: { isActive: true },
-      orderBy: { order: "asc" },
-    });
+    const faqs = await prisma.$queryRaw<FaqItem[]>`
+      SELECT id, question, answer, category, "order"
+      FROM "Faq"
+      WHERE "isActive" = true
+      ORDER BY "order" ASC
+    `;
     return faqs;
   } catch (error) {
     console.error("Failed to fetch FAQs, returning empty fallback array:", error);

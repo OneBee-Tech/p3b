@@ -42,7 +42,7 @@ export function SponsorshipImpactTiers({ data }: { data?: any }) {
                             <p className="text-gray-500 text-sm leading-relaxed mb-8 italic">
                                 Represents approximately one dollar a day. Provides consistent monthly support for a child's educational journey.
                             </p>
-                            <Link href="/sponsor?type=monthly" className="block w-full text-center py-3 px-6 rounded-lg bg-white text-[#2563eb] font-bold border-2 border-[#2563eb] hover:bg-blue-50 transition-all duration-300">
+                            <Link href="/sponsor-a-child#meet-children" className="block w-full text-center py-3 px-6 rounded-lg bg-white text-[#2563eb] font-bold border-2 border-[#2563eb] hover:bg-blue-50 transition-all duration-300">
                                 Give Monthly
                             </Link>
                         </div>
@@ -65,7 +65,7 @@ export function SponsorshipImpactTiers({ data }: { data?: any }) {
                             <p className="text-gray-400 text-sm leading-relaxed mb-8 italic">
                                 Equivalent to one dollar for every day of the year. Secures a child's education for a full academic cycle in one meaningful gift.
                             </p>
-                            <Link href="/sponsor?type=annual" className="block w-full text-center py-3 px-6 rounded-lg bg-[#fdc700] text-[#111827] font-bold hover:bg-yellow-400 transition-all duration-300">
+                            <Link href="/sponsor-a-child#meet-children" className="block w-full text-center py-3 px-6 rounded-lg bg-[#fdc700] text-[#111827] font-bold hover:bg-yellow-400 transition-all duration-300">
                                 Give Annually
                             </Link>
                         </div>
@@ -85,7 +85,7 @@ export function SponsorshipImpactTiers({ data }: { data?: any }) {
                             <p className="text-gray-500 text-sm leading-relaxed mb-8 italic">
                                 Funds the remaining education of a child based on grade level and local educational costs, ensuring they reach graduation without interruption.
                             </p>
-                            <Link href="/sponsor?type=complete" className="block w-full text-center py-3 px-6 rounded-lg bg-white text-[#10b981] font-bold border-2 border-[#10b981] hover:bg-emerald-50 transition-all duration-300">
+                            <Link href="/sponsor-a-child#meet-children" className="block w-full text-center py-3 px-6 rounded-lg bg-white text-[#10b981] font-bold border-2 border-[#10b981] hover:bg-emerald-50 transition-all duration-300">
                                 Fund a Complete Education
                             </Link>
                         </div>

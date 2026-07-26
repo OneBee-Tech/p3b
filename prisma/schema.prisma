@@ -572,6 +572,7 @@ model Faq {
   id       String  @id @default(cuid())
   question String
   answer   String
+  category String?
   order    Int     @default(0)
   isActive Boolean @default(true)
 }

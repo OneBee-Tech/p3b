@@ -67,6 +67,9 @@ export function Navbar({ session }: { session?: any }) {
     { href: "/impact", label: "Our Impact" },
   ];
 
+  const isLightBgPage = pathname?.startsWith("/checkout");
+  const useDarkNavbar = isScrolled || isLightBgPage;
+
   if (pathname?.startsWith("/admin") || pathname === "/home2" || pathname === "/signin") return null;
 
   return (
@@ -74,7 +77,7 @@ export function Navbar({ session }: { session?: any }) {
       className={cn(
         "fixed w-full z-50 transition-all duration-300 transform",
         isVisible ? "translate-y-0" : "-translate-y-full",
-        isScrolled
+        useDarkNavbar
           ? "bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm py-2"
           : "bg-cinematicDark/90 backdrop-blur-md border-b border-white/10 py-3"
       )}
@@ -93,7 +96,7 @@ export function Navbar({ session }: { session?: any }) {
               <span
                 className={cn(
                   "hidden md:block font-heading font-extrabold text-sm md:text-base lg:text-lg tracking-tight transition-colors whitespace-nowrap",
-                  isScrolled ? "text-cinematicDark" : "text-white"
+                  useDarkNavbar ? "text-cinematicDark" : "text-white"
                 )}
               >
                 One Dollar. One Child. One Future.
@@ -110,10 +113,10 @@ export function Navbar({ session }: { session?: any }) {
                 className={cn(
                   "transition-colors text-[11px] xl:text-xs font-bold uppercase tracking-wider whitespace-nowrap shrink-0",
                   pathname === link.href
-                    ? isScrolled
+                    ? useDarkNavbar
                       ? "text-trustBlue font-extrabold"
                       : "text-[#fdc700] font-extrabold"
-                    : isScrolled
+                    : useDarkNavbar
                     ? "text-slate-700 hover:text-trustBlue"
                     : "text-white/90 hover:text-white"
                 )}
@@ -124,7 +127,7 @@ export function Navbar({ session }: { session?: any }) {
 
             {/* Single-Active Dropdowns: Get Involved */}
             <GetInvolvedDropdown
-              isScrolled={isScrolled}
+              isScrolled={useDarkNavbar}
               isOpen={activeDropdown === "get-involved"}
               onOpen={() => setActiveDropdown("get-involved")}
               onClose={() => setActiveDropdown(null)}
@@ -135,7 +138,7 @@ export function Navbar({ session }: { session?: any }) {
 
             {/* Single-Active Dropdowns: Support */}
             <SupportDropdown
-              isScrolled={isScrolled}
+              isScrolled={useDarkNavbar}
               isOpen={activeDropdown === "support"}
               onOpen={() => setActiveDropdown("support")}
               onClose={() => setActiveDropdown(null)}
@@ -150,7 +153,7 @@ export function Navbar({ session }: { session?: any }) {
                 onClick={() => setLangOpen(!langOpen)}
                 className={cn(
                   "flex items-center gap-1 transition-colors p-1 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-trustBlue",
-                  isScrolled ? "text-slate-700 hover:text-trustBlue" : "text-white/90 hover:text-white"
+                  useDarkNavbar ? "text-slate-700 hover:text-trustBlue" : "text-white/90 hover:text-white"
                 )}
                 aria-label="Select Language"
               >
@@ -253,7 +256,7 @@ export function Navbar({ session }: { session?: any }) {
               variant="ghost"
               size="icon"
               onClick={() => setIsOpen(!isOpen)}
-              className={isScrolled ? "text-slate-800" : "text-white"}
+              className={useDarkNavbar ? "text-slate-800" : "text-white"}
               aria-label="Toggle Navigation Menu"
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
