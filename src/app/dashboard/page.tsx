@@ -111,40 +111,44 @@ export default async function DashboardPage() {
     // System 3: Program Contribution Mapping
     const contributionMap = new Map();
 
-    // Map one-off donations
-    donor.donations.forEach(d => {
-        if (!d.programId) return; // Note: In community model, we expect all to have programId
-        const existing = contributionMap.get(d.programId) || { total: 0, isMonthly: false };
-        contributionMap.set(d.programId, {
+    // Map one-off standalone donations (where donation type is ONE_TIME)
+    donor.donations.filter(d => d.type === 'ONE_TIME').forEach(d => {
+        const key = "one_time_community_fund";
+        const existing = contributionMap.get(key) || { total: 0, isMonthly: false, isOneTime: true };
+        contributionMap.set(key, {
             ...existing,
-            total: existing.total + Number(d.baseAmountUSD || d.amount)
+            total: existing.total + Number(d.baseAmountUSD || d.amount),
+            programData: d.program
         });
     });
 
-    // Map active monthly subscriptions & grab program data payload
+    // Map active monthly subscriptions & grab program/child data payload
     donor.sponsorships.forEach(s => {
-        const existing = contributionMap.get(s.programId) || { total: 0, isMonthly: false };
-        contributionMap.set(s.programId, {
+        const key = s.childId ? `child_${s.childId}` : s.programId;
+        const existing = contributionMap.get(key) || { total: 0, isMonthly: false };
+        contributionMap.set(key, {
             ...existing,
             total: existing.total + Number(s.monthlyAmount),
-            isMonthly: true, // Tag as monthly if they have an active subscription
-            programData: s.program
+            isMonthly: true,
+            programData: s.program,
+            childData: s.child
         });
     });
 
     // Finalize the array for the client component
-    const userContributions = Array.from(contributionMap.entries()).map(([programId, data]) => {
-        // If we only had donations and no sponsorship, we need to fetch the program metadata somehow.
-        // For efficiency, we will assume (based on our seed) that the donor dashboard query included program data on donations, or we just rely on sponsorship.
-        // *Correction*: We need DB queries for programs if they only donated once. We should fetch any missing programs.
+    const userContributions = Array.from(contributionMap.entries()).map(([key, data]) => {
+        const childName = data.childData?.displayName || data.childData?.name;
+        const programName = data.isOneTime ? "Community Education Fund (One-Time)" : (data.programData?.name || "Community Education Fund");
+
         return {
-            programId,
-            programName: data.programData?.name || `Program #${programId.substring(0, 6)}`,
+            programId: key,
+            programName: childName ? `${childName}'s Education Sponsorship` : programName,
             programStatus: data.programData?.status || 'ACTIVE',
             fundingCurrent: Number(data.programData?.fundingCurrent || 0),
             fundingGoal: data.programData?.fundingGoal ? Number(data.programData.fundingGoal) : null,
             userContribution: data.total,
-            isMonthly: data.isMonthly
+            isMonthly: data.isMonthly,
+            childData: data.childData
         };
     }).sort((a, b) => b.userContribution - a.userContribution);
 
@@ -296,7 +300,7 @@ export default async function DashboardPage() {
                                         {donor.donations.filter(d => d.status === 'SUCCEEDED').slice(0, 5).map(d => (
                                             <tr key={d.id} className="group">
                                                 <td className="py-3 text-cinematic-dark">{new Date(d.createdAt).toLocaleDateString()}</td>
-                                                <td className="py-3 font-bold text-trust-blue">${(Number(d.amount) / 100).toFixed(2)}</td>
+                                                <td className="py-3 font-bold text-trust-blue">${Number(d.amount).toFixed(2)}</td>
                                                 <td className="py-3 text-gray-500 truncate max-w-[120px]">{d.program?.name || 'General Ledger'}</td>
                                                 <td className="py-3 text-right">
                                                     <a href={`/api/invoices/${d.id}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-bold text-gray-400 hover:text-trust-blue transition-colors">

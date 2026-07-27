@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import prisma from '@/lib/prisma';
+import { auth } from '@/auth';
 
 export async function POST(req: Request) {
     try {
+        const sessionUser = await auth();
         const body = await req.json();
         const { programId, childId, amount, frequency } = body;
 
@@ -63,6 +65,7 @@ export async function POST(req: Request) {
             metadata: {
                 programId,
                 childId: childId || '',
+                userId: sessionUser?.user?.id || '',
                 allocationModel: 'COMMUNITY_POOL',
                 amount: amount.toString()
             },

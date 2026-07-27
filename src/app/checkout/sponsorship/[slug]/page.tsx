@@ -11,23 +11,24 @@ type Props = {
 export default async function ChildSponsorshipCheckoutPage({ params }: Props) {
     const { slug } = await params;
 
-    const dbChildren = await prisma.registryChild.findMany({
-        where: {
-            deletedAt: null,
-            isArchived: false,
-        }
+    const registryChild = await prisma.registryChild.findFirst({
+        where: { OR: [{ slug }, { id: slug }], deletedAt: null, isArchived: false }
     });
 
-    const child: any = dbChildren.find((c: any) => c.slug === slug || c.id === slug);
+    const childModel = await prisma.child.findFirst({
+        where: { OR: [{ id: slug }, { name: { contains: slug, mode: 'insensitive' } }] }
+    });
 
-    if (!child) return notFound();
+    const childId = childModel?.id || registryChild?.id;
+
+    if (!childId) return notFound();
 
     const defaultProgram = await prisma.program.findFirst();
 
     return CheckoutPage({
         searchParams: Promise.resolve({
             type: "sponsorship",
-            childId: child.id,
+            childId: childId,
             programId: defaultProgram?.id
         })
     });

@@ -3,6 +3,7 @@ import { stripe } from '@/lib/stripe';
 import prisma from '@/lib/prisma';
 import Stripe from 'stripe';
 import { triggerPaymentFailedAlert, triggerSponsorshipEndedAlert } from '@/lib/lifecycleAlerts';
+import { sendDonationReceiptEmail } from '@/lib/donorImpactMailer';
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -116,28 +117,49 @@ export async function POST(req: Request) {
 }
 
 async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
-    const stripePaymentId = session.payment_intent as string || session.id;
+    try {
+        const stripePaymentId = (typeof session.payment_intent === 'string' && session.payment_intent) 
+            ? session.payment_intent 
+            : session.id;
 
-    // Idempotency: skip if exists
-    const existing = await prisma.donation.findUnique({
-        where: { stripePaymentId }
-    });
-    if (existing) return;
+        if (!stripePaymentId) return;
 
-    const metadata = session.metadata || {};
-    const programId = metadata.programId;
-    const childId = metadata.childId;
-    const amountStr = metadata.amount;
+        // Idempotency: skip if exists
+        const existing = await prisma.donation.findUnique({
+            where: { stripePaymentId }
+        });
+        if (existing) return;
 
-    if (!programId || !amountStr) return;
+        const metadata = session.metadata || {};
+        const programId = metadata.programId;
+        const childId = metadata.childId;
+        const amountStr = metadata.amount || (session.amount_total ? (session.amount_total / 100).toString() : null);
 
-    const amount = parseFloat(amountStr);
+        if (!programId || !amountStr) {
+            console.log(`Checkout session ${session.id} missing programId or amount metadata`);
+            return;
+        }
 
-    // Get pseudo UserId (in real app, use Auth/Session, but for now fallback to systemic user if no explicit donor)
-    let user = await prisma.user.findFirst({ where: { role: 'USER' } });
-    if (!user) {
-        user = await prisma.user.create({ data: { email: `donor_${session.id}@placeholder.com`, role: 'USER', name: 'Anonymous Donor' } });
-    }
+        const amount = parseFloat(amountStr);
+
+        // Verify program exists before writing donation record
+        const targetProgram = await prisma.program.findUnique({ where: { id: programId } });
+        if (!targetProgram) {
+            console.warn(`Webhook warning: Program ${programId} not found in DB`);
+            return;
+        }
+
+        // Fetch logged in donor if metadata.userId exists, otherwise fallback to systemic user
+        let user = null;
+        if (metadata.userId) {
+            user = await prisma.user.findUnique({ where: { id: metadata.userId } });
+        }
+        if (!user) {
+            user = await prisma.user.findFirst({ where: { role: 'USER' } });
+            if (!user) {
+                user = await prisma.user.create({ data: { email: `donor_${session.id}@placeholder.com`, role: 'USER', name: 'Anonymous Donor' } });
+            }
+        }
 
     // Generate allocation breakdown mapping
     const allocationBreakdown = {
@@ -213,21 +235,43 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
                 }
             });
 
-            // 3. Create generic Sponsorship link if subscription
-            if (session.mode === 'subscription') {
-                await tx.sponsorship.create({
-                    data: {
-                        monthlyAmount: amount,
-                        stripeSubscriptionId: session.subscription as string,
-                        tier: amount >= 30 ? 'FULL' : 'PARTIAL',
-                        userId: user!.id,
-                        programId: programId,
-                        childId: childId || null,
+    // 3. Create generic Sponsorship link if subscription
+            if (session.mode === 'subscription' && session.subscription) {
+                const subId = typeof session.subscription === 'string' 
+                    ? session.subscription 
+                    : (session.subscription as any)?.id;
+
+                if (subId) {
+                    // Verify childId exists in Child database table before passing to relation if provided
+                    let validChildId: string | null = null;
+                    if (childId) {
+                        const childExists = await tx.child.findUnique({ where: { id: childId } });
+                        if (childExists) validChildId = childId;
                     }
-                });
+
+                    await tx.sponsorship.create({
+                        data: {
+                            monthlyAmount: amount,
+                            stripeSubscriptionId: subId,
+                            tier: amount >= 30 ? 'FULL' : 'PARTIAL',
+                            userId: user!.id,
+                            programId: programId,
+                            childId: validChildId,
+                        }
+                    });
+                }
             }
         }
     });
+
+        // Trigger instant receipt & invoice email to donor
+        const donorEmail = user.email || session.customer_details?.email;
+        if (donorEmail && !donorEmail.includes("placeholder")) {
+            await sendDonationReceiptEmail(donorEmail, user.name || 'Generous Donor', amount, stripePaymentId);
+        }
+    } catch (err: any) {
+        console.error("Error in handleSuccessfulPayment:", err);
+    }
 }
 
 async function handleSuccessfulSubscriptionPayment(invoice: Stripe.Invoice) {
@@ -339,6 +383,12 @@ async function handleSuccessfulSubscriptionPayment(invoice: Stripe.Invoice) {
             });
         }
     });
+
+    // Fetch user details for email notification
+    const donorUser = await prisma.user.findUnique({ where: { id: sponsorship.userId } });
+    if (donorUser?.email && !donorUser.email.includes("placeholder")) {
+        await sendDonationReceiptEmail(donorUser.email, donorUser.name || 'Generous Donor', amount, stripePaymentId);
+    }
 }
 
 async function handleFailedSubscriptionPayment(invoice: Stripe.Invoice) {

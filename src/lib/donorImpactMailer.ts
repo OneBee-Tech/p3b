@@ -106,6 +106,31 @@ export const impactTemplates = {
             <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;" />
             <p style="font-size: 10px; color: #a0aec0; text-transform: uppercase;">Shared under verified guardian consent and safeguarding review.</p>
         </div>
+    `,
+    donationReceipt: (donorName: string, amount: number, donationId: string, invoiceUrl: string, dateStr: string) => `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #0f172a; padding: 20px; border: 1px solid #e2e8f0; rounded-radius: 12px;">
+            <div style="border-bottom: 2px solid #0f172a; padding-bottom: 15px; margin-bottom: 20px;">
+                <h2 style="color: #0f172a; margin: 0;">One Dollar. One Child. One Future.</h2>
+                <p style="color: #64748b; font-size: 12px; margin: 4px 0 0 0;">Official Donation Receipt & Impact Invoice</p>
+            </div>
+            
+            <p>Dear <strong>${donorName}</strong>,</p>
+            <p>Thank you for your generous contribution of <strong>$${amount.toFixed(2)} USD</strong>. Your payment has been successfully processed and verified on our ledger.</p>
+            
+            <div style="background-color: #f8fafc; padding: 16px; border-radius: 8px; margin: 20px 0;">
+                <p style="margin: 0 0 8px 0; font-size: 13px;"><strong>Receipt ID:</strong> ${donationId}</p>
+                <p style="margin: 0 0 8px 0; font-size: 13px;"><strong>Date:</strong> ${dateStr}</p>
+                <p style="margin: 0 0 8px 0; font-size: 13px;"><strong>Amount Paid:</strong> $${amount.toFixed(2)} USD</p>
+                <p style="margin: 0; font-size: 13px;"><strong>Status:</strong> Verified &amp; Allocated</p>
+            </div>
+
+            <p style="margin-bottom: 25px;">You can download your itemized PDF receipt and track how your contribution is deployed on your donor dashboard:</p>
+
+            <a href="${invoiceUrl}" style="display: inline-block; padding: 12px 24px; background-color: #fdc700; color: #0f172a; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px;">Download Itemized PDF Receipt</a>
+            
+            <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;" />
+            <p style="font-size: 11px; color: #94a3b8; text-align: center;">One Dollar. One Child. One Future. • 1200 Mississauga Rd, Mississauga, ON, Canada</p>
+        </div>
     `
 };
 
@@ -142,4 +167,13 @@ export async function sendInterventionAlertEmail(donorId: string, email: string,
     const html = impactTemplates.interventionAlert(donorName, childName, aiSummary, attendance, `${process.env.NEXTAUTH_URL}/dashboard`);
     await dispatchEmail(email, "Your Sponsored Child Needs Extra Support", html);
     await markImpactEmailSent(donorId);
+}
+
+export async function sendDonationReceiptEmail(toEmail: string, donorName: string, amount: number, donationId: string) {
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || 'http://localhost:3000';
+    const invoiceUrl = `${baseUrl}/api/invoices/${donationId}`;
+    const dateStr = new Date().toLocaleDateString();
+
+    const html = impactTemplates.donationReceipt(donorName, amount, donationId, invoiceUrl, dateStr);
+    await dispatchEmail(toEmail, `Official Receipt: $${amount.toFixed(2)} USD Contribution Confirmed 📄`, html);
 }
