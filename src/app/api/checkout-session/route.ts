@@ -29,7 +29,11 @@ export async function POST(req: Request) {
                 where: { id: childId },
                 select: { displayName: true }
             });
-            childDisplayName = registryChild?.displayName ?? null;
+            const childModel = await prisma.child.findUnique({
+                where: { id: childId },
+                select: { name: true }
+            });
+            childDisplayName = registryChild?.displayName || childModel?.name || null;
         }
 
         // 2. Funding Cap Enforcement
@@ -75,10 +79,10 @@ export async function POST(req: Request) {
                         currency: 'usd',
                         product_data: {
                             name: childDisplayName
-                                ? `Help ${childDisplayName}`
+                                ? `Sponsoring ${childDisplayName}'s Education`
                                 : `Support ${program.name}`,
                             description: childDisplayName
-                                ? `Sponsoring ${childDisplayName}'s education, learning materials, and wellbeing services.`
+                                ? `Monthly educational sponsorship for ${childDisplayName} including tuition, books, and essential school supplies.`
                                 : `Contribution to the ${program.name} Community Fund.`,
                         },
                         unit_amount: unitAmount,

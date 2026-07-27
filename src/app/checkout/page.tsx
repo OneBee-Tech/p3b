@@ -64,9 +64,11 @@ export default async function CheckoutPage({
             where: { id: childId },
             select: { displayName: true }
         });
-        if (registryChild) {
-            childDisplayName = registryChild.displayName;
-        }
+        const childModel = await prisma.child.findUnique({
+            where: { id: childId },
+            select: { name: true }
+        });
+        childDisplayName = registryChild?.displayName || childModel?.name;
     }
 
     const fundingCurrent = Number(program.fundingCurrent);
