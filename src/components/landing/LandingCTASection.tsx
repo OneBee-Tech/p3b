@@ -1,4 +1,4 @@
-"use client";
+
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -16,6 +16,7 @@ export function LandingCTASection({ data }: { data?: any }) {
                     src="/images/placeholders/hero-new.jpg"
                     alt="Conclusion"
                     fill
+                    sizes="100vw"
                     className="object-cover opacity-30 mix-blend-overlay transition-transform duration-[20s] hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-cinematic-dark via-cinematic-dark/80 to-cinematic-dark/40" />

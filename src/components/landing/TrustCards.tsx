@@ -1,4 +1,3 @@
-"use client";
 
 import { ShieldCheck, FileText, CheckCircle2, ArrowRight } from "lucide-react";
 import Link from "next/link";

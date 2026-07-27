@@ -1,4 +1,4 @@
-"use client";
+
 
 import Link from "next/link";
 import Image from "next/image";
@@ -15,6 +15,7 @@ export function HeroAcquisition({ data }: { data?: any }) {
                     src={heroImage}
                     alt="Children smiling and learning"
                     fill
+                    sizes="100vw"
                     priority
                     className="object-cover opacity-60"
                 />

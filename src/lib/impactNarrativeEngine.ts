@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import { GoogleGenAI } from "@google/genai";
 
 // Initialize AI safely
@@ -74,7 +74,7 @@ DATA PROVIDED:
  * Tagged for invalidation when a report is verified or a milestone is logged.
  */
 export async function getChildImpactSummary(childId: string): Promise<string> {
-    const fetchAndGenerate = unstable_cache(
+    const fetchAndGenerate = cache(
         async (id: string) => {
             const child = await prisma.registryChild.findUnique({
                 where: { id },
@@ -94,11 +94,6 @@ export async function getChildImpactSummary(childId: string): Promise<string> {
             if (!child) return "Sponsorship details are currently being processed.";
 
             return generateNarrativeFromData(child);
-        },
-        [`impact-summary-${childId}`],
-        {
-            revalidate: 86400, // 24 hours
-            tags: [`child-${childId}-impact`]
         }
     );
 

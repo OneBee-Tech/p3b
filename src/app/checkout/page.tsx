@@ -27,47 +27,35 @@ export default async function CheckoutPage({
 }) {
     const { programId, childId, type } = await searchParams;
 
-    let targetProgramId = programId;
+    const programSelect = { id: true, name: true, slug: true, isLocked: true, status: true, fundingCurrent: true, fundingGoal: true };
+    let programPromise: any = Promise.resolve(null);
 
-    if (!targetProgramId && type === 'general') {
-        const generalFund = await prisma.program.findUnique({
-            where: { slug: 'general-fund' }
-        });
-
-        if (generalFund) {
-            targetProgramId = generalFund.id;
-        }
+    if (programId) {
+        programPromise = prisma.program.findUnique({ where: { id: programId }, select: programSelect });
+    } else if (type === 'general') {
+        programPromise = prisma.program.findUnique({ where: { slug: 'general-fund' }, select: programSelect });
+    } else if (type === 'sponsorship') {
+        programPromise = prisma.program.findFirst({ select: programSelect });
     }
 
-    if (!targetProgramId && type === 'sponsorship') {
-        const defaultProgram = await prisma.program.findFirst();
-        if (defaultProgram) {
-            targetProgramId = defaultProgram.id;
-        }
-    }
+    const registryChildPromise = childId ? prisma.registryChild.findUnique({ where: { id: childId }, select: { displayName: true } }) : Promise.resolve(null);
+    const childModelPromise = childId ? prisma.child.findUnique({ where: { id: childId }, select: { name: true } }) : Promise.resolve(null);
 
-    if (!targetProgramId) {
-        return <div className="p-8 text-center text-red-500">Missing Program ID or valid donation type</div>;
-    }
-
-    const program = await prisma.program.findUnique({
-        where: { id: targetProgramId }
-    });
+    const [program, registryChild, childModel] = await Promise.all([
+        programPromise,
+        registryChildPromise,
+        childModelPromise
+    ]);
 
     if (!program) {
+        if (!programId && !type) {
+            return <div className="p-8 text-center text-red-500">Missing Program ID or valid donation type</div>;
+        }
         notFound();
     }
 
     let childDisplayName: string | undefined;
     if (childId) {
-        const registryChild = await prisma.registryChild.findUnique({
-            where: { id: childId },
-            select: { displayName: true }
-        });
-        const childModel = await prisma.child.findUnique({
-            where: { id: childId },
-            select: { name: true }
-        });
         childDisplayName = registryChild?.displayName || childModel?.name;
     }
 

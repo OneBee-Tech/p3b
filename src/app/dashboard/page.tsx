@@ -1,19 +1,29 @@
 import { auth, signOut } from "@/auth";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { LogOut, CheckCircle2, AlertCircle, Star, Lock, ShieldCheck, Info, FileText, Trophy, BarChart3, BookOpen } from "lucide-react";
 import Link from "next/link";
-import { AllocationPieChart } from "./AllocationPieChart";
 import { FundingCategoryBreakdown } from "./FundingCategoryBreakdown";
 import { ProgramContributionList } from "./ProgramContributionList";
-import { DownloadCertificateButton } from "./DownloadCertificateButton";
-import { SnapshotIntelligenceChart } from "./SnapshotIntelligenceChart";
 import { ImpactNarrativeCard } from "@/components/dashboard/ImpactNarrativeCard";
 
+const AllocationPieChart = dynamic(() => import("./AllocationPieChart").then((mod) => mod.AllocationPieChart), {
+    loading: () => <div className="h-64 bg-gray-100 animate-pulse rounded-2xl" />,
+});
+
+const SnapshotIntelligenceChart = dynamic(() => import("./SnapshotIntelligenceChart").then((mod) => mod.SnapshotIntelligenceChart), {
+    loading: () => <div className="h-72 bg-gray-100 animate-pulse rounded-2xl" />,
+});
+
+const DownloadCertificateButton = dynamic(() => import("./DownloadCertificateButton").then((mod) => mod.DownloadCertificateButton), {
+    loading: () => <div className="h-10 w-48 bg-gray-100 animate-pulse rounded-xl" />,
+});
+
 // System 1 Performance: Caching Global Aggregations
-const getCachedGlobalSnapshots = unstable_cache(
+const getCachedGlobalSnapshots = cache(
     async () => {
         console.log("[OBSERVABILITY] Cache Miss: Fetching global ProgramSnapshot aggregations");
         return await prisma.programSnapshot.groupBy({
@@ -21,9 +31,7 @@ const getCachedGlobalSnapshots = unstable_cache(
             _sum: { fundsRaised: true, studentsImpacted: true },
             orderBy: [{ year: 'asc' }, { month: 'asc' }]
         });
-    },
-    ['global-program-snapshots'],
-    { revalidate: 3600, tags: ['snapshots'] } // Revalidate every hour
+    }
 );
 
 export default async function DashboardPage() {
@@ -128,8 +136,11 @@ export default async function DashboardPage() {
         const existing = contributionMap.get(key) || { total: 0, isMonthly: false };
         contributionMap.set(key, {
             ...existing,
+            sponsorshipId: s.id,
             total: existing.total + Number(s.monthlyAmount),
             isMonthly: true,
+            status: s.status,
+            endDate: s.endDate,
             programData: s.program,
             childData: s.child
         });
@@ -142,13 +153,24 @@ export default async function DashboardPage() {
 
         return {
             programId: key,
+            sponsorshipId: data.sponsorshipId,
             programName: childName ? `${childName}'s Education Sponsorship` : programName,
             programStatus: data.programData?.status || 'ACTIVE',
             fundingCurrent: Number(data.programData?.fundingCurrent || 0),
             fundingGoal: data.programData?.fundingGoal ? Number(data.programData.fundingGoal) : null,
             userContribution: data.total,
             isMonthly: data.isMonthly,
-            childData: data.childData
+            status: data.status || 'ACTIVE',
+            endDate: data.endDate ? new Date(data.endDate).toISOString() : null,
+            childData: data.childData ? {
+                id: data.childData.id,
+                name: data.childData.name,
+                displayName: data.childData.displayName || data.childData.name,
+                slug: data.childData.slug || data.childData.id,
+                currentGrade: data.childData.currentGrade || 'Elementary',
+                region: data.childData.region || 'Partner School',
+                avatarIllustrationUrl: data.childData.avatarIllustrationUrl || null
+            } : null
         };
     }).sort((a, b) => b.userContribution - a.userContribution);
 

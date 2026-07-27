@@ -1,4 +1,4 @@
-"use client";
+
 
 import { EditorialHero } from "./EditorialHero";
 import { EditorialSection } from "./EditorialSection";

@@ -21,39 +21,56 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function SponsorPage() {
-    // 1. Fetch CMS sections for Sponsor Page
-    const sections = await prisma.homepageSection.findMany({
-        where: {
-            sectionKey: {
-                in: [
-                    'sponsorHero',
-                    'sponsorPoeticMission',
-                    'sponsorProvides',
-                    'sponsorJourney',
-                    'sponsorTrust',
-                    'sponsorClosing'
-                ]
+    // 1 & 2. Fetch CMS sections and RegistryChild records in parallel
+    const [sections, dbChildren] = await Promise.all([
+        prisma.homepageSection.findMany({
+            where: {
+                sectionKey: {
+                    in: [
+                        'sponsorHero',
+                        'sponsorPoeticMission',
+                        'sponsorProvides',
+                        'sponsorJourney',
+                        'sponsorTrust',
+                        'sponsorClosing'
+                    ]
+                },
+                isActive: true
+            }
+        }),
+        prisma.registryChild.findMany({
+            where: {
+                deletedAt: null,
+                isArchived: false,
             },
-            isActive: true
-        }
-    });
+            select: {
+                id: true,
+                slug: true,
+                displayName: true,
+                age: true,
+                region: true,
+                educationLevel: true,
+                currentGrade: true,
+                schoolType: true,
+                dream: true,
+                shortIntro: true,
+                avatarIllustrationUrl: true,
+                status: true,
+                safeguardingReviewStatus: true,
+                impactStorySlug: true,
+                createdAt: true,
+            },
+            orderBy: [
+                { createdAt: "desc" }
+            ],
+            take: 36,
+        })
+    ]);
 
     const sectionsMap = sections.reduce((acc: any, sec) => {
         acc[sec.sectionKey] = sec;
         return acc;
     }, {});
-
-    // 2. Fetch RegistryChild records from DB
-    const dbChildren = await prisma.registryChild.findMany({
-        where: {
-            deletedAt: null,
-            isArchived: false,
-        },
-        orderBy: [
-            { createdAt: "desc" }
-        ],
-        take: 36,
-    });
 
     // Format profiles for ProfileGrid
     const profiles = dbChildren.map((child) => ({

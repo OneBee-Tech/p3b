@@ -1,4 +1,3 @@
-"use client";
 
 import { BookOpen, Briefcase, TrendingUp, Users, Heart, Globe, Star, Sparkles, HeartHandshake, MapPin, School, Calculator, CreditCard, FileText, CheckCircle } from "lucide-react";
 

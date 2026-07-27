@@ -111,6 +111,7 @@ export function Navbar({ session }: { session?: any }) {
               <Link
                 key={link.href}
                 href={link.href}
+                prefetch={false}
                 className={cn(
                   "transition-colors text-[11px] xl:text-xs font-bold uppercase tracking-wider whitespace-nowrap shrink-0",
                   pathname === link.href

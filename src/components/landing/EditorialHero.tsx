@@ -1,4 +1,4 @@
-"use client";
+
 
 import Image from "next/image";
 import Link from "next/link";
@@ -16,6 +16,7 @@ export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig
                         src={backgroundImage?.src || backgroundImage}
                         alt={backgroundImage?.alt || "Hero background"}
                         fill
+                        sizes="100vw"
                         priority
                         className="object-cover opacity-60"
                     />

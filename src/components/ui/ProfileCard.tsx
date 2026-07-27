@@ -126,6 +126,7 @@ export function ProfileCard({ profile, variant = "child" }: ProfileCardProps) {
 
                     <Link
                         href={targetHref}
+                        prefetch={false}
                         className={`group/btn w-full py-3.5 px-5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-sm ${
                             isGraduated
                                 ? 'bg-amber-500 hover:bg-amber-600 text-white shadow-amber-500/20'

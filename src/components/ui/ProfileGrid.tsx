@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { ProfileCard, ProfileCardData } from "./ProfileCard";
-import { Search, Filter, ShieldCheck, Sparkles, AlertCircle } from "lucide-react";
+import { Search, Filter, ShieldCheck, AlertCircle, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export interface ProfileGridProps {
     profiles: ProfileCardData[];
@@ -22,6 +23,12 @@ export function ProfileGrid({
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedRegion, setSelectedRegion] = useState("ALL");
     const [selectedStatus, setSelectedStatus] = useState("ALL");
+
+    // Carousel state
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(4);
+    const touchStartX = useRef<number | null>(null);
+    const touchEndX = useRef<number | null>(null);
 
     // Extract unique regions
     const regions = useMemo(() => {
@@ -55,6 +62,70 @@ export function ProfileGrid({
         });
     }, [profiles, searchQuery, selectedRegion, selectedStatus]);
 
+    // Calculate items per page dynamically based on viewport width
+    const updateItemsPerPage = useCallback(() => {
+        if (typeof window === "undefined") return;
+        const width = window.innerWidth;
+        if (width < 640) {
+            setItemsPerPage(1); // Mobile: 1 card
+        } else if (width < 1024) {
+            setItemsPerPage(2); // Tablet: 2 cards
+        } else if (width < 1280) {
+            setItemsPerPage(3); // Desktop: 3 cards
+        } else {
+            setItemsPerPage(4); // Large Desktop: 4 cards
+        }
+    }, []);
+
+    useEffect(() => {
+        updateItemsPerPage();
+        window.addEventListener("resize", updateItemsPerPage);
+        return () => window.removeEventListener("resize", updateItemsPerPage);
+    }, [updateItemsPerPage]);
+
+    // Reset carousel index when filters change
+    useEffect(() => {
+        setCurrentIndex(0);
+    }, [searchQuery, selectedRegion, selectedStatus]);
+
+    const totalPages = Math.ceil(filteredProfiles.length / itemsPerPage);
+
+    const prevSlide = () => {
+        setCurrentIndex((prev) => (prev > 0 ? prev - 1 : Math.max(0, totalPages - 1)));
+    };
+
+    const nextSlide = () => {
+        setCurrentIndex((prev) => (prev < totalPages - 1 ? prev + 1 : 0));
+    };
+
+    const goToPage = (pageIndex: number) => {
+        setCurrentIndex(pageIndex);
+    };
+
+    // Touch Swipe Handlers for mobile
+    const handleTouchStart = (e: React.TouchEvent) => {
+        touchStartX.current = e.targetTouches[0].clientX;
+    };
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        touchEndX.current = e.targetTouches[0].clientX;
+    };
+
+    const handleTouchEnd = () => {
+        if (!touchStartX.current || !touchEndX.current) return;
+        const distance = touchStartX.current - touchEndX.current;
+        const minSwipeDistance = 50;
+
+        if (distance > minSwipeDistance) {
+            nextSlide(); // Swipe left -> next
+        } else if (distance < -minSwipeDistance) {
+            prevSlide(); // Swipe right -> prev
+        }
+
+        touchStartX.current = null;
+        touchEndX.current = null;
+    };
+
     return (
         <section className="py-20 sm:py-28 bg-warm-bg overflow-hidden" id="meet-children">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -78,7 +149,7 @@ export function ProfileGrid({
                             <ShieldCheck className="w-6 h-6" />
                         </div>
                         <p className="text-xs sm:text-sm text-gray-700 font-medium leading-relaxed">
-                            <strong className="text-cinematic-dark">Child Protection & Safeguarding:</strong> For the privacy and protection of children, representative imagery and first names are used until appropriate consent and verification have been completed.
+                            <strong className="text-cinematic-dark">Child Protection &amp; Safeguarding:</strong> For the privacy and protection of children, representative imagery and first names are used until appropriate consent and verification have been completed.
                         </p>
                     </div>
                 )}
@@ -94,6 +165,7 @@ export function ProfileGrid({
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Search by name, dream, region..."
+                            aria-label="Search children by name, dream, or region"
                             className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:bg-white focus:border-trust-blue focus:ring-2 focus:ring-trust-blue/20 outline-none transition-all"
                         />
                     </div>
@@ -110,6 +182,7 @@ export function ProfileGrid({
                             <select
                                 value={selectedRegion}
                                 onChange={(e) => setSelectedRegion(e.target.value)}
+                                aria-label="Filter by region"
                                 className="px-3.5 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold text-gray-700 focus:bg-white focus:border-trust-blue outline-none cursor-pointer"
                             >
                                 <option value="ALL">All Regions ({regions.length})</option>
@@ -123,6 +196,7 @@ export function ProfileGrid({
                         <select
                             value={selectedStatus}
                             onChange={(e) => setSelectedStatus(e.target.value)}
+                            aria-label="Filter by sponsorship status"
                             className="px-3.5 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold text-gray-700 focus:bg-white focus:border-trust-blue outline-none cursor-pointer"
                         >
                             <option value="ALL">All Statuses</option>
@@ -134,12 +208,99 @@ export function ProfileGrid({
                     </div>
                 </div>
 
-                {/* Grid Result */}
+                {/* MODERN RESPONSIVE CAROUSEL */}
                 {filteredProfiles.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
-                        {filteredProfiles.map((profile) => (
-                            <ProfileCard key={profile.id} profile={profile} variant={variant === "children" ? "child" : "alumni"} />
-                        ))}
+                    <div className="relative group/carousel px-1">
+                        {/* Carousel Outer Track */}
+                        <div
+                            className="overflow-hidden py-2"
+                            onTouchStart={handleTouchStart}
+                            onTouchMove={handleTouchMove}
+                            onTouchEnd={handleTouchEnd}
+                        >
+                            <div
+                                className="flex transition-transform duration-500 ease-out"
+                                style={{
+                                    transform: `translateX(-${currentIndex * 100}%)`,
+                                }}
+                            >
+                                {Array.from({ length: totalPages }).map((_, pageIdx) => {
+                                    const start = pageIdx * itemsPerPage;
+                                    const pageItems = filteredProfiles.slice(start, start + itemsPerPage);
+
+                                    return (
+                                        <div
+                                            key={pageIdx}
+                                            className="w-full shrink-0 grid gap-6 items-stretch"
+                                            style={{
+                                                gridTemplateColumns: `repeat(${itemsPerPage}, minmax(0, 1fr))`,
+                                            }}
+                                        >
+                                            {pageItems.map((profile) => (
+                                                <div key={profile.id} className="h-full">
+                                                    <ProfileCard
+                                                        profile={profile}
+                                                        variant={variant === "children" ? "child" : "alumni"}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* Carousel Navigation Arrows */}
+                        {totalPages > 1 && (
+                            <>
+                                <button
+                                    type="button"
+                                    onClick={prevSlide}
+                                    aria-label="Previous Slide"
+                                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 sm:-translate-x-6 w-11 h-11 rounded-full bg-white border border-gray-200 text-cinematic-dark shadow-xl hover:bg-impact-gold hover:border-impact-gold transition-all duration-300 flex items-center justify-center z-20 focus:outline-none focus:ring-2 focus:ring-impact-gold"
+                                >
+                                    <ChevronLeft className="w-6 h-6" />
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={nextSlide}
+                                    aria-label="Next Slide"
+                                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 sm:translate-x-6 w-11 h-11 rounded-full bg-white border border-gray-200 text-cinematic-dark shadow-xl hover:bg-impact-gold hover:border-impact-gold transition-all duration-300 flex items-center justify-center z-20 focus:outline-none focus:ring-2 focus:ring-impact-gold"
+                                >
+                                    <ChevronRight className="w-6 h-6" />
+                                </button>
+                            </>
+                        )}
+
+                        {/* Carousel Pagination Indicators (Dots) */}
+                        {totalPages > 1 && (
+                            <div className="flex justify-center items-center gap-2 mt-8">
+                                {Array.from({ length: totalPages }).map((_, dotIdx) => (
+                                    <button
+                                        key={dotIdx}
+                                        type="button"
+                                        onClick={() => goToPage(dotIdx)}
+                                        aria-label={`Go to slide ${dotIdx + 1}`}
+                                        className={`h-2.5 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-impact-gold ${
+                                            currentIndex === dotIdx
+                                                ? "w-8 bg-impact-gold shadow-sm"
+                                                : "w-2.5 bg-gray-300 hover:bg-gray-400"
+                                        }`}
+                                    />
+                                ))}
+                            </div>
+                        )}
+
+                        {/* Centered View All Children CTA */}
+                        <div className="text-center mt-12">
+                            <Link
+                                href="/sponsor-a-child"
+                                className="inline-flex items-center gap-2 px-8 py-4 bg-cinematic-dark hover:bg-trust-blue text-white font-bold text-base rounded-xl transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5"
+                            >
+                                <span>View All Children</span>
+                                <ArrowRight className="w-5 h-5" />
+                            </Link>
+                        </div>
                     </div>
                 ) : (
                     <div className="text-center py-20 px-4 border-2 border-dashed border-gray-200 rounded-3xl bg-white max-w-2xl mx-auto">
@@ -149,6 +310,7 @@ export function ProfileGrid({
                             Try adjusting your search query or filters to discover other children in our program.
                         </p>
                         <button
+                            type="button"
                             onClick={() => { setSearchQuery(""); setSelectedRegion("ALL"); setSelectedStatus("ALL"); }}
                             className="px-6 py-2.5 bg-cinematic-dark text-white text-xs font-bold rounded-xl hover:bg-trust-blue transition-colors"
                         >

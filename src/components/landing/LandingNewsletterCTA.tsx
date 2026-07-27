@@ -1,4 +1,4 @@
-"use client";
+
 
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { Mail } from "lucide-react";

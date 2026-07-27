@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { unstable_cache } from "next/cache";
+import { cache } from "react";
 
 export type FundingStatus = "STABLE" | "AT_RISK" | "HIGH_RISK" | "CRITICAL";
 
@@ -23,7 +23,7 @@ export interface ChildFundingSummary {
 
 const GRACE_PERIOD_MS = 14 * 24 * 60 * 60 * 1000; // 14 days
 
-export const calculateFundingStatus = unstable_cache(
+export const calculateFundingStatus = cache(
     async (childId: string): Promise<ChildFundingSummary> => {
         const child = await prisma.registryChild.findUnique({
             where: { id: childId },
@@ -79,12 +79,10 @@ export const calculateFundingStatus = unstable_cache(
             fullySponsored: remainingSlots === 0,
             gracePeriodSponsors: gracePeriodCount
         };
-    },
-    ["calculate-funding-status"],
-    { revalidate: 900, tags: ["funding-engine"] }
+    }
 );
 
-export const getFundingGapReport = unstable_cache(
+export const getFundingGapReport = cache(
     async () => {
         const activeChildren = await prisma.registryChild.findMany({
             where: {
@@ -164,7 +162,5 @@ export const getFundingGapReport = unstable_cache(
             totalGapCount: report.reduce((sum, r) => sum + r.remainingSlots, 0),
             gracePeriodDetails
         };
-    },
-    ["funding-gap-report"],
-    { revalidate: 900, tags: ["funding-engine"] }
+    }
 );
