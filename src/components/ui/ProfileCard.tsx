@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Heart, MapPin, BookOpen, GraduationCap, Sparkles, ArrowRight, ShieldCheck, CheckCircle2 } from "lucide-react";
+import { Heart, MapPin, BookOpen, GraduationCap, Sparkles, ArrowRight, ShieldCheck, CheckCircle2, Clock } from "lucide-react";
 
 export interface ProfileCardData {
     id: string;
@@ -57,9 +57,9 @@ export function ProfileCard({ profile, variant = "child" }: ProfileCardProps) {
             <span>In Education</span>
         </div>
     ) : (
-        <div className="bg-impact-gold text-cinematic-dark text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-md">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Waiting for Support</span>
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-300 shadow-sm">
+            <Clock className="w-3.5 h-3.5 text-impact-gold" />
+            <span>Waiting for Sponsor</span>
         </div>
     );
 

@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 export interface GlobalSettingsData {
   organizationName: string;
   registeredOffice: string;
+  registrationNumber?: string;
   contactEmails: {
     info: string;
     sponsor: string;
@@ -11,6 +12,7 @@ export interface GlobalSettingsData {
     volunteer: string;
     safeguarding: string;
   };
+  whatsappNumber?: string;
   socialLinks: {
     facebook?: string;
     twitter?: string;
@@ -26,6 +28,7 @@ export interface GlobalSettingsData {
 export const DEFAULT_GLOBAL_SETTINGS: GlobalSettingsData = {
   organizationName: "One Dollar. One Child. One Future.",
   registeredOffice: "3211 Bloomfield Drive, Mississauga, Ontario L5N 6V2, Canada",
+  registrationNumber: undefined,
   contactEmails: {
     info: "info@onedollaronechild.org",
     sponsor: "sponsor@onedollaronechild.org",
@@ -33,6 +36,7 @@ export const DEFAULT_GLOBAL_SETTINGS: GlobalSettingsData = {
     volunteer: "volunteer@onedollaronechild.org",
     safeguarding: "safeguarding@onedollaronechild.org",
   },
+  whatsappNumber: undefined,
   socialLinks: {
     facebook: "https://facebook.com/onedollaronechild",
     instagram: "https://instagram.com/onedollaronechild",
@@ -61,7 +65,9 @@ export const getGlobalSettings = cache(async (): Promise<GlobalSettingsData> => 
     return {
       organizationName: settings.organizationName || DEFAULT_GLOBAL_SETTINGS.organizationName,
       registeredOffice: settings.registeredOffice || DEFAULT_GLOBAL_SETTINGS.registeredOffice,
+      registrationNumber: (settings as any).registrationNumber || DEFAULT_GLOBAL_SETTINGS.registrationNumber,
       contactEmails: (settings.contactEmails as GlobalSettingsData["contactEmails"]) || DEFAULT_GLOBAL_SETTINGS.contactEmails,
+      whatsappNumber: (settings as any).whatsappNumber || DEFAULT_GLOBAL_SETTINGS.whatsappNumber,
       socialLinks: (settings.socialLinks as GlobalSettingsData["socialLinks"]) || DEFAULT_GLOBAL_SETTINGS.socialLinks,
       craStatus: settings.craStatus || DEFAULT_GLOBAL_SETTINGS.craStatus,
       missionStatement: settings.missionStatement || DEFAULT_GLOBAL_SETTINGS.missionStatement,

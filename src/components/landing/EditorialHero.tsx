@@ -9,7 +9,7 @@ export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig
     const { heading, description, secondaryDescription, backgroundImage, ctas, readingTime, badge, breadcrumb } = meta;
 
     return (
-        <section className="relative bg-cinematic-dark text-white min-h-[90vh] md:min-h-screen flex flex-col justify-center overflow-hidden py-12 md:py-16">
+        <section className="relative bg-cinematic-dark text-white flex flex-col justify-center overflow-hidden pt-12 md:pt-16 pb-[3%]">
             {backgroundImage && (
                 <div className="absolute inset-0 z-0">
                     <Image
@@ -26,7 +26,7 @@ export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig
                 </div>
             )}
 
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-20 pb-12 sm:pt-28 md:pt-32 md:pb-16">
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-16 sm:pt-20 md:pt-24 pb-4">
                 <div className="max-w-4xl text-left">
                     
                     {badge && (

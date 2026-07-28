@@ -21,15 +21,24 @@ export function FounderStoryBlock({ data }: { data?: any }) {
                     
                     {/* Portrait Col */}
                     <div className="w-full md:w-5/12 relative animate-fade-in-up">
-                        <div className="relative h-[450px] w-full max-w-sm mx-auto rounded-3xl overflow-hidden shadow-2xl border border-white/10 group">
-                            <Image
-                                src={meta.founderImage || "https://images.unsplash.com/photo-1559027615-cd4628902d4a?q=80&w=2674&auto=format&fit=crop"}
-                                alt="Founder"
-                                fill
-                                loading="lazy"
-                                sizes="(max-width: 768px) 100vw, 40vw"
-                                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                            />
+                        <div className="relative h-[450px] w-full max-w-sm mx-auto rounded-3xl overflow-hidden shadow-2xl border border-white/10 group bg-slate-800">
+                            {(!meta.founderImage || meta.founderImage.includes('placeholder')) ? (
+                                <div className="w-full h-full flex flex-col items-center justify-center text-slate-500 bg-slate-800 transition-transform duration-700 group-hover:scale-105">
+                                    <div className="w-32 h-32 rounded-full bg-slate-700 flex items-center justify-center mb-6">
+                                        <span className="text-4xl font-bold text-slate-500">SH</span>
+                                    </div>
+                                    <span className="text-sm font-medium tracking-widest uppercase">Founder</span>
+                                </div>
+                            ) : (
+                                <Image
+                                    src={meta.founderImage}
+                                    alt="Founder"
+                                    fill
+                                    loading="lazy"
+                                    sizes="(max-width: 768px) 100vw, 40vw"
+                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                />
+                            )}
                             <div className="absolute inset-0 bg-gradient-to-t from-cinematic-dark via-cinematic-dark/40 to-transparent opacity-90" />
                             <div className="absolute bottom-8 left-8 right-8">
                                 <div className="font-heading font-bold text-2xl text-white mb-1">Sarah Haider</div>

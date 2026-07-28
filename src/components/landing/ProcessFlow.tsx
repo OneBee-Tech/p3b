@@ -58,7 +58,7 @@ export function ProcessFlow({ data, layoutConfig, isEmbedded = false }: { data?:
                         <div className="hidden md:flex flex-col gap-24 w-full relative">
                             {/* Top Row: 5 items (cols 1 to 5) */}
                             <div className="grid grid-cols-5 gap-y-12 w-full relative">
-                                {items.slice(0, 5).map((item: any, idx: number) => renderDesktopHeroItem(item, idx, false, idx === 4, false, 'col-span-1'))}
+                                {items.slice(0, 5).map((item: any, idx: number) => renderDesktopHeroItem(item, idx, false, idx === 4, idx === items.length - 1, 'col-span-1'))}
                             </div>
                             
                             {/* Bottom Row: 4 items (cols 5 to 2 in reverse) */}
@@ -142,7 +142,7 @@ export function ProcessFlow({ data, layoutConfig, isEmbedded = false }: { data?:
                 )}
 
                 {/* U-Turn Connecting Line (only on last item of top row) */}
-                {isLastInTopRow && (
+                {isLastInTopRow && !isLastTotal && (
                     <div className="hidden md:block absolute left-[50%] top-[30px] w-[calc(50%+24px)] h-[calc(100%+96px)] border-t-[3px] border-r-[3px] border-b-[3px] border-impact-gold/60 rounded-r-[3rem] -z-10" style={{ filter: 'drop-shadow(4px 0 8px rgba(253,199,0,0.3))' }} />
                 )}
 

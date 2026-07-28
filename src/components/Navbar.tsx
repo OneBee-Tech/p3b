@@ -89,7 +89,7 @@ export function Navbar({ session }: { session?: any }) {
           <div className="col-span-8 lg:col-span-4 flex items-center shrink-0">
             <Link href="/" className="flex items-center gap-2 group">
               {/* Mobile Logo Placeholder (visible on mobile, hidden on tablet/desktop) */}
-              <div className="md:hidden flex items-center justify-center w-8 h-8 rounded bg-[#fdc700] text-white font-extrabold text-xs shadow-sm shrink-0">
+              <div aria-hidden="true" className="md:hidden flex items-center justify-center w-8 h-8 rounded bg-[#fdc700] text-white font-extrabold text-xs shadow-sm shrink-0">
                 O1
               </div>
               

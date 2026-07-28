@@ -145,7 +145,11 @@ export function Footer({ settings = DEFAULT_GLOBAL_SETTINGS }: FooterProps) {
         <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-300">
           <div className="flex items-center gap-2 text-slate-200 font-semibold">
             <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span>Registered in Canada | {settings.organizationName}</span>
+            <span>
+              {settings.registrationNumber 
+                ? `Registered in Canada | ${settings.registrationNumber}` 
+                : "Official registration information will be displayed here once available."}
+            </span>
           </div>
           <p className="text-center md:text-right text-slate-300 font-medium">
             &copy; {new Date().getFullYear()} {settings.organizationName}. All rights reserved.

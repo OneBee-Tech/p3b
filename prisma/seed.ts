@@ -139,7 +139,7 @@ async function main() {
                 description: 'We ensure 100% of your sponsorship reaches the classroom. Our verified partners and regular reporting mean you always know your impact.',
                 highlight: 'Every dollar tracked. Every child supported.',
                 ctas: [
-                    { label: 'View Our Standards', href: '/transparency', variant: 'primary' },
+                    { label: 'View Our Impact', href: '/impact', variant: 'primary' },
                     { label: 'Read Reports', href: '/impact', variant: 'secondary' }
                 ]
             }
@@ -199,7 +199,6 @@ async function main() {
                 component: 'hero',
                 layout: 'full-bg',
                 featured: true,
-                badge: 'Our Story',
                 breadcrumb: 'Home / Our Story',
                 heading: 'A Small Idea With the Power to Build Big Futures',
                 description: 'What happens if many people each give one dollar a day?',
@@ -463,12 +462,12 @@ async function main() {
                 heading: 'Registration & Accountability',
                 description: 'We are a legally registered entity committed to absolute transparency and compliance.',
                 items: [
-                    { title: 'Registered Non-Profit', description: 'Fully compliant with charity regulations.', icon: 'ShieldCheck', value: '123456789 RR0001' },
+                    { title: 'Registered Non-Profit', description: 'Fully compliant with charity regulations.', icon: 'ShieldCheck' },
                     { title: 'Audited Financials', description: 'Strict append-only ledger of every dollar spent.', icon: 'FileText' },
                     { title: '100% Allocation', description: 'Directly funding educational ecosystems.', icon: 'CheckCircle' }
                 ],
                 ctas: [
-                    { label: 'View Transparency Info', href: '/transparency', variant: 'secondary' }
+                    { label: 'View Our Impact', href: '/impact', variant: 'secondary' }
                 ]
             }
         },
@@ -950,7 +949,7 @@ async function main() {
                 },
                 ctas: [
                     { label: 'Sponsor a Child ($1/Day)', href: '/sponsor-a-child#meet-children', variant: 'primary' },
-                    { label: 'Explore Transparency Protocol', href: '/transparency', variant: 'secondary' }
+                    { label: 'Explore Our Impact', href: '/impact', variant: 'secondary' }
                 ]
             }
         },
@@ -1010,19 +1009,19 @@ async function main() {
         },
         {
             sectionKey: 'impactStories',
-            title: 'Sample Progress Reporting Layout',
+            title: 'Example Progress Reporting Layout',
             content: '',
             metadata: {
                 version: 'v3-trust-experience',
                 order: 5,
                 component: 'storyGrid',
                 variant: 'stories',
-                heading: 'Sample Progress Reporting Layout',
-                description: 'Below is an example of the bi-annual progress dashboard report format that active sponsors receive for their matched child once school terms commence.',
+                heading: 'Example Progress Reporting Layout',
+                description: 'Below is an illustrative example of the bi-annual progress dashboard report format that active sponsors receive for their matched child once school terms commence.',
                 stories: [
-                    { id: 's1', slug: 'amara-k', firstName: 'Amara (Sample Reporting Layout)', dream: 'Primary Teacher Aspirant', summary: 'Illuminative Report Preview: Tracking attendance recovery, reading comprehension scores, and term-by-term grade progression.', photoUrl: 'https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=800&auto=format&fit=crop', badgeText: 'Sample Format: Active' },
-                    { id: 's2', slug: 'farhan-m', firstName: 'Farhan (Sample Reporting Layout)', dream: 'STEM & Computer Literacy', summary: 'Illuminative Report Preview: Monitoring STEM workshop participation, math examination performance, and extracurricular achievements.', photoUrl: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop', badgeText: 'Sample Format: Matched' },
-                    { id: 's3', slug: 'tariq-a', firstName: 'Tariq (Sample Reporting Layout)', dream: 'Secondary School Scholar', summary: 'Illuminative Report Preview: High school entrance evaluation, national exam preparation, and post-secondary vocational planning.', photoUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop', badgeText: 'Sample Format: Alumni' }
+                    { id: 's1', slug: 'amara-k', firstName: 'Amara (Illustrative Preview)', dream: 'Primary Teacher Aspirant', summary: 'Illustrative Report Preview: Tracking attendance recovery, reading comprehension scores, and term-by-term grade progression.', photoUrl: 'https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=800&auto=format&fit=crop', badgeText: 'Example Format: Active' },
+                    { id: 's2', slug: 'farhan-m', firstName: 'Farhan (Illustrative Preview)', dream: 'STEM & Computer Literacy', summary: 'Illustrative Report Preview: Monitoring STEM workshop participation, math examination performance, and extracurricular achievements.', photoUrl: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop', badgeText: 'Example Format: Matched' },
+                    { id: 's3', slug: 'tariq-a', firstName: 'Tariq (Illustrative Preview)', dream: 'Secondary School Scholar', summary: 'Illustrative Report Preview: High school entrance evaluation, national exam preparation, and post-secondary vocational planning.', photoUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop', badgeText: 'Example Format: Alumni' }
                 ]
             }
         },
@@ -1307,7 +1306,7 @@ async function main() {
                 age: c.age,
                 region: c.location,
                 dream: c.dream,
-                shortIntro: `${c.name} is a bright ${c.age}-year-old student from ${c.location} who dreams of becoming a ${c.dream}.`,
+                shortIntro: `${c.name} is a bright ${c.age}-year-old student from ${c.location} who dreams of becoming ${/^[aeiou]/i.test(c.dream) ? 'an' : 'a'} ${c.dream === 'Police' ? 'Police Officer' : c.dream}.`,
                 story: `${c.story}\n\n${c.name} walks to school every day with determination. With your support, ${c.name} receives complete tuition, textbooks, uniform, daily meals, and ongoing academic guidance.`,
                 status: c.status,
                 impactStorySlug: c.name === 'Yusuf' ? 'yusuf-b-business' : undefined,
@@ -1329,8 +1328,8 @@ async function main() {
                 safeguardingReviewStatus: SafeguardingReviewStatus.VERIFIED,
                 createdByAdminId: 'admin-1',
                 avatarIllustrationUrl: `https://images.unsplash.com/photo-${1544717305 + (index * 1000)}?q=80&w=800&auto=format&fit=crop`,
-                dream: `Future ${c.dream}`,
-                shortIntro: `${c.name} is a bright ${c.age}-year-old student from ${c.location} who dreams of becoming a ${c.dream}.`,
+                dream: `Future ${c.dream === 'Police' ? 'Police Officer' : c.dream}`,
+                shortIntro: `${c.name} is a bright ${c.age}-year-old student from ${c.location} who dreams of becoming ${/^[aeiou]/i.test(c.dream) ? 'an' : 'a'} ${c.dream === 'Police' ? 'Police Officer' : c.dream}.`,
                 story: `${c.story}\n\n${c.name} walks to school every day with determination. With your support, ${c.name} receives complete tuition, textbooks, uniform, daily meals, and ongoing academic guidance.`,
                 needs: ['Tuition', 'Textbooks', 'Uniform', 'School Bag', 'Shoes', 'Stationery', 'Learning Materials'],
                 aspirations: {

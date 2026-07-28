@@ -31,20 +31,24 @@ export default function GratitudePage() {
             <section className="max-w-7xl mx-auto px-4 py-8 space-y-24">
                 {/* Testimonials Static section */}
                 <div className="grid md:grid-cols-2 gap-8 mb-16">
-                    <div className="bg-gray-50 p-10 rounded-3xl border border-gray-100 transition-all hover:bg-white hover:shadow-md">
-                        <Quote className="w-10 h-10 text-gray-300 mb-6" />
-                        <p className="text-xl font-medium text-gray-700 leading-relaxed mb-8">"Knowing that my contribution directly fuels an entire community ecosystem instead of a single isolated case gives me tremendous confidence in their model."</p>
+                    <div className="bg-gray-50 p-10 rounded-3xl border border-gray-100 transition-all hover:bg-white hover:shadow-md h-full flex flex-col justify-between">
+                        <div>
+                            <Quote className="w-10 h-10 text-gray-300 mb-6" />
+                            <p className="text-xl font-medium text-gray-400 italic leading-relaxed mb-8">Testimonial space reserved for our community members.</p>
+                        </div>
                         <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-cinematic-dark rounded-full flex items-center justify-center text-impact-gold font-bold">SJ</div>
-                            <div className="font-bold text-cinematic-dark">Sarah J.<span className="block text-sm text-gray-500 font-normal">Impact Investor</span></div>
+                            <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 font-bold"></div>
+                            <div className="font-bold text-gray-400">Community Member<span className="block text-sm text-gray-400 font-normal">Supporter</span></div>
                         </div>
                     </div>
-                    <div className="bg-gray-50 p-10 rounded-3xl border border-gray-100 transition-all hover:bg-white hover:shadow-md">
-                        <Quote className="w-10 h-10 text-gray-300 mb-6" />
-                        <p className="text-xl font-medium text-gray-700 leading-relaxed mb-8">"Their transparent ledger and monthly programmatic snapshots provide exactly the kind of accountability I've been looking for in the modern NGO space."</p>
+                    <div className="bg-gray-50 p-10 rounded-3xl border border-gray-100 transition-all hover:bg-white hover:shadow-md h-full flex flex-col justify-between">
+                        <div>
+                            <Quote className="w-10 h-10 text-gray-300 mb-6" />
+                            <p className="text-xl font-medium text-gray-400 italic leading-relaxed mb-8">Testimonial space reserved for our community members.</p>
+                        </div>
                         <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-trust-blue rounded-full flex items-center justify-center text-white font-bold">MT</div>
-                            <div className="font-bold text-cinematic-dark">Marcus T.<span className="block text-sm text-gray-500 font-normal">Education Advocate</span></div>
+                            <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 font-bold"></div>
+                            <div className="font-bold text-gray-400">Community Member<span className="block text-sm text-gray-400 font-normal">Supporter</span></div>
                         </div>
                     </div>
                 </div>

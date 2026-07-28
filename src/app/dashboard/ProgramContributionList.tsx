@@ -31,7 +31,7 @@ export function ProgramContributionList({ contributions }: { contributions: Prog
         return (
             <div className="bg-white p-8 text-center rounded-2xl border border-gray-100 text-gray-500 transition-all duration-300 hover:shadow-md">
                 <Globe2 className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-                <p className="mb-4 text-gray-600 font-medium">Your journey starts here — discover children waiting for support.</p>
+                <p className="mb-4 text-gray-600 font-medium">Your journey starts here — discover children waiting for a sponsor.</p>
                 <Link href="/sponsor-a-child">
                     <Button variant="impact">Sponsor a Child</Button>
                 </Link>

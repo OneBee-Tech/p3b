@@ -91,7 +91,7 @@ export default async function RootLayout({
         </main>
         <TrustBadgeStrip />
         <Footer />
-        <FloatingWhatsAppButton />
+        {settings.whatsappNumber && <FloatingWhatsAppButton whatsappNumber={settings.whatsappNumber} />}
         <AnalyticsTracker />
         <ClientAutoTranslator />
 

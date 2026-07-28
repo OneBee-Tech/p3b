@@ -3,12 +3,12 @@
 import { usePathname } from "next/navigation";
 import { MessageCircle } from "lucide-react";
 
-export function FloatingWhatsAppButton() {
+export function FloatingWhatsAppButton({ whatsappNumber }: { whatsappNumber: string }) {
     const pathname = usePathname();
-    if (pathname?.startsWith("/admin")) return null;
+    if (pathname?.startsWith("/admin") || !whatsappNumber) return null;
     return (
         <a
-            href="https://wa.me/XXXXXXXX"
+            href={`https://wa.me/${whatsappNumber}`}
             target="_blank"
             rel="noopener noreferrer"
             className="fixed bottom-4 left-4 z-40 flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-lg hover:scale-110 active:scale-95 transition-transform duration-300 group md:bottom-6 md:left-6"
