@@ -103,7 +103,7 @@ model Child {
   bio              String
   story            String
   photoUrl         String
-  status           ChildStatus            @default(WAITING)
+  status           ChildStatus            @default(WAITING_FOR_SPONSOR)
   sponsorshipSlots Int                    @default(1)
   annualCost       Decimal
   gender           String
@@ -356,7 +356,7 @@ model RegistryChild {
   region                    String
   educationLevel            String
   sponsorshipNeededMonthly  Decimal
-  status                    ChildStatus                      @default(WAITING)
+  status                    ChildStatus                      @default(WAITING_FOR_SPONSOR)
   privacyMode               VisibilityScope                  @default(PUBLIC)
   safeguardingConsent       Boolean                          @default(false)
   avatarIllustrationUrl     String?
@@ -594,12 +594,10 @@ enum Role {
 }
 
 enum ChildStatus {
-  WAITING
+  WAITING_FOR_SPONSOR
   SPONSORED
-  GRADUATED
-  MATCHED
-  ACTIVE
-  ALUMNI
+  EDUCATION_COMPLETED
+  ARCHIVED
 }
 
 enum ModerationStatus {

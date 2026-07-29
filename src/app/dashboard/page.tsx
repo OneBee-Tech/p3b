@@ -130,19 +130,28 @@ export default async function DashboardPage() {
         });
     });
 
-    // Map active monthly subscriptions & grab program/child data payload
-    donor.sponsorships.forEach(s => {
-        const key = s.childId ? `child_${s.childId}` : s.programId;
+    // Legacy sponsorships are deprecated in favor of SponsorshipAssignments
+    // We only map one-time donations and new SponsorshipAssignments now.
+
+    // Map new architecture SponsorshipAssignments
+    donor.sponsorshipAssignments.forEach(assignment => {
+        const key = `registry_child_${assignment.registryChildId}`;
         const existing = contributionMap.get(key) || { total: 0, isMonthly: false };
         contributionMap.set(key, {
             ...existing,
-            sponsorshipId: s.id,
-            total: existing.total + Number(s.monthlyAmount),
+            sponsorshipId: assignment.id,
+            total: existing.total + 30, // Default monthly sponsorship amount since it's not stored on the assignment itself
             isMonthly: true,
-            status: s.status,
-            endDate: s.endDate,
-            programData: s.program,
-            childData: s.child
+            status: assignment.status,
+            endDate: assignment.endedAt,
+            childData: {
+                id: assignment.registryChild.id,
+                name: assignment.registryChild.displayName, // Mapping registry child fields to legacy childData format
+                displayName: assignment.registryChild.displayName,
+                currentGrade: assignment.registryChild.educationLevel,
+                region: assignment.registryChild.region,
+                avatarIllustrationUrl: assignment.registryChild.avatarIllustrationUrl
+            }
         });
     });
 
@@ -319,18 +328,27 @@ export default async function DashboardPage() {
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-50">
-                                        {donor.donations.filter(d => d.status === 'SUCCEEDED').slice(0, 5).map(d => (
-                                            <tr key={d.id} className="group">
-                                                <td className="py-3 text-cinematic-dark">{new Date(d.createdAt).toLocaleDateString()}</td>
-                                                <td className="py-3 font-bold text-trust-blue">${Number(d.amount).toFixed(2)}</td>
-                                                <td className="py-3 text-gray-500 truncate max-w-[120px]">{d.program?.name || 'General Ledger'}</td>
-                                                <td className="py-3 text-right">
-                                                    <a href={`/api/invoices/${d.id}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-bold text-gray-400 hover:text-trust-blue transition-colors">
-                                                        <FileText className="w-3 h-3" /> PDF
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        ))}
+                                        {donor.donations.filter(d => d.status === 'SUCCEEDED').slice(0, 5).map(d => {
+                                            let targetName = d.program?.name || 'General Ledger';
+                                            if (d.type === 'RECURRING_MONTHLY' && (donor as any).sponsorshipAssignments?.length > 0) {
+                                                const child = (donor as any).sponsorshipAssignments[0]?.registryChild;
+                                                if (child) {
+                                                    targetName = `${child.displayName}'s Education`;
+                                                }
+                                            }
+                                            return (
+                                                <tr key={d.id} className="group">
+                                                    <td className="py-3 text-cinematic-dark">{new Date(d.createdAt).toLocaleDateString()}</td>
+                                                    <td className="py-3 font-bold text-trust-blue">${Number(d.amount).toFixed(2)}</td>
+                                                    <td className="py-3 text-gray-500 truncate max-w-[200px]" title={targetName}>{targetName}</td>
+                                                    <td className="py-3 text-right">
+                                                        <a href={`/api/invoices/${d.id}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-bold text-gray-400 hover:text-trust-blue transition-colors">
+                                                            <FileText className="w-3 h-3" /> PDF
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
                                         {donor.donations.filter(d => d.status === 'SUCCEEDED').length === 0 && (
                                             <tr>
                                                 <td colSpan={4} className="py-6 text-center text-gray-400">No verified contributions on ledger yet.</td>

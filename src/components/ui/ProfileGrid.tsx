@@ -22,7 +22,7 @@ export function ProfileGrid({
 }: ProfileGridProps) {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedRegion, setSelectedRegion] = useState("ALL");
-    const [selectedStatus, setSelectedStatus] = useState("ALL");
+    const [selectedStatus, setSelectedStatus] = useState("WAITING_FOR_SPONSOR");
 
     // Carousel state
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -53,10 +53,8 @@ export function ProfileGrid({
             
             const matchesStatus = 
                 selectedStatus === "ALL" ||
-                (selectedStatus === "WAITING" && (p.status === "WAITING" || !p.status)) ||
-                (selectedStatus === "MATCHED" && p.status === "MATCHED") ||
-                (selectedStatus === "ACTIVE" && (p.status === "ACTIVE" || p.status === "SPONSORED")) ||
-                (selectedStatus === "GRADUATED" && (p.status === "GRADUATED" || p.status === "ALUMNI"));
+                (selectedStatus === "WAITING_FOR_SPONSOR" && (p.status === "WAITING_FOR_SPONSOR" || !p.status)) ||
+                (selectedStatus === "SPONSORED" && p.status === "SPONSORED");
 
             return matchesSearch && matchesRegion && matchesStatus;
         });
@@ -200,10 +198,8 @@ export function ProfileGrid({
                             className="px-3.5 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold text-gray-700 focus:bg-white focus:border-trust-blue outline-none cursor-pointer"
                         >
                             <option value="ALL">All Statuses</option>
-                            <option value="WAITING">Waiting for Sponsor</option>
-                            <option value="MATCHED">Matched</option>
-                            <option value="ACTIVE">In Education</option>
-                            <option value="GRADUATED">Graduated Alumni</option>
+                            <option value="WAITING_FOR_SPONSOR">Waiting for Sponsor</option>
+                            <option value="SPONSORED">Sponsored</option>
                         </select>
                     </div>
                 </div>

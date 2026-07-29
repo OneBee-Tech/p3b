@@ -31,14 +31,13 @@ export interface ProfileCardProps {
 export function ProfileCard({ profile, variant = "child" }: ProfileCardProps) {
     const slug = profile.slug || profile.id;
     const firstName = profile.displayName.split(" ")[0];
-    const isGraduated = profile.status === "GRADUATED" || profile.status === "ALUMNI" || variant === "alumni";
+    const isGraduated = profile.status === "EDUCATION_COMPLETED" || variant === "alumni";
     const targetHref = isGraduated 
         ? (profile.impactStorySlug ? `/stories/${profile.impactStorySlug}` : "/impact") 
         : `/sponsor-a-child/${slug}`;
 
-    const isMatched = profile.status === "MATCHED" || profile.progressStage?.toLowerCase().includes("matched");
-    const isActive = profile.status === "ACTIVE" || profile.status === "SPONSORED";
-    const isWaiting = profile.status === "WAITING" || !profile.status;
+    const isActive = profile.status === "SPONSORED";
+    const isWaiting = profile.status === "WAITING_FOR_SPONSOR" || !profile.status;
 
     // Status Badge Configuration
     const statusBadge = isGraduated ? (
@@ -46,15 +45,10 @@ export function ProfileCard({ profile, variant = "child" }: ProfileCardProps) {
             <GraduationCap className="w-3.5 h-3.5" />
             <span>Graduated Alumni</span>
         </div>
-    ) : isMatched ? (
-        <div className="bg-blue-600/90 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-md backdrop-blur-sm">
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            <span>Matched</span>
-        </div>
     ) : isActive ? (
         <div className="bg-emerald-600/90 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-md backdrop-blur-sm">
-            <Heart className="w-3.5 h-3.5 fill-current" />
-            <span>In Education</span>
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>Sponsored ✓</span>
         </div>
     ) : (
         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-300 shadow-sm">

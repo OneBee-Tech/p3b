@@ -8,6 +8,7 @@ import { ContentGrid } from "./ContentGrid";
 import { ProcessFlow } from "./ProcessFlow";
 import { TrustCards } from "./TrustCards";
 import { LandingCTASection } from "./LandingCTASection";
+import { ContentBlock } from "./ContentBlock";
 
 import { MetricsGrid } from "../ui/MetricsGrid";
 import { JourneyTimeline } from "../ui/JourneyTimeline";
@@ -23,6 +24,8 @@ export const ComponentRegistry: Record<string, React.FC<{ data: any, layoutConfi
     processFlow: ProcessFlow,
     trustCards: TrustCards,
     ctaSection: LandingCTASection,
+    whyOneDollar: ContentBlock,
+    contentBlock: ContentBlock,
     metricsGrid: ({ data }) => (
         <MetricsGrid 
             metrics={data.metadata?.metrics || []}

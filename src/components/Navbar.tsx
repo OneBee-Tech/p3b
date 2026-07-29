@@ -107,7 +107,7 @@ export function Navbar({ session }: { session?: any }) {
 
           {/* 2. Center Column: Centered Navigation Links (5 cols) */}
           <div className="hidden lg:flex col-span-5 items-center justify-center gap-4 xl:gap-6 flex-nowrap">
-            {primaryNavLinks.map((link) => (
+            {!pathname?.startsWith("/dashboard") && primaryNavLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -264,21 +264,25 @@ export function Navbar({ session }: { session?: any }) {
             >
               <Link href="/sponsor-a-child#meet-children">Give $1 a Day</Link>
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsOpen(!isOpen)}
-              className={useDarkNavbar ? "text-slate-800" : "text-white"}
-              aria-label="Toggle Navigation Menu"
-            >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </Button>
+            {/* Mobile Menu Button */}
+            {!pathname?.startsWith("/dashboard") && (
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className={cn(
+                  "lg:hidden p-2 -mr-2 transition-colors shrink-0",
+                  useDarkNavbar ? "text-slate-600 hover:text-slate-900" : "text-white/90 hover:text-white"
+                )}
+                aria-label="Toggle menu"
+              >
+                {isOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
+              </button>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
-      {isOpen && (
+      {/* Mobile Nav Overlay */}
+      {!pathname?.startsWith("/dashboard") && isOpen && (
         <div className="lg:hidden bg-cinematicDark text-white border-t border-white/10 py-6 px-6 space-y-4 max-h-[85vh] overflow-y-auto">
           <div className="space-y-2">
             <p className="text-[10px] font-bold text-[#fdc700] uppercase tracking-widest mb-1">Navigation</p>

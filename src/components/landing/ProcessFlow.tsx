@@ -196,7 +196,7 @@ export function ProcessFlow({ data, layoutConfig, isEmbedded = false }: { data?:
     }
 
     return (
-        <section className={`py-16 sm:py-28 md:py-48 overflow-hidden ${bgClasses}`}>
+        <section className={`py-12 sm:py-16 md:py-16 overflow-hidden ${bgClasses}`}>
             {content}
         </section>
     );

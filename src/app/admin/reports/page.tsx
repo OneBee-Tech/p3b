@@ -107,7 +107,7 @@ export default async function AdminReportsPage() {
                     </div>
                     <p className="text-sm text-white/50">Waiting List</p>
                     <p className="text-2xl font-bold text-white">
-                        {childrenStatus.find(s => s.status === 'WAITING')?._count.id || 0}
+                        {childrenStatus.find(s => s.status === 'WAITING_FOR_SPONSOR')?._count.id || 0}
                     </p>
                 </div>
 

@@ -31,7 +31,17 @@ export default async function DonationMonitorPage({
             take: limit,
             orderBy: { createdAt: 'desc' },
             include: {
-                user: { select: { name: true, email: true } },
+                user: {
+                    select: {
+                        name: true,
+                        email: true,
+                        sponsorshipAssignments: {
+                            include: { registryChild: true },
+                            orderBy: { startedAt: 'desc' },
+                            take: 1
+                        }
+                    }
+                },
                 program: { select: { name: true } },
             }
         })
@@ -107,8 +117,15 @@ export default async function DonationMonitorPage({
                                         <div className="text-white/40 text-xs">{new Date(d.createdAt).toLocaleString()}</div>
                                     </td>
                                     <td className="p-4">
-                                        <div className="font-medium text-white">{d.user?.name || "Anonymous Donor"}</div>
-                                        <div className="text-white/50 text-xs">{d.user?.email || "No email on record"}</div>
+                                        <div className="font-medium text-white">
+                                            {d.user?.name || d.user?.email || "Anonymous Donor"}
+                                        </div>
+                                        {d.user?.name && d.user?.email && (
+                                            <div className="text-white/50 text-xs">{d.user.email}</div>
+                                        )}
+                                        {(!d.user?.name && !d.user?.email) && (
+                                            <div className="text-white/50 text-xs">No identity recorded</div>
+                                        )}
                                     </td>
                                     <td className="p-4">
                                         <div className="flex items-center gap-2">
@@ -118,7 +135,15 @@ export default async function DonationMonitorPage({
                                             </span>
                                         </div>
                                         <div className="mt-1 text-white/70 text-xs">
-                                            {d.program?.name || "General Ledger"}
+                                            {d.type === "RECURRING_MONTHLY" ? (
+                                                (d.user as any)?.sponsorshipAssignments?.[0]?.registryChild ? (
+                                                    <span className="text-emerald-400">Sponsored Child: {(d.user as any).sponsorshipAssignments[0].registryChild.displayName} (Age {(d.user as any).sponsorshipAssignments[0].registryChild.age} • {(d.user as any).sponsorshipAssignments[0].registryChild.region})</span>
+                                                ) : (
+                                                    <span className="text-impact-gold">Awaiting Assignment</span>
+                                                )
+                                            ) : (
+                                                d.program?.name || "Community Fund / campaign"
+                                            )}
                                         </div>
                                     </td>
                                     <td className="p-4 text-right font-mono font-bold text-white">

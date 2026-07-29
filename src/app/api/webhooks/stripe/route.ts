@@ -249,6 +249,7 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
                         if (childExists) validChildId = childId;
                     }
 
+                    // Legacy Sponsorship record
                     await tx.sponsorship.create({
                         data: {
                             monthlyAmount: amount,
@@ -259,6 +260,25 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
                             childId: validChildId,
                         }
                     });
+
+                    // Modern Sponsorship Lifecycle logic
+                    if (childId) {
+                        const registryChild = await tx.registryChild.findUnique({ where: { id: childId } });
+                        if (registryChild) {
+                            await tx.sponsorshipAssignment.create({
+                                data: {
+                                    donorId: user!.id,
+                                    registryChildId: registryChild.id,
+                                    status: 'ACTIVE'
+                                }
+                            });
+
+                            await tx.registryChild.update({
+                                where: { id: registryChild.id },
+                                data: { status: 'SPONSORED' }
+                            });
+                        }
+                    }
                 }
             }
         }

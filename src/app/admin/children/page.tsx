@@ -104,7 +104,7 @@ export default async function ChildrenRegistryPage() {
                                                     }`}>
                                                     {child.privacyMode}
                                                 </span>
-                                                <span className={`px-2 py-0.5 text-[10px] font-bold uppercase rounded-md ${child.status === "WAITING" ? "bg-impact-gold/20 text-impact-gold" : "bg-emerald-500/20 text-emerald-400"
+                                                <span className={`px-2 py-0.5 text-[10px] font-bold uppercase rounded-md ${child.status === "WAITING_FOR_SPONSOR" ? "bg-impact-gold/20 text-impact-gold" : "bg-emerald-500/20 text-emerald-400"
                                                     }`}>
                                                     {child.status}
                                                 </span>

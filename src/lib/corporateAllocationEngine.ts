@@ -31,7 +31,7 @@ export async function allocateChildrenToCorporateSponsor(sponsorId: string, admi
     // Fetch all children not fully sponsored, prioritized by deepest funding gap / WAITING status
     const eligibleChildrenRaw = await prisma.registryChild.findMany({
         where: {
-            status: { in: ["WAITING", "PARTIALLY_FUNDED"] as any },
+            status: { in: ["WAITING_FOR_SPONSOR", "PARTIALLY_FUNDED"] as any },
             isArchived: false,
             deletedAt: null,
         },
@@ -82,7 +82,7 @@ export async function allocateChildrenToCorporateSponsor(sponsorId: string, admi
 
         // Update child status to PARTIALLY_FUNDED if they were waiting 
         // We do NOT mark them fully funded here because funding logic stays purely in the Donation webhook tier.
-        if (child.status === "WAITING") {
+        if (child.status === "WAITING_FOR_SPONSOR") {
             await prisma.registryChild.update({
                 where: { id: child.id },
                 data: { status: "PARTIALLY_FUNDED" as any }

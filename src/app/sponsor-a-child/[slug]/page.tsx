@@ -146,10 +146,9 @@ export default async function ChildProfilePage({ params }: Props) {
     }
 
     const firstName = child.displayName.split(" ")[0];
-    const isGraduated = child.status === "GRADUATED" || child.status === "ALUMNI";
-    const isMatched = child.status === "MATCHED";
-    const isActive = child.status === "ACTIVE";
-    const isWaiting = child.status === "WAITING" || !child.status;
+    const isGraduated = child.status === "EDUCATION_COMPLETED";
+    const isSponsored = child.status === "SPONSORED";
+    const isWaiting = child.status === "WAITING_FOR_SPONSOR" || !child.status;
     const checkoutHref = `/checkout/sponsorship/${child.slug || child.id}`;
 
     // Fetch 3 related children for "More Children Need Your Support"
@@ -225,15 +224,10 @@ export default async function ChildProfilePage({ params }: Props) {
                                             <GraduationCap className="w-3.5 h-3.5" />
                                             <span>Graduated Alumni</span>
                                         </div>
-                                    ) : isMatched ? (
-                                        <div className="bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
-                                            <CheckCircle2 className="w-3.5 h-3.5" />
-                                            <span>Matched</span>
-                                        </div>
-                                    ) : isActive ? (
+                                    ) : isSponsored ? (
                                         <div className="bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
-                                            <Heart className="w-3.5 h-3.5 fill-current" />
-                                            <span>In Education</span>
+                                            <CheckCircle2 className="w-3.5 h-3.5" />
+                                            <span>Sponsored ✓</span>
                                         </div>
                                     ) : (
                                         <div className="bg-impact-gold text-cinematic-dark text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
@@ -297,6 +291,19 @@ export default async function ChildProfilePage({ params }: Props) {
                                         <span>Read Impact Story</span>
                                         <ArrowRight className="w-5 h-5" />
                                     </Link>
+                                ) : isSponsored ? (
+                                    <div className="flex flex-col gap-3">
+                                        <div className="bg-emerald-50 text-emerald-800 border border-emerald-200 font-medium px-6 py-4 rounded-xl text-sm flex items-center gap-3">
+                                            <CheckCircle2 className="w-6 h-6 text-emerald-600 flex-shrink-0" />
+                                            <p>This child has already found a sponsor. Thank you for helping transform lives. Explore another child who is still waiting for sponsorship.</p>
+                                        </div>
+                                        <Link
+                                            href="/sponsor-a-child"
+                                            className="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold px-6 py-3 rounded-xl text-center transition-all"
+                                        >
+                                            Find Another Child
+                                        </Link>
+                                    </div>
                                 ) : (
                                     <Link
                                         href={checkoutHref}
@@ -335,7 +342,7 @@ export default async function ChildProfilePage({ params }: Props) {
                         </div>
                         <div className="space-y-1">
                             <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Status</span>
-                            <p className="text-xl font-bold text-emerald-600 font-heading">{child.status || 'WAITING'}</p>
+                            <p className="text-xl font-bold text-emerald-600 font-heading">{child.status || 'WAITING_FOR_SPONSOR'}</p>
                         </div>
                         <div className="space-y-1">
                             <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Progress Stage</span>

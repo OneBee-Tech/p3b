@@ -70,8 +70,10 @@ export default async function AddChildPage() {
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-white/70">Status</label>
                             <select name="status" className="w-full bg-cinematic-dark border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-trust-blue">
-                                <option value="WAITING">WAITING</option>
-                                <option value="SUPPORTED">SUPPORTED</option>
+                                <option value="WAITING_FOR_SPONSOR">WAITING_FOR_SPONSOR</option>
+                                <option value="SPONSORED">SPONSORED</option>
+                                <option value="EDUCATION_COMPLETED">EDUCATION_COMPLETED</option>
+                                <option value="ARCHIVED">ARCHIVED</option>
                             </select>
                         </div>
                         <div className="space-y-2">

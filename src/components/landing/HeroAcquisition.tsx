@@ -8,7 +8,7 @@ export function HeroAcquisition({ data }: { data?: any }) {
     const heroImage = "/images/placeholders/hero-smiling-girl.png";
 
     return (
-        <section className="relative bg-cinematic-dark text-white flex flex-col justify-between overflow-hidden">
+        <section className="hero-section relative bg-cinematic-dark text-white flex flex-col justify-center overflow-hidden min-h-screen">
             {/* Background Image Layer */}
             <div className="absolute inset-0 z-0">
                 <Image
@@ -24,29 +24,28 @@ export function HeroAcquisition({ data }: { data?: any }) {
                 <div className="absolute inset-0 bg-gradient-to-t from-cinematic-dark via-transparent to-cinematic-dark/30" />
             </div>
 
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-28 pb-2 md:pt-36 md:pb-4">
-                <div className="max-w-3xl text-left">
-                    <h1 className="text-5xl md:text-6xl font-heading font-extrabold text-white mb-6 tracking-tight leading-[1.1] whitespace-pre-line animate-fade-in-up delay-100 drop-shadow-lg">
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-28 pb-8 lg:pt-32 lg:pb-12">
+                <div className="max-w-4xl text-left">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-extrabold text-white mb-6 tracking-tight leading-[1.1] whitespace-pre-line animate-fade-in-up delay-100 drop-shadow-lg max-w-3xl">
                         One Dollar. One Child.<br/>
                         <span className="text-impact-gold">One Future.</span>
                     </h1>
 
-                    <div className="text-lg md:text-xl text-white/90 leading-relaxed font-body mb-8 animate-fade-in-up delay-200 max-w-3xl drop-shadow-md space-y-6">
-                        <p>In many countries across Asia, Africa, Latin America, and other parts of the world, quality public education is a blessing many families can rely on. In many underserved communities, children are not given that same safe start.</p>
-                        <p>Some children study in damaged, overcrowded government schools with limited materials, irregular teaching, and unsafe conditions. Your $1 a day, shared with others, helps move carefully selected children from low-income families into affordable, quality private schools where they can learn safely, consistently, and with dignity.</p>
-                    </div>
+                    <p className="text-lg md:text-xl text-white/90 leading-relaxed font-body mb-8 animate-fade-in-up delay-200 max-w-3xl drop-shadow-md">
+                        Your $1 a day helps provide carefully selected children with access to affordable, quality private schools where they can learn safely and with dignity.
+                    </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 mb-4 animate-fade-in-up delay-300">
                         <Link
                             href="/sponsor-a-child#meet-children"
-                            className="group bg-impact-gold hover:bg-yellow-400 text-cinematic-dark px-8 py-5 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_0_40px_rgba(253,199,0,0.3)] hover:-translate-y-1"
+                            className="group bg-impact-gold hover:bg-yellow-400 text-cinematic-dark px-7 py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_0_40px_rgba(253,199,0,0.3)] hover:-translate-y-1"
                         >
                             <Heart className="w-5 h-5 fill-current" />
                             Give $1 a Day
                         </Link>
                         <Link
                             href="/how-it-works"
-                            className="group bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-5 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 backdrop-blur-sm"
+                            className="group bg-white/10 hover:bg-white/20 text-white border border-white/20 px-7 py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 backdrop-blur-sm hover:-translate-y-1"
                         >
                             <PlayCircle className="w-5 h-5" />
                             See How It Works

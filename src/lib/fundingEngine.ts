@@ -88,7 +88,7 @@ export const getFundingGapReport = cache(
             where: {
                 deletedAt: null,
                 isArchived: false,
-                status: { in: ["WAITING", "SPONSORED"] }
+                status: { in: ["WAITING_FOR_SPONSOR", "SPONSORED"] }
             },
             include: {
                 assignments: {

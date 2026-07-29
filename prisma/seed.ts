@@ -528,15 +528,15 @@ async function main() {
                 version: 'v4',
                 order: 1,
                 component: 'hero',
+                variant: 'tall',
                 layout: 'full-bg',
                 featured: true,
-                badge: 'How It Works',
                 breadcrumb: 'Home / How It Works',
                 heading: 'Your $1. A Clear Process. A Child\'s Brighter Future.',
                 description: 'See exactly how your contribution moves from your checkout to creating measurable change in a child\'s life.',
                 backgroundImage: {
-                    src: '/images/placeholders/hero-smiling-girl.png',
-                    alt: 'Joyful school children eager to learn',
+                    src: '/images/how-it-works-hero.png',
+                    alt: 'Teacher helping students',
                 },
                 trustStrip: [
                     'Verified Children',
@@ -583,8 +583,8 @@ async function main() {
                 heading: 'Finding the Right Child',
                 body: 'We work closely with trusted community partners, local volunteers, and social workers to identify children who are most at risk of leaving school due to financial hardship. Every child\'s circumstances are rigorously verified before enrollment, ensuring that your support goes exactly where it is needed most. Finally, we select a dependable, affordable local school that can provide safe, consistent education.',
                 image: {
-                    src: '/images/placeholders/finding-child-documentary.jpg',
-                    alt: 'Community assessment process',
+                    src: '/images/finding-right-child.png',
+                    alt: 'NGO worker speaking with a family',
                     caption: 'Identifying and verifying need within the community.'
                 },
                 timelineHeading: 'The Initial Steps',
@@ -608,8 +608,8 @@ async function main() {
                 heading: 'Building the Education Plan',
                 body: 'Once a child is verified, we build a comprehensive budget that covers their entire academic year—including tuition, uniforms, books, and basic supplies. You step in as their sponsor, providing the critical funding required. We then manage the payments directly with the school and local vendors, ensuring every dollar is used solely for educational purposes.',
                 image: {
-                    src: '/images/placeholders/classroom-books.jpg',
-                    alt: 'Education planning and budgeting',
+                    src: '/images/building-education-plan.png',
+                    alt: 'NGO worker and teacher going over educational materials',
                     caption: 'Building a comprehensive plan for success.'
                 },
                 timelineHeading: 'Securing the Foundation',
@@ -634,7 +634,7 @@ async function main() {
                     text: 'Education begins with one opportunity.'
                 },
                 image: {
-                    src: '/images/placeholders/cinematic-break.jpg',
+                    src: '/images/education-begins.png',
                     alt: 'Child entering classroom'
                 }
             }
@@ -652,8 +652,8 @@ async function main() {
                 heading: 'Following the Journey',
                 body: 'Transparency is at the heart of our mission. As soon as the child is enrolled, we secure and share the official documentation with you. Throughout the year, we collect academic reports, attendance records, and teacher feedback, summarizing them into regular progress updates. At the end of the year, a comprehensive annual review ensures the child is ready for the next grade.',
                 image: {
-                    src: '/images/placeholders/child-studying.jpg',
-                    alt: 'Teacher reviewing a progress report',
+                    src: '/images/following-the-journey.png',
+                    alt: 'Teacher and students looking at a report card',
                     caption: 'Documenting every milestone along the way.'
                 },
                 timelineHeading: 'Tracking Impact',
@@ -702,43 +702,43 @@ async function main() {
                         title: 'School Fee Receipts', 
                         description: 'Receive documentation showing approved education payments made on behalf of the child.', 
                         icon: 'Receipt',
-                        image: '/images/placeholders/receipt-doc.jpg'
+                        image: '/images/school-fee-receipt.png'
                     },
                     { 
                         title: 'Enrollment Confirmation', 
                         description: 'Know when the child begins their educational journey.', 
                         icon: 'FileCheck',
-                        image: '/images/placeholders/enrollment-doc.jpg'
+                        image: '/images/enrollment-confirmation.png'
                     },
                     { 
                         title: 'Progress Reports', 
                         description: 'Receive academic updates approximately every six months, depending on the school\'s reporting schedule.', 
                         icon: 'TrendingUp',
-                        image: '/images/placeholders/report-card.jpg'
+                        image: '/images/progress-reports.png'
                     },
                     { 
                         title: 'Teacher Feedback', 
                         description: 'Where available, receive insights into the child\'s learning and classroom progress.', 
                         icon: 'MessageSquare',
-                        image: '/images/placeholders/teacher-notes.jpg'
+                        image: '/images/teacher-feedback.png'
                     },
                     { 
                         title: 'Attendance Updates', 
                         description: 'Follow the child\'s participation and educational consistency where reporting is available.', 
                         icon: 'CalendarCheck',
-                        image: '/images/placeholders/attendance-log.jpg'
+                        image: '/images/attendance-update.png'
                     },
                     { 
                         title: 'Approved Photographs', 
                         description: 'Celebrate important milestones through approved photographs shared with appropriate consent.', 
                         icon: 'Camera',
-                        image: '/images/placeholders/approved-photo.jpg'
+                        image: '/images/approved-photographs.png'
                     },
                     { 
                         title: 'Educational Milestones', 
                         description: 'Follow the child\'s journey from enrollment through continued academic progress.', 
                         icon: 'Award',
-                        image: '/images/placeholders/milestones.jpg'
+                        image: '/images/educational-milestones.png'
                     }
                 ]
             }
@@ -814,6 +814,7 @@ async function main() {
                 version: 'v2',
                 order: 1,
                 component: 'hero',
+                variant: 'tall',
                 layout: 'full-bg',
                 heading: 'Every Child Has a Dream.',
                 description: 'Every child profile represents a unique educational journey. Learn their story, discover their aspirations, and see how sponsorship helps create lasting opportunities through education.',
@@ -940,6 +941,7 @@ async function main() {
                 version: 'v3-trust-experience',
                 order: 1,
                 component: 'hero',
+                variant: 'tall',
                 heading: 'Every Sponsorship Becomes a Documented Story of Progress.',
                 description: 'We are building an open, verifiable sponsorship system where tuition, uniforms, and learning outcomes are tracked with complete transparency.',
                 secondaryDescription: 'Most charities ask for trust. We believe trust should be documented.',
@@ -1254,20 +1256,20 @@ async function main() {
     // 5. Seed Children
     const childrenData = [
         // High Urgency Waiting
-        { name: 'Ayesha', age: 8, gender: 'Female', location: 'Dadu', dream: 'Doctor', programId: 'prog-1', status: ChildStatus.WAITING, story: 'Ayesha walks 5km to school...' },
-        { name: 'Fatima', age: 7, gender: 'Female', location: 'Dadu', dream: 'Teacher', programId: 'prog-1', status: ChildStatus.WAITING, story: 'Fatima loves mathematics...' },
-        { name: 'Zainab', age: 9, gender: 'Female', location: 'Dadu', dream: 'Pilot', programId: 'prog-1', status: ChildStatus.WAITING, story: 'Zainab wants to fly planes...' },
+        { name: 'Ayesha', age: 8, gender: 'Female', location: 'Dadu', dream: 'Doctor', programId: 'prog-1', status: ChildStatus.WAITING_FOR_SPONSOR, story: 'Ayesha walks 5km to school...' },
+        { name: 'Fatima', age: 7, gender: 'Female', location: 'Dadu', dream: 'Teacher', programId: 'prog-1', status: ChildStatus.WAITING_FOR_SPONSOR, story: 'Fatima loves mathematics...' },
+        { name: 'Zainab', age: 9, gender: 'Female', location: 'Dadu', dream: 'Pilot', programId: 'prog-1', status: ChildStatus.WAITING_FOR_SPONSOR, story: 'Zainab wants to fly planes...' },
         // Normal Waiting
-        { name: 'Ali', age: 10, gender: 'Male', location: 'Lahore', dream: 'Engineer', programId: 'prog-2', status: ChildStatus.WAITING, story: 'Ali builds toys from scrap...' },
-        { name: 'Ahmed', age: 11, gender: 'Male', location: 'Lahore', dream: 'Cricketer', programId: 'prog-2', status: ChildStatus.WAITING, story: 'Ahmed is the team captain...' },
-        { name: 'Bilal', age: 12, gender: 'Male', location: 'Lahore', dream: 'Artist', programId: 'prog-2', status: ChildStatus.WAITING, story: 'Bilal paints beautiful landscapes...' },
-        { name: 'Omar', age: 6, gender: 'Male', location: 'Swat', dream: 'Police', programId: 'prog-3', status: ChildStatus.WAITING, story: 'Omar wants to protect his village...' },
-        { name: 'Sana', age: 7, gender: 'Female', location: 'Swat', dream: 'Nurse', programId: 'prog-3', status: ChildStatus.WAITING, story: 'Sana helps her grandmother...' },
+        { name: 'Ali', age: 10, gender: 'Male', location: 'Lahore', dream: 'Engineer', programId: 'prog-2', status: ChildStatus.WAITING_FOR_SPONSOR, story: 'Ali builds toys from scrap...' },
+        { name: 'Ahmed', age: 11, gender: 'Male', location: 'Lahore', dream: 'Cricketer', programId: 'prog-2', status: ChildStatus.WAITING_FOR_SPONSOR, story: 'Ahmed is the team captain...' },
+        { name: 'Bilal', age: 12, gender: 'Male', location: 'Lahore', dream: 'Artist', programId: 'prog-2', status: ChildStatus.WAITING_FOR_SPONSOR, story: 'Bilal paints beautiful landscapes...' },
+        { name: 'Omar', age: 6, gender: 'Male', location: 'Swat', dream: 'Police', programId: 'prog-3', status: ChildStatus.WAITING_FOR_SPONSOR, story: 'Omar wants to protect his village...' },
+        { name: 'Sana', age: 7, gender: 'Female', location: 'Swat', dream: 'Nurse', programId: 'prog-3', status: ChildStatus.WAITING_FOR_SPONSOR, story: 'Sana helps her grandmother...' },
         // Sponsored
         { name: 'Raju', age: 13, gender: 'Male', location: 'Karachi', dream: 'Chef', programId: 'prog-4', status: ChildStatus.SPONSORED, story: 'Raju is learning to cook...' },
         { name: 'Hina', age: 14, gender: 'Female', location: 'Karachi', dream: 'Designer', programId: 'prog-4', status: ChildStatus.SPONSORED, story: 'Hina designs her own clothes...' },
         // Graduated
-        { name: 'Yusuf', age: 18, gender: 'Male', location: 'Dadu', dream: 'Business', programId: 'prog-1', status: ChildStatus.GRADUATED, story: 'Yusuf now runs a shop...' },
+        { name: 'Yusuf', age: 18, gender: 'Male', location: 'Dadu', dream: 'Business', programId: 'prog-1', status: ChildStatus.EDUCATION_COMPLETED, story: 'Yusuf now runs a shop...' },
     ]
 
     for (const [index, c] of childrenData.entries()) {
@@ -1320,7 +1322,7 @@ async function main() {
                 educationLevel: 'Primary',
                 currentGrade: `Grade ${Math.max(1, c.age - 5)}`,
                 schoolType: 'Community Primary School',
-                progressStage: c.status === ChildStatus.SPONSORED ? 'In Education' : c.status === ChildStatus.GRADUATED ? 'Graduated' : 'Needs Sponsor',
+                progressStage: c.status === ChildStatus.SPONSORED ? 'In Education' : c.status === ChildStatus.EDUCATION_COMPLETED ? 'Graduated' : 'Needs Sponsor',
                 sponsorshipNeededMonthly: 30,
                 status: c.status,
                 impactStorySlug: c.name === 'Yusuf' ? 'yusuf-b-business' : undefined,
@@ -1379,7 +1381,7 @@ async function main() {
             schoolType: 'Hope Community Primary',
             progressStage: 'Needs Sponsor',
             sponsorshipNeededMonthly: 30,
-            status: ChildStatus.WAITING,
+            status: ChildStatus.WAITING_FOR_SPONSOR,
             safeguardingConsent: true,
             safeguardingReviewStatus: SafeguardingReviewStatus.VERIFIED,
             createdByAdminId: 'admin-1',
@@ -1519,7 +1521,7 @@ async function main() {
             schoolType: 'St. Jude High School',
             progressStage: 'Enrolled in University',
             sponsorshipNeededMonthly: 30,
-            status: ChildStatus.GRADUATED,
+            status: ChildStatus.EDUCATION_COMPLETED,
             safeguardingConsent: true,
             safeguardingReviewStatus: SafeguardingReviewStatus.VERIFIED,
             createdByAdminId: 'admin-1',
@@ -1564,7 +1566,7 @@ async function main() {
             schoolType: 'Hope Primary',
             progressStage: 'Needs Sponsor',
             sponsorshipNeededMonthly: 30,
-            status: ChildStatus.WAITING,
+            status: ChildStatus.WAITING_FOR_SPONSOR,
             safeguardingConsent: true,
             safeguardingReviewStatus: SafeguardingReviewStatus.VERIFIED,
             createdByAdminId: 'admin-1',
@@ -1601,7 +1603,7 @@ async function main() {
             schoolType: 'Coastal Academy',
             progressStage: 'Needs Sponsor',
             sponsorshipNeededMonthly: 30,
-            status: ChildStatus.WAITING,
+            status: ChildStatus.WAITING_FOR_SPONSOR,
             safeguardingConsent: true,
             safeguardingReviewStatus: SafeguardingReviewStatus.VERIFIED,
             createdByAdminId: 'admin-1',
