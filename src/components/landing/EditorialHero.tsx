@@ -89,7 +89,7 @@ export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig
                     )}
 
                         {meta.trustStrip && meta.trustStrip.length > 0 && (
-                            <div className="flex flex-wrap items-center gap-x-4 gap-y-3 mt-4 pt-4 border-t border-white/10 animate-fade-in-up delay-500 text-sm font-medium text-white/80">
+                            <div className="flex flex-wrap items-center gap-x-4 gap-y-3 mt-10 pt-6 border-t border-white/10 animate-fade-in-up delay-500 text-sm font-medium text-white/80">
                                 {meta.trustStrip.map((item: string, idx: number) => (
                                     <div key={idx} className="flex items-center">
                                         <div className="flex items-center gap-2">

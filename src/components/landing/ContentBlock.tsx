@@ -69,13 +69,13 @@ export function ContentBlock({ data }: { data?: any }) {
                                     
                                     if (variant === 'checkmarks') {
                                         return (
-                                            <div key={idx} className="flex items-start gap-4 p-4 rounded-xl hover:bg-black/20 transition-colors">
-                                                <div className="bg-emerald-500/20 rounded-full p-1.5 flex-shrink-0 mt-0.5">
-                                                    <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+                                            <div key={idx} className="flex items-start gap-4 p-4 rounded-xl hover:bg-gray-100 transition-colors">
+                                                <div className="bg-emerald-500/10 rounded-full p-1.5 flex-shrink-0 mt-0.5">
+                                                    <CheckCircle2 className="w-6 h-6 text-emerald-500" />
                                                 </div>
                                                 <div>
-                                                    <h3 className="text-white font-bold text-xl mb-1">{title}</h3>
-                                                    {subtitle && <p className="text-gray-300 text-sm leading-relaxed">{subtitle}</p>}
+                                                    <h3 className="text-gray-900 font-bold text-xl mb-1">{title}</h3>
+                                                    {subtitle && <p className="text-gray-600 text-sm leading-relaxed">{subtitle}</p>}
                                                 </div>
                                             </div>
                                         );
