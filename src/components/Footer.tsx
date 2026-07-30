@@ -105,7 +105,6 @@ export function Footer({ settings = DEFAULT_GLOBAL_SETTINGS }: FooterProps) {
               <li><Link href="/how-it-works" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">How It Works</Link></li>
               <li><Link href="/sponsor" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">Sponsor a Child</Link></li>
               <li><Link href="/impact" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">Our Impact</Link></li>
-              <li><Link href="/transparency" className="text-slate-300 hover:text-[#fdc700] transition-colors font-medium">Transparency</Link></li>
             </ul>
           </div>
 

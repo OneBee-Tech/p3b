@@ -318,13 +318,23 @@ export function Navbar({ session }: { session?: any }) {
           </div>
 
           <div className="border-t border-white/10 pt-4">
-            <Link
-              href="/signin"
-              className="block py-2 text-xs font-bold text-white hover:text-[#fdc700] uppercase tracking-wider"
-              onClick={() => setIsOpen(false)}
-            >
-              Sign In
-            </Link>
+            {session ? (
+              <Link
+                href="/dashboard"
+                className="block py-2 text-xs font-bold text-white hover:text-[#fdc700] uppercase tracking-wider"
+                onClick={() => setIsOpen(false)}
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <Link
+                href="/signin"
+                className="block py-2 text-xs font-bold text-white hover:text-[#fdc700] uppercase tracking-wider"
+                onClick={() => setIsOpen(false)}
+              >
+                Sign In
+              </Link>
+            )}
           </div>
         </div>
       )}
