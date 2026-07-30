@@ -31,7 +31,7 @@ export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig
                 <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[60vw] h-[80vh] bg-impact-gold/5 blur-[120px] rounded-full pointer-events-none z-0 mix-blend-screen" />
             )}
 
-            <div className={`relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full ${isTall ? 'pt-28 pb-8 lg:pt-32 lg:pb-12' : 'pt-20 pb-8 lg:pt-24 lg:pb-12'}`}>
+            <div className={`relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 flex flex-col justify-center py-20 mt-[2vh]`}>
                 <div className="max-w-4xl text-left">
                     
                     {badge && (
@@ -41,25 +41,25 @@ export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig
                     )}
 
                     {heading && (
-                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-extrabold text-white mb-6 tracking-tight leading-[1.1] animate-fade-in-up delay-100 drop-shadow-lg max-w-4xl">
+                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-extrabold text-white mb-10 tracking-tight leading-[1.1] animate-fade-in-up delay-100 drop-shadow-lg max-w-4xl">
                             {heading}
                         </h1>
                     )}
                     
                     {description && (
-                        <p className="text-lg md:text-xl text-white/90 leading-relaxed font-body mb-8 animate-fade-in-up delay-200 max-w-3xl drop-shadow-md">
+                        <p className="text-lg md:text-xl text-white/90 leading-relaxed font-body mb-6 animate-fade-in-up delay-200 max-w-3xl drop-shadow-md">
                             {description}
                         </p>
                     )}
                     
                     {secondaryDescription && (
-                        <p className="text-base md:text-lg text-white/70 leading-relaxed font-body mb-7 animate-fade-in-up delay-300 max-w-2xl">
+                        <p className="text-base md:text-lg italic text-impact-gold/90 leading-relaxed font-body mb-8 animate-fade-in-up delay-300 max-w-2xl drop-shadow-sm border-l-2 border-impact-gold/40 pl-4 py-1">
                             {secondaryDescription}
                         </p>
                     )}
 
                     {ctas && ctas.length > 0 && (
-                        <div className="flex flex-col sm:flex-row gap-4 mb-4 animate-fade-in-up delay-400">
+                        <div className="flex flex-col sm:flex-row gap-4 mb-8 animate-fade-in-up delay-400">
                             {ctas.map((cta: any, idx: number) => (
                                 <Link
                                     key={idx}
