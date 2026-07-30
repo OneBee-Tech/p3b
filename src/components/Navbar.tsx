@@ -64,7 +64,7 @@ export function Navbar({ session }: { session?: any }) {
     { href: "/", label: "Home" },
     { href: "/our-story", label: "Our Story" },
     { href: "/how-it-works", label: "How It Works" },
-    { href: "/sponsor", label: "Sponsor a Child" },
+    { href: "/sponsor-a-child", label: "Sponsor a Child" },
     { href: "/impact", label: "Our Impact" },
   ];
 

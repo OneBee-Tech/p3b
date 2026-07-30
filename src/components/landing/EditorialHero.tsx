@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 
 export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig?: any }) {
     const meta = data?.metadata || {};
-    const { heading, description, secondaryDescription, backgroundImage, ctas, readingTime, badge, breadcrumb, variant } = meta;
+    const { heading, description, supportingParagraph, secondaryDescription, backgroundImage, ctas, readingTime, badge, breadcrumb, variant, marginTop } = meta;
     const isTall = variant === 'tall';
 
     return (
@@ -31,9 +31,9 @@ export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig
                 <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[60vw] h-[80vh] bg-impact-gold/5 blur-[120px] rounded-full pointer-events-none z-0 mix-blend-screen" />
             )}
 
-            <div className={`relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 flex flex-col justify-center py-20 mt-[2vh]`}>
+            <div className={`relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 flex flex-col justify-center pt-20 pb-12 ${marginTop || 'mt-[2vh]'}`}>
                 <div className="max-w-4xl text-left">
-                    
+
                     {badge && (
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold tracking-wider text-impact-gold uppercase mb-5 animate-fade-in-up">
                             {badge}
@@ -45,13 +45,19 @@ export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig
                             {heading}
                         </h1>
                     )}
-                    
+
                     {description && (
                         <p className="text-lg md:text-xl text-white/90 leading-relaxed font-body mb-6 animate-fade-in-up delay-200 max-w-3xl drop-shadow-md">
                             {description}
                         </p>
                     )}
-                    
+
+                    {supportingParagraph && (
+                        <p className="text-base md:text-lg text-gray-300 leading-relaxed font-body mb-9 animate-fade-in-up delay-250 max-w-[730px] drop-shadow-sm">
+                            {supportingParagraph}
+                        </p>
+                    )}
+
                     {secondaryDescription && (
                         <p className="text-base md:text-lg italic text-impact-gold/90 leading-relaxed font-body mb-8 animate-fade-in-up delay-300 max-w-2xl drop-shadow-sm border-l-2 border-impact-gold/40 pl-4 py-1">
                             {secondaryDescription}
@@ -64,11 +70,10 @@ export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig
                                 <Link
                                     key={idx}
                                     href={cta.href}
-                                    className={`group px-7 py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 ${
-                                        cta.variant === 'primary' 
-                                        ? 'bg-impact-gold hover:bg-yellow-400 text-cinematic-dark shadow-[0_0_40px_rgba(253,199,0,0.3)] hover:-translate-y-1'
-                                        : 'bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm hover:-translate-y-1'
-                                    }`}
+                                    className={`group px-7 py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 ${cta.variant === 'primary'
+                                            ? 'bg-impact-gold hover:bg-yellow-400 text-cinematic-dark shadow-[0_0_40px_rgba(253,199,0,0.3)] hover:-translate-y-1'
+                                            : 'bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm hover:-translate-y-1'
+                                        }`}
                                 >
                                     {cta.label}
                                     {cta.variant === 'primary' && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
@@ -88,28 +93,28 @@ export function EditorialHero({ data, layoutConfig }: { data?: any, layoutConfig
                         </div>
                     )}
 
-                        {meta.trustStrip && meta.trustStrip.length > 0 && (
-                            <div className="flex flex-wrap items-center gap-x-4 gap-y-3 mt-10 pt-6 border-t border-white/10 animate-fade-in-up delay-500 text-sm font-medium text-white/80">
-                                {meta.trustStrip.map((item: string, idx: number) => (
-                                    <div key={idx} className="flex items-center">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-5 h-5 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-                                                <svg className="w-3.5 h-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                                </svg>
-                                            </div>
-                                            <span className="tracking-wide">{item}</span>
+                    {meta.trustStrip && meta.trustStrip.length > 0 && (
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-3 mt-10 pt-6 border-t border-white/10 animate-fade-in-up delay-500 text-sm font-medium text-white/80">
+                            {meta.trustStrip.map((item: string, idx: number) => (
+                                <div key={idx} className="flex items-center">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-5 h-5 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                                            <svg className="w-3.5 h-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                            </svg>
                                         </div>
-                                        {idx < meta.trustStrip.length - 1 && (
-                                            <span className="mx-4 text-white/20 hidden sm:inline-block">•</span>
-                                        )}
+                                        <span className="tracking-wide">{item}</span>
                                     </div>
-                                ))}
-                            </div>
-                        )}
+                                    {idx < meta.trustStrip.length - 1 && (
+                                        <span className="mx-4 text-white/20 hidden sm:inline-block">•</span>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
-            
+
         </section>
     );
 }
