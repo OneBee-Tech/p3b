@@ -24,7 +24,7 @@ export function HeroAcquisition({ data }: { data?: any }) {
                 <div className="absolute inset-0 bg-gradient-to-t from-cinematic-dark via-transparent to-cinematic-dark/30" />
             </div>
 
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 flex flex-col justify-center pt-24 lg:pt-28 pb-8">
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 flex flex-col justify-center pt-24 lg:pt-28 pb-8 mt-[7vh]">
                 <div className="max-w-4xl text-left">
                     <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-extrabold text-white mb-4 tracking-tight leading-[1.1] whitespace-pre-line animate-fade-in-up delay-100 drop-shadow-lg max-w-3xl">
                         One Dollar. One Child.<br/>
