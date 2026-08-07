@@ -67,7 +67,7 @@ async function main() {
                     { title: 'Uniforms & Shoes', icon: 'Shirt' },
                     { title: 'Classroom Materials', icon: 'Clipboard' },
                 ],
-                featureImage: '/images/placeholders/classroom-study.jpg',
+                featureImage: '/ngo_images/home/02_home_one_dollar_impact.webp',
                 ctas: [
                     { label: 'Turn My $1 Into Opportunity', href: '/sponsor', variant: 'primary' }
                 ]

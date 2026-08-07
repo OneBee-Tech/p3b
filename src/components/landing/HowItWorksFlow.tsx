@@ -93,7 +93,7 @@ export function HowItWorksFlow({ data }: { data?: any }) {
                     {/* Right: Visual */}
                     <div className="relative h-[600px] rounded-2xl overflow-hidden shadow-2xl group sticky top-24">
                         <Image
-                            src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=2673&auto=format&fit=crop"
+                            src="/ngo_images/home/03_home_education_journey_.webp"
                             alt="Symbolic imagery of books representing educational support"
                             fill
                             className="object-cover transition-transform duration-700 group-hover:scale-105"

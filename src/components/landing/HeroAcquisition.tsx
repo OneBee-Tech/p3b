@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ShieldCheck, HeartHandshake, FileText, Lock, Heart, PlayCircle } from "lucide-react";
 
 export function HeroAcquisition({ data }: { data?: any }) {
-    const heroImage = "/images/placeholders/hero-smiling-girl.png";
+    const heroImage = "/ngo_images/home/01_home_hero.webp";
 
     return (
         <section className="hero-section relative bg-cinematic-dark text-white flex flex-col justify-center overflow-hidden lg:min-h-[85vh]">

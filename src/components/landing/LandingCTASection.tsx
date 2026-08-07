@@ -13,7 +13,7 @@ export function LandingCTASection({ data }: { data?: any }) {
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <Image
-                    src="/images/placeholders/hero-new.jpg"
+                    src="/ngo_images/home/04_home_cta.webp"
                     alt="Conclusion"
                     fill
                     sizes="100vw"
