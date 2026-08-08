@@ -31,7 +31,8 @@ export function EditorialSection({ data, layoutConfig }: { data?: any, layoutCon
                             src={image?.src || image}
                             alt={image?.alt || heading || "Cinematic visual break"}
                             fill
-                            className="object-cover object-center scale-105 transition-transform duration-[10s] hover:scale-100"
+                            className="object-cover scale-105 transition-transform duration-[10s] hover:scale-100"
+                            style={image?.objectPosition ? { objectPosition: image.objectPosition } : {}}
                         />
                         <div className="absolute inset-0 bg-gradient-to-b from-cinematic-dark/85 via-cinematic-dark/70 to-cinematic-dark/90" />
                     </div>
@@ -74,6 +75,7 @@ export function EditorialSection({ data, layoutConfig }: { data?: any, layoutCon
                                     alt={image?.alt || heading || "Editorial image"}
                                     fill
                                     className="object-cover transition-transform duration-[20s] group-hover:scale-110"
+                                    style={image?.objectPosition ? { objectPosition: image.objectPosition } : {}}
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
                             </figure>
@@ -91,6 +93,7 @@ export function EditorialSection({ data, layoutConfig }: { data?: any, layoutCon
                                         alt={image?.alt || heading || "Editorial image"}
                                         fill
                                         className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                                        style={image?.objectPosition ? { objectPosition: image.objectPosition } : {}}
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
                                     {image?.caption && (

@@ -204,7 +204,7 @@ async function main() {
                 description: 'What happens if many people each give one dollar a day?',
                 secondaryDescription: 'One dollar is insignificant in developed countries—it cannot even buy a cup of coffee. But when aggregated and sent directly to developing communities, that same dollar becomes transformative. It provides school fees, books, and uniforms. A single dollar can begin a journey of lifelong opportunity.',
                 backgroundImage: {
-                    src: '/images/placeholders/story-hero-happy-children.jpg',
+                    src: '/ngo_images/our-story/01_story_hero.webp',
                     alt: 'Joyful school children in uniform raising their hands eager to learn',
                     caption: 'Every dollar creates a new opportunity.'
                 },
@@ -231,7 +231,7 @@ async function main() {
                     author: 'Our Core Philosophy'
                 },
                 image: {
-                    src: '/images/placeholders/classroom-study.jpg',
+                    src: '/ngo_images/our-story/02_story_problem.webp',
                     alt: 'Students studying diligently',
                     caption: 'Transforming small change into massive impact.'
                 }
@@ -328,7 +328,7 @@ async function main() {
                     author: 'The Power of the Classroom'
                 },
                 image: {
-                    src: '/images/placeholders/classroom-study.jpg',
+                    src: '/ngo_images/our-story/05_story_education_changes.webp',
                     alt: 'Children eager to learn in a vibrant classroom',
                     caption: 'Education changes lives—one classroom at a time.'
                 },
@@ -384,7 +384,7 @@ async function main() {
                     author: 'Our Philosophy'
                 },
                 image: {
-                    src: '/images/placeholders/why-one-dollar.png',
+                    src: '/ngo_images/our-story/03_story_one_dollar.webp',
                     alt: 'Children looking out of a classroom window with bright smiles',
                     caption: 'Democratizing generosity, one dollar at a time.'
                 }
@@ -403,7 +403,7 @@ async function main() {
                 heading: 'Why Smaller Communities?',
                 body: 'We focus our efforts on smaller towns and rural communities where resources are scarce but community bonds are strong. This allows for responsible stewardship, measurable impact, and long-term sustainability.',
                 image: {
-                    src: '/images/placeholders/smaller-communities-new.jpg',
+                    src: '/ngo_images/our-story/04_story_smaller_community.webp',
                     alt: 'Joyful group of children smiling in a rural community',
                     caption: 'Targeted support where it is needed most.'
                 }
@@ -484,7 +484,7 @@ async function main() {
                 heading: 'Every Child Deserves the Chance to Learn.',
                 body: 'A classroom can change a life. A single opportunity can change a generation. A single dollar can help make that opportunity possible.',
                 image: {
-                    src: '/images/placeholders/every-child-deserves.jpg',
+                    src: '/ngo_images/our-story/06_story_every_child.webp',
                     alt: 'Children sitting together in class holding slates eager to learn',
                     caption: 'Every child deserves the chance to learn.'
                 }
@@ -501,6 +501,7 @@ async function main() {
                 component: 'ctaSection',
                 heading: 'Be Part of Their Next Chapter',
                 description: 'Every child deserves the opportunity to learn, and every contribution helps write a new chapter in someone\'s future. You have the power to change a life today.',
+                backgroundImage: '/ngo_images/our-story/07_story_cta.webp',
                 ctas: [
                     { label: 'Start Your Impact', href: '/sponsor', variant: 'primary' },
                     { label: 'Make a One-Time Gift', href: '/checkout', variant: 'secondary' }
